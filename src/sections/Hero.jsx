@@ -7,6 +7,7 @@ import hero960 from '@/assets/hero-960.webp'
 import hero1440 from '@/assets/hero-1440.webp'
 import hero1920 from '@/assets/hero-1920.webp'
 import heroJpg from '@/assets/hero-1920.jpg'
+import logo from '@/assets/logo.svg'
 
 const HEADLINE = 'Marketing, design and imagery that gets you noticed.'
 
@@ -32,8 +33,8 @@ export default function Hero({ reducedMotion }) {
   return (
     <header className="hero" ref={scope}>
       <nav className="nav" aria-label="Main">
-        <a className="logo display" href="#top">
-          CATALYZE
+        <a className="logo" href="#top">
+          <img src={logo} width="2400" height="897" alt="Catalyze, back to top" />
         </a>
         <ul>
           <li><a href="#services">Services</a></li>

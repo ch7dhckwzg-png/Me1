@@ -70,8 +70,15 @@ a {
 }
 
 .nav .logo {
-  font-size: 1.4rem;
-  text-decoration: none;
+  display: block;
+  flex-shrink: 0;
+  border-radius: 6px;
+}
+
+.nav .logo img {
+  display: block;
+  width: auto;
+  height: clamp(30px, 4.2vw, 44px);
 }
 
 .nav ul {
