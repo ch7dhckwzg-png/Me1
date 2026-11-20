@@ -1,0 +1,319 @@
+:root {
+  --bg: #181818;
+  --fg: #f1ebdd;
+  --muted: #a59c8b;
+  --soft: #b8af9e;
+  --line: rgba(241, 235, 221, 0.16);
+  --accent: #e4cfa6;
+  --accent-hover: #f0dfbf;
+  --ink: #161616;
+  --gutter: clamp(1rem, 4vw, 3rem);
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+html {
+  background: var(--bg);
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font: 400 1.0625rem/1.6 'Hanken Grotesk', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+
+a {
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.display {
+  font-family: 'Saira Stencil One', Impact, 'Arial Black', sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  line-height: 1.05;
+}
+
+/* ---------- Hero ---------- */
+
+.hero {
+  padding-bottom: clamp(2.5rem, 6vw, 4.5rem);
+}
+
+.nav,
+.intro {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-inline: var(--gutter);
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding-top: calc(env(safe-area-inset-top, 0px) + 1rem);
+  padding-bottom: 0.75rem;
+}
+
+.nav .logo {
+  font-size: 1.4rem;
+  text-decoration: none;
+}
+
+.nav ul {
+  display: flex;
+  gap: clamp(0.9rem, 3vw, 1.25rem);
+  list-style: none;
+  padding: 0;
+  font-size: 0.95rem;
+}
+
+.nav ul a {
+  text-decoration: none;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+
+.nav ul a:hover {
+  opacity: 1;
+}
+
+.hero picture {
+  display: block;
+  overflow: hidden;
+}
+
+.hero-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 78svh;
+  object-fit: contain;
+}
+
+.intro {
+  display: grid;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.headline {
+  display: inline-block;
+  font-size: clamp(2rem, 5vw, 3.6rem);
+}
+
+.split-placeholder {
+  visibility: hidden;
+}
+
+.intro p {
+  color: var(--soft);
+  max-width: 44ch;
+}
+
+.cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+}
+
+.btn {
+  display: inline-block;
+  padding: 0.8rem 1.3rem;
+  border-radius: 2px;
+  font: 600 1rem 'Hanken Grotesk', system-ui, sans-serif;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color 0.2s,
+    border-color 0.2s;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: var(--ink);
+  border: 1px solid var(--accent);
+}
+
+.btn-primary:hover {
+  background: var(--accent-hover);
+}
+
+.btn-ghost {
+  border: 1px solid rgba(241, 235, 221, 0.4);
+  color: var(--fg);
+  background: none;
+}
+
+.btn-ghost:hover {
+  border-color: var(--fg);
+}
+
+@media (min-width: 800px) {
+  .intro {
+    grid-template-columns: 1.3fr 1fr;
+    align-items: end;
+    gap: 3rem;
+  }
+}
+
+/* ---------- Sections ---------- */
+
+.wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: clamp(3.5rem, 9vw, 7rem) var(--gutter);
+}
+
+h2 {
+  font-size: clamp(1.9rem, 4.5vw, 3rem);
+  margin-bottom: 2.5rem;
+}
+
+.services ul {
+  list-style: none;
+  padding: 0;
+}
+
+.service {
+  border-top: 1px solid var(--line);
+}
+
+.service:last-child {
+  border-bottom: 1px solid var(--line);
+}
+
+/* Override React Bits GlareHover's centred inline-grid so the row lays out like the original. */
+.glare-hover.service-row {
+  display: grid;
+  place-items: stretch;
+  gap: 0.5rem;
+  padding: 1.5rem 0;
+  border: 0;
+}
+
+.service h3 {
+  font-size: clamp(1.6rem, 3.2vw, 2.4rem);
+  transition: color 0.2s;
+}
+
+.service:hover h3 {
+  color: var(--accent);
+}
+
+.service p {
+  color: var(--muted);
+  max-width: 38ch;
+}
+
+@media (min-width: 760px) {
+  .glare-hover.service-row {
+    grid-template-columns: 1fr 1fr;
+    align-items: baseline;
+  }
+}
+
+.about {
+  display: grid;
+  gap: 1rem;
+}
+
+.about p {
+  color: var(--muted);
+  max-width: 56ch;
+  font-size: 1.15rem;
+}
+
+@media (min-width: 760px) {
+  .about {
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+  }
+
+  .about h2 {
+    margin-bottom: 0;
+  }
+}
+
+/* ---------- Contact ---------- */
+
+.contact {
+  position: relative;
+  isolation: isolate;
+  border-top: 1px solid var(--line);
+}
+
+.contact-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Fade the gradient into the page so the section edge stays a hairline, not a block. */
+.contact-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, var(--bg) 0%, transparent 45%);
+}
+
+.contact .mail {
+  display: block;
+  font-size: clamp(1.2rem, 5vw, 3rem);
+  text-decoration: none;
+  overflow-wrap: anywhere;
+  margin-bottom: 1.5rem;
+  transition: color 0.2s;
+}
+
+.contact .mail:hover {
+  color: var(--accent);
+}
+
+.contact .btn-ghost {
+  border-color: var(--line);
+}
+
+.contact .btn-ghost:hover {
+  border-color: var(--fg);
+}
+
+footer {
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+footer div {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.5rem var(--gutter) calc(1.5rem + env(safe-area-inset-bottom, 0px));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+  }
+}
