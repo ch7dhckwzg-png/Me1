@@ -103,6 +103,27 @@ a {
   height: auto;
   max-height: 78svh;
   object-fit: contain;
+  /* The photo's backdrop is the page colour (#181818), but the black T-shirt is darker and
+     ends in a hard line at the bottom corners. Feather the bottom and sides into the page. */
+  -webkit-mask-image:
+    linear-gradient(to bottom, #000 72%, transparent 100%),
+    linear-gradient(to right, transparent 0%, #000 12%, #000 88%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(to bottom, #000 72%, transparent 100%),
+    linear-gradient(to right, transparent 0%, #000 12%, #000 88%, transparent 100%);
+  mask-composite: intersect;
+}
+
+/* Phones: a 16:9 photo at 390px wide is only ~220px tall. Crop to a square around the head
+   so the hero still reads as the hero; the stencilled logo sits well inside the crop. */
+@media (max-width: 699px) {
+  .hero-img {
+    aspect-ratio: 1 / 1;
+    max-height: none;
+    object-fit: cover;
+    object-position: 50% 40%;
+  }
 }
 
 .intro {

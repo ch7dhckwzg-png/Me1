@@ -46,7 +46,7 @@ export default function Hero({ reducedMotion }) {
         <source
           type="image/webp"
           srcSet={`${hero960} 960w, ${hero1440} 1440w, ${hero1920} 1920w`}
-          sizes="100vw"
+          sizes="(max-width: 699px) 178vw, 100vw"
         />
         <img
           id="top"
