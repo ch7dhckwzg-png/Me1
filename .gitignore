@@ -33,3 +33,4 @@ dist-single
 
 # Single-file preview build (regenerate with npm run build:single)
 catalyze-site-preview.html
+catalyze-netlify-deploy.zip
