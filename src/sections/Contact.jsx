@@ -48,6 +48,11 @@ export default function Contact({ reducedMotion }) {
         </h2>
         <a className="mail" href={MAILTO}>{EMAIL}</a>
         <button className="btn btn-dark" type="button" onClick={copy} aria-live="polite">
+          {label === 'Copied' && (
+            <svg className="copied-tick" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+              <path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          )}
           {label}
         </button>
       </div>

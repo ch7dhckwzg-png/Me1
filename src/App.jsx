@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import useReducedMotion from '@/hooks/useReducedMotion'
 import useSmoothScroll from '@/hooks/useSmoothScroll'
+import { ScrollProgress } from '@/components/ui/scroll-progress'
+import SiteDock from '@/components/SiteDock'
 import Intro from '@/sections/Intro'
 import Hero from '@/sections/Hero'
 import Velocity from '@/sections/Velocity'
@@ -37,6 +39,12 @@ export default function App() {
         <About reducedMotion={reducedMotion} />
         <Contact reducedMotion={reducedMotion} />
       </main>
+      {phase !== 'intro' || reducedMotion ? (
+        <>
+          <ScrollProgress className="scroll-progress" aria-hidden="true" />
+          <SiteDock />
+        </>
+      ) : null}
       <footer>
         <div>© {YEAR} Catalyze. All rights reserved.</div>
       </footer>

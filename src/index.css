@@ -4,6 +4,8 @@
 @import 'tailwindcss/theme.css' layer(theme);
 @import 'tailwindcss/utilities.css' layer(utilities);
 
+@custom-variant dark (&:is(.dark *));
+
 :root {
   --bg: #181818;
   --fg: #f1ebdd;
@@ -558,6 +560,120 @@ html.is-locked body {
   color: var(--accent);
 }
 
+/* ---------- Magic UI: shimmer button, scroll progress, dock ---------- */
+
+/* Plain CSS here wins over Tailwind's layered utilities, so colours and type set here
+   always apply, whatever the component's defaults. */
+.btn-shimmer {
+  padding: 0.8rem 1.5rem;
+  color: var(--ink);
+  font: 600 0.98rem 'Hanken Grotesk', system-ui, sans-serif;
+  text-decoration: none;
+}
+
+.scroll-progress {
+  z-index: 45;
+  height: 2px;
+  background: linear-gradient(90deg, #b8925a, var(--accent), #fff2d6);
+}
+
+.site-dock {
+  position: fixed;
+  z-index: 40;
+  left: 50%;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 14px);
+  translate: -50% 140%;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    translate 0.45s cubic-bezier(0.2, 0.9, 0.2, 1),
+    opacity 0.3s;
+}
+
+.site-dock.is-shown {
+  translate: -50% 0;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.site-dock-bar {
+  margin: 0;
+  height: 64px;
+  gap: 6px;
+  padding: 8px 10px;
+  border: 1px solid rgba(241, 235, 221, 0.14);
+  border-radius: 999px;
+  background: rgba(24, 24, 24, 0.72);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+}
+
+.site-dock-item {
+  position: relative;
+  color: var(--fg);
+  background: rgba(241, 235, 221, 0.06);
+  transition: background-color 0.2s;
+}
+
+.site-dock-item:hover {
+  background: rgba(241, 235, 221, 0.14);
+}
+
+.site-dock-item.is-primary {
+  background: var(--accent);
+  color: var(--ink);
+}
+
+.site-dock-item a {
+  display: grid;
+  place-items: center;
+  color: inherit;
+  border-radius: 999px;
+}
+
+/* The DockIcon wraps its child in a div; make the link fill the whole circle. */
+.site-dock-item > div,
+.site-dock-item a {
+  width: 100%;
+  height: 100%;
+}
+
+.site-dock-item a::after {
+  content: attr(data-label);
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  translate: -50% 4px;
+  padding: 0.3rem 0.6rem;
+  border-radius: 6px;
+  background: var(--fg);
+  color: var(--ink);
+  font-size: 0.78rem;
+  font-weight: 600;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.15s,
+    translate 0.15s;
+}
+
+.site-dock-item a:hover::after,
+.site-dock-item a:focus-visible::after {
+  opacity: 1;
+  translate: -50% 0;
+}
+
+.copied-tick {
+  margin: 0 0.4rem -0.15rem 0;
+}
+
+/* Keep the last lines of the page clear of the floating dock. */
+footer {
+  padding-bottom: 88px;
+}
+
 /* ---------- Hero ---------- */
 
 .hero {
@@ -625,7 +741,6 @@ html.is-locked body {
   gap: 1.25rem;
   max-width: 36ch;
 }
-
 
 .hero-sub {
   color: var(--soft);
@@ -750,6 +865,8 @@ html.is-locked body {
     width: min(76vw, 1100px);
     height: 100%;
     padding-inline: clamp(2.5rem, 6vw, 5.5rem);
+    /* Clear the floating dock. */
+    padding-bottom: calc(clamp(2rem, 6vw, 5rem) + 72px);
   }
 
   .panel-intro {
@@ -837,6 +954,10 @@ footer div {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .btn-shimmer * {
+    animation: none !important;
+  }
+
   .services-track {
     display: block !important;
     width: auto !important;
@@ -857,5 +978,29 @@ footer div {
   *::before,
   *::after {
     transition-duration: 0.01ms !important;
+  }
+}
+
+@theme inline {
+  --animate-shimmer-slide: shimmer-slide var(--speed) ease-in-out infinite alternate;
+  --animate-spin-around: spin-around calc(var(--speed) * 2) infinite linear;
+  @keyframes shimmer-slide {
+  to {
+    transform: translate(calc(100cqw - 100%), 0);
+    }
+  }
+  @keyframes spin-around {
+  0% {
+    transform: translateZ(0) rotate(0);
+    }
+  15%, 35% {
+    transform: translateZ(0) rotate(90deg);
+    }
+  65%, 85% {
+    transform: translateZ(0) rotate(270deg);
+    }
+  100% {
+    transform: translateZ(0) rotate(360deg);
+    }
   }
 }

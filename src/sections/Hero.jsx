@@ -2,6 +2,7 @@ import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { useGSAP } from '@gsap/react'
 import HeroStar from '@/components/HeroStar'
+import { ShimmerButton } from '@/components/ui/shimmer-button'
 import { MAILTO } from '@/content'
 import logo from '@/assets/logo.svg'
 
@@ -104,7 +105,18 @@ export default function Hero({ reducedMotion, prepare = true, ready = true, onSc
             between your business and the people it’s for.
           </p>
           <div className="cta">
-            <a className="btn btn-primary" href={MAILTO}>Email us</a>
+            {/* Magic UI shimmer: a slow light runs round the main action. */}
+            <ShimmerButton
+              as="a"
+              href={MAILTO}
+              className="btn-shimmer"
+              background="#E4CFA6"
+              shimmerColor="#FFFFFF"
+              shimmerDuration="3.5s"
+              shimmerSize="0.1em"
+            >
+              Email us
+            </ShimmerButton>
             <a className="btn btn-ghost" href="#services">See what we do</a>
           </div>
         </div>
