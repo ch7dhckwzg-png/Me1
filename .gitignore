@@ -24,3 +24,5 @@ dist-ssr
 *.sw?
 dist-single
 .playwright-mcp
+# Playwright CLI output (may contain credentials)
+.playwright-cli/
