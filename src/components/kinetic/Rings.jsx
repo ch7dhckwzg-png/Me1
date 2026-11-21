@@ -6,9 +6,9 @@ import { useGSAP } from '@gsap/react'
 gsap.registerPlugin(DrawSVGPlugin)
 
 const RINGS = [
-  { label: 'Branding', r: 176, color: '#d2642c' },
-  { label: 'Web', r: 146, color: '#e2804c' },
-  { label: 'Photography', r: 116, color: '#efa376' },
+  { label: 'Branding', r: 176, color: '#ff6e00' },
+  { label: 'Web', r: 146, color: '#ff8c3d' },
+  { label: 'Photography', r: 116, color: '#ffb27a' },
   { label: 'Motion', r: 86, color: '#f3ede3' },
 ]
 

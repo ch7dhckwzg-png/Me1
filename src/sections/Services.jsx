@@ -6,7 +6,7 @@ export default function Services() {
     <section className="section services" id="services">
       <div className="wrap">
         <header className="section-head">
-          <h2 className="display">Everything your brand needs to be seen</h2>
+          <h2 className="display">Everything your brand needs to be <span className="accent-word">seen</span></h2>
           <p className="lead">Choose one service, or bring us in for the lot. Whatever we make is designed to work together.</p>
         </header>
         <ul className="service-list">

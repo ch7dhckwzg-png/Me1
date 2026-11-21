@@ -261,7 +261,7 @@ export default function Work({ reducedMotion }) {
       </GiantWord>
       <div className="wrap">
         <header className="section-head">
-          <h2 className="display">A taste of what we make</h2>
+          <h2 className="display">A taste of what we <span className="accent-word">make</span></h2>
           <p className="lead">
             The brands below are concept projects, created by Catalyze to show our range. Yours could be next.
           </p>

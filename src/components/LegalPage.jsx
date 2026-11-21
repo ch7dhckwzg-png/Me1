@@ -16,7 +16,7 @@ export default function LegalPage({ title, sections }) {
       <header className="legal-header">
         <nav className="nav" aria-label="Main">
           <a className="logo" href="/">
-            <img src={logo} width="1275" height="477" alt="Catalyze, home" />
+            <img src={logo} width="1286" height="488" alt="Catalyze, home" />
           </a>
           <a className="btn btn-ghost nav-back" href="/">Back to the site</a>
           <a className="btn btn-primary nav-cta" href={MAILTO}>Start a project</a>

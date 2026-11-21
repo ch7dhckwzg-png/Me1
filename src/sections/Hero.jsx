@@ -81,7 +81,7 @@ export default function Hero({ reducedMotion, prepare = true, ready = true, onSc
 
       <nav className="nav" aria-label="Main">
         <a className="logo" href="#home">
-          <img src={logo} width="1275" height="477" alt="Catalyze, back to top" />
+          <img src={logo} width="1286" height="488" alt="Catalyze, back to top" />
         </a>
         <ul>
           <li><a href="#services">Services</a></li>
@@ -107,8 +107,8 @@ export default function Hero({ reducedMotion, prepare = true, ready = true, onSc
               as="a"
               href={MAILTO}
               className="btn-shimmer"
-              background="#D2642C"
-              shimmerColor="#FFE3CC"
+              background="#FF6E00"
+              shimmerColor="#FFF1E3"
               shimmerDuration="3.5s"
               shimmerSize="0.1em"
               borderRadius="6px"
@@ -120,7 +120,7 @@ export default function Hero({ reducedMotion, prepare = true, ready = true, onSc
         </div>
         <h1 className="hero-title">
           <span className="line line-serif"><span>Branding, websites, photography and motion,</span></span>{' '}
-          <span className="line line-bold"><span>made to be noticed.</span></span>
+          <span className="line line-bold"><span>made to be <span className="accent-word">noticed.</span></span></span>
         </h1>
       </div>
     </header>
