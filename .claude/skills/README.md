@@ -14,6 +14,9 @@ These skills load automatically in any Claude Code session on this repo, includi
 | `threejs-*` (13 skills) | [CloudAI-X/threejs-skills](https://github.com/CloudAI-X/threejs-skills) (community, not official three.js) | MIT |
 | `shadcn` | [shadcn-ui/ui](https://github.com/shadcn-ui/ui/tree/main/skills/shadcn) (official; evals and Codex config left out) | MIT |
 | `playwright-cli` | Written by `playwright-cli install --skills` ([microsoft/playwright-cli](https://github.com/microsoft/playwright-cli)) | Apache 2.0 |
+| `design-taste-frontend` (Taste) | [Leonxlnx/taste-skill](https://github.com/Leonxlnx/taste-skill) | See repo |
+| `img2threejs` | [img2threejs/img2threejs](https://github.com/img2threejs/img2threejs) | Apache 2.0 |
+| `remotion-*` (13 skills, router: `remotion-best-practices`) | [remotion-dev/skills](https://github.com/remotion-dev/skills), installed with `npx skills add remotion-dev/skills --agent claude-code`. Taste and img2threejs were added the same way (`npx skills add <repo> --agent claude-code`) | See [Remotion licence](https://www.remotion.dev/license) |
 
 All are copied unchanged. Each folder has its licence. `../CONNECTORS.md` comes from the same Design plugin, and the skills link to it.
 
@@ -22,3 +25,7 @@ All are copied unchanged. Each folder has its licence. `../CONNECTORS.md` comes 
 `impeccable` runs a helper (`scripts/impeccable`) that downloads its engine from the project's GitHub releases on first use and checks it against `scripts/engine-checksums.txt`.
 
 **Figma:** Figma's skills aren't copied here (they're under Figma's developer terms). Instead `../settings.json` enables Figma's official plugin, `figma@claude-plugins-official`, which brings its skills and the Figma MCP server. Connect your Figma account with `/mcp` the first time.
+
+Versions of all CLI-installed skills are pinned in `/skills-lock.json`; refresh them with `npx skills update -p`.
+
+Awesome Design (VoltAgent/awesome-design-md) is a library of `DESIGN.md` references rather than a skill; it lives in `design/references/`.
