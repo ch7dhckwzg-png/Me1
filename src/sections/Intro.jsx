@@ -133,7 +133,7 @@ export default function Intro({ onReveal, onDone }) {
         <div className="lt-screen">
           <div className="lt-screen-on">
             <div className="lt-logo">
-              <img src={logo} alt="" width="2400" height="897" />
+              <img src={logo} alt="" width="1275" height="477" />
             </div>
           </div>
         </div>
@@ -151,7 +151,7 @@ export default function Intro({ onReveal, onDone }) {
             <div className="lt-base" />
             <div className="lt-lid">
               <div className="lt-lid-back">
-                <img src={logo} alt="" width="2400" height="897" />
+                <img src={logo} alt="" width="1275" height="477" />
               </div>
               <div className="lt-light" />
               {screen('l')}

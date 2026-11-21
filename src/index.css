@@ -41,10 +41,12 @@ a {
 }
 
 .display {
-  font-family: 'Saira Stencil One', Impact, 'Arial Black', sans-serif;
-  font-weight: 400;
-  letter-spacing: 0.01em;
-  line-height: 1.05;
+  /* Heavy oblique, echoing the slant of the logotype. */
+  font-family: 'Hanken Grotesk', system-ui, sans-serif;
+  font-style: italic;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.02;
 }
 
 /* ---------- Intro: laptop that unfolds into the site ---------- */
@@ -407,11 +409,38 @@ html.is-locked body {
 /* ---------- Hero ---------- */
 
 .hero {
-  padding-bottom: clamp(2.5rem, 6vw, 4.5rem);
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  min-height: 100svh;
+  overflow: hidden;
+  padding-bottom: clamp(1.25rem, 3vw, 2.25rem);
+}
+
+/* The warm amber glow from the brand artwork, low in the right-hand corner. */
+.hero-glow {
+  position: absolute;
+  z-index: -1;
+  right: -30vw;
+  bottom: 0;
+  width: max(95vw, 720px);
+  height: 100svh;
+  background: radial-gradient(
+    ellipse 50% 55% at 50% 82%,
+    rgba(132, 94, 44, 0.6) 0%,
+    rgba(95, 68, 32, 0.26) 45%,
+    rgba(60, 44, 22, 0) 100%
+  );
+  /* Fade out before the hero ends, so the next section starts on plain ink. */
+  -webkit-mask-image: linear-gradient(to bottom, #000 60%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 60%, transparent 100%);
+  pointer-events: none;
 }
 
 .nav,
-.intro {
+.hero-foot {
+  width: 100%;
   max-width: 1200px;
   margin: 0 auto;
   padding-inline: var(--gutter);
@@ -422,7 +451,7 @@ html.is-locked body {
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
-  padding-top: calc(env(safe-area-inset-top, 0px) + 1rem);
+  padding-top: calc(env(safe-area-inset-top, 0px) + 1.1rem);
   padding-bottom: 0.75rem;
 }
 
@@ -435,12 +464,12 @@ html.is-locked body {
 .nav .logo img {
   display: block;
   width: auto;
-  height: clamp(30px, 4.2vw, 44px);
+  height: clamp(26px, 3.4vw, 36px);
 }
 
 .nav ul {
   display: flex;
-  gap: clamp(0.9rem, 3vw, 1.25rem);
+  gap: clamp(0.9rem, 3vw, 1.5rem);
   list-style: none;
   padding: 0;
   font-size: 0.95rem;
@@ -456,65 +485,65 @@ html.is-locked body {
   opacity: 1;
 }
 
-.hero picture {
-  display: block;
-  overflow: hidden;
-}
-
-.hero-img {
-  display: block;
-  width: 100%;
-  height: auto;
-  max-height: 78svh;
-  object-fit: contain;
-  /* The photo's backdrop is the page colour (#181818), but the black T-shirt is darker and
-     ends in a hard line at the bottom corners. Feather the bottom and sides into the page. */
-  -webkit-mask-image:
-    linear-gradient(to bottom, #000 72%, transparent 100%),
-    linear-gradient(to right, transparent 0%, #000 12%, #000 88%, transparent 100%);
-  -webkit-mask-composite: source-in;
-  mask-image:
-    linear-gradient(to bottom, #000 72%, transparent 100%),
-    linear-gradient(to right, transparent 0%, #000 12%, #000 88%, transparent 100%);
-  mask-composite: intersect;
-}
-
-/* Phones: a 16:9 photo at 390px wide is only ~220px tall. Crop to a square around the head
-   so the hero still reads as the hero; the stencilled logo sits well inside the crop. */
-@media (max-width: 699px) {
-  .hero-img {
-    aspect-ratio: 1 / 1;
-    max-height: none;
-    object-fit: cover;
-    object-position: 50% 40%;
-  }
-}
-
-.intro {
+.hero-mark {
+  align-self: center;
   display: grid;
-  gap: 1.5rem;
-  margin-top: 1.5rem;
+  justify-items: center;
+  gap: clamp(1.25rem, 3.2vw, 2.4rem);
+  padding: clamp(2.5rem, 8vh, 5rem) var(--gutter);
 }
 
-.headline {
-  display: inline-block;
-  font-size: clamp(2rem, 5vw, 3.6rem);
+.hero-logo {
+  margin: 0;
+  line-height: 0;
 }
 
-.split-placeholder {
-  visibility: hidden;
+.hero-logo img {
+  display: block;
+  width: min(880px, 86vw);
+  height: auto;
 }
 
-.intro p {
+.hero-tagline {
+  /* The trailing tracking would push the line off-centre, so pad the start to match. */
+  padding-left: 0.34em;
+  color: var(--accent);
+  font-size: clamp(0.8rem, 2vw, 1.4rem);
+  font-weight: 500;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.hero-foot {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: end;
+  gap: 1.25rem 2.5rem;
+  position: relative;
+  padding-top: 1.25rem;
+}
+
+/* Divider aligned with the content, not the padded box. */
+.hero-foot::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: var(--gutter);
+  right: var(--gutter);
+  border-top: 1px solid var(--line);
+}
+
+.hero-lede {
+  max-width: 46ch;
   color: var(--soft);
-  max-width: 44ch;
 }
 
 .cta {
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
-  margin-top: 1.25rem;
 }
 
 .btn {
@@ -547,14 +576,6 @@ html.is-locked body {
 
 .btn-ghost:hover {
   border-color: var(--fg);
-}
-
-@media (min-width: 800px) {
-  .intro {
-    grid-template-columns: 1.3fr 1fr;
-    align-items: end;
-    gap: 3rem;
-  }
 }
 
 /* ---------- Sections ---------- */
