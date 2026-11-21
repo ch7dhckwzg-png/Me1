@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs'
 import { fileURLToPath, URL } from 'node:url'
+import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
 import { viteSingleFile } from 'vite-plugin-singlefile'
@@ -17,7 +18,7 @@ const inlineFavicon = () => ({
 })
 
 export default defineConfig(({ mode }) => ({
-  plugins: [react(), ...(mode === 'single' ? [inlineFavicon(), viteSingleFile()] : [])],
+  plugins: [react(), tailwindcss(), ...(mode === 'single' ? [inlineFavicon(), viteSingleFile()] : [])],
   resolve: {
     alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) },
   },

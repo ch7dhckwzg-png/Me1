@@ -37,6 +37,16 @@ Node 22 (see `.nvmrc`).
 
 With `prefers-reduced-motion: reduce`, the opening animation is skipped entirely, Lenis and every GSAP tween are skipped. GlareHover doesn't sweep, and Grainient draws a single still frame.
 
+### Magic UI components
+
+[Magic UI](https://magicui.design) is registered with the shadcn CLI as `@magicui`, so components install the same way, e.g.
+
+```bash
+npx shadcn@latest add @magicui/marquee
+```
+
+They land in `src/components/ui/`, converted to JavaScript. Magic UI is built on Tailwind CSS, so Tailwind v4 is set up through `@tailwindcss/vite` with only its theme and utility layers (no Preflight reset, so the hand-written CSS is unaffected), plus the `cn` helper in `src/lib/utils.js`. The CLI adds any packages a component needs (usually `motion`) and its keyframes to `src/index.css`.
+
 ### React Bits components
 
 These were added with the shadcn CLI, using the JS + CSS variants:
@@ -57,7 +67,7 @@ It's a static build (`npm run build` → `dist/`), so any of these works:
 
 ## Claude Code setup
 
-`.mcp.json` adds three MCP servers: Playwright (browser testing), Context7 (up-to-date library docs) and shadcn (component registries, including `@react-bits`). `.claude/settings.json` approves them. `.claude/skills/` holds UI/UX skills (frontend-design, design-critique, accessibility-review, ux-copy) that load in every session, including on mobile.
+`.mcp.json` adds four MCP servers: Playwright (browser testing), Context7 (up-to-date library docs) shadcn (component registries, including `@react-bits` and `@magicui`) and Magic UI (component docs and examples). Approve the Magic UI server when Claude Code asks. `.claude/settings.json` approves them. `.claude/skills/` holds UI/UX skills (frontend-design, design-critique, accessibility-review, ux-copy) that load in every session, including on mobile.
 
 For cloud sessions, the **Me1** environment allows context7.com and mcp.context7.com, and points Playwright at the browser that's already installed:
 `PLAYWRIGHT_MCP_EXECUTABLE_PATH=/opt/pw-browsers/chromium`, `PLAYWRIGHT_MCP_HEADLESS=true`, `PLAYWRIGHT_MCP_SANDBOX=false`.
