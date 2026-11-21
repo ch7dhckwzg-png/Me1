@@ -27,3 +27,6 @@ dist-single
 
 # Remotion renders
 out/
+
+# Playwright CLI sessions
+.playwright-cli/
