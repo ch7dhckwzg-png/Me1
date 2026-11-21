@@ -13,8 +13,9 @@ export default function App() {
 
   return (
     <>
+      <a className="skip-link" href="#main">Skip to content</a>
       <Hero reducedMotion={reducedMotion} />
-      <main>
+      <main id="main" tabIndex={-1}>
         <Services reducedMotion={reducedMotion} />
         <About />
         <Contact />

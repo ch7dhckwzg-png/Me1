@@ -34,7 +34,7 @@ export default function Hero({ reducedMotion }) {
     <header className="hero" ref={scope}>
       <nav className="nav" aria-label="Main">
         <a className="logo" href="#top">
-          <img src={logo} width="2400" height="897" alt="Catalyze, back to top" />
+          <img src={logo} width="3801" height="1407" alt="Catalyze, back to top" />
         </a>
         <ul>
           <li><a href="#services">Services</a></li>

@@ -2,10 +2,8 @@ import { useEffect, useRef, useState } from 'react'
 import Grainient from '@/components/Grainient'
 import { EMAIL, MAILTO } from '@/content'
 
-const LABEL = 'Copy email address'
-
 export default function Contact() {
-  const [label, setLabel] = useState(LABEL)
+  const [status, setStatus] = useState('')
   const timer = useRef(0)
 
   useEffect(() => () => clearTimeout(timer.current), [])
@@ -13,12 +11,12 @@ export default function Contact() {
   const copy = async () => {
     try {
       await navigator.clipboard.writeText(EMAIL)
-      setLabel('Copied')
+      setStatus('Copied to clipboard')
     } catch {
-      setLabel('Copy not available here')
+      setStatus('Copy isn’t available here. Select the address above instead.')
     }
     clearTimeout(timer.current)
-    timer.current = setTimeout(() => setLabel(LABEL), 2200)
+    timer.current = setTimeout(() => setStatus(''), 4000)
   }
 
   return (
@@ -42,9 +40,12 @@ export default function Contact() {
       <div className="wrap">
         <h2 className="display">Tell us what you’re working on</h2>
         <a className="mail display" href={MAILTO}>{EMAIL}</a>
-        <button className="btn btn-ghost" type="button" onClick={copy} aria-live="polite">
-          {label}
-        </button>
+        <div className="copy-row">
+          <button className="btn btn-ghost" type="button" onClick={copy}>
+            Copy email address
+          </button>
+          <p className="copy-status" role="status">{status}</p>
+        </div>
       </div>
     </section>
   )
