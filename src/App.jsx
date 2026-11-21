@@ -1,5 +1,6 @@
 import useReducedMotion from '@/hooks/useReducedMotion'
 import useSmoothScroll from '@/hooks/useSmoothScroll'
+import Intro from '@/sections/Intro'
 import Hero from '@/sections/Hero'
 import Services from '@/sections/Services'
 import About from '@/sections/About'
@@ -13,7 +14,8 @@ export default function App() {
 
   return (
     <>
-      <Hero reducedMotion={reducedMotion} />
+      {!reducedMotion && <Intro />}
+      <Hero reducedMotion={reducedMotion} playOnScroll={!reducedMotion} />
       <main>
         <Services reducedMotion={reducedMotion} />
         <About />

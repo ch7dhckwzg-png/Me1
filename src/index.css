@@ -47,6 +47,105 @@ a {
   line-height: 1.05;
 }
 
+/* ---------- Intro (Remotion Player, scrubbed by scroll) ---------- */
+
+.intro-reel {
+  position: relative;
+  /* 100svh of stage plus ~260svh of scroll to play the story through. */
+  height: 360svh;
+}
+
+.intro-stage {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+}
+
+.intro-player {
+  position: absolute;
+  inset: 0;
+}
+
+.intro-skip {
+  position: absolute;
+  top: calc(env(safe-area-inset-top, 0px) + 1rem);
+  right: var(--gutter);
+  padding: 0.5rem 0.9rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--soft);
+  font-size: 0.85rem;
+  text-decoration: none;
+  backdrop-filter: blur(6px);
+  transition:
+    color 0.2s,
+    border-color 0.2s;
+}
+
+.intro-skip:hover {
+  color: var(--fg);
+  border-color: var(--fg);
+}
+
+.intro-hint {
+  position: absolute;
+  left: 50%;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 1.75rem);
+  display: grid;
+  justify-items: center;
+  gap: 0.6rem;
+  translate: -50% 0;
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  opacity: 0;
+  /* Appears once the self-playing part of the intro has finished. */
+  animation: hint-in 0.8s 2.6s ease-out forwards;
+  transition: opacity 0.4s;
+}
+
+.intro-hint i {
+  position: relative;
+  width: 1px;
+  height: 44px;
+  overflow: hidden;
+  background: var(--line);
+}
+
+.intro-hint i::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  animation: hint-line 1.8s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+.intro-hint.is-gone {
+  animation: none;
+  opacity: 0;
+}
+
+@keyframes hint-in {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes hint-line {
+  0% {
+    translate: 0 -100%;
+  }
+  50% {
+    translate: 0 0;
+  }
+  100% {
+    translate: 0 100%;
+  }
+}
+
 /* ---------- Hero ---------- */
 
 .hero {

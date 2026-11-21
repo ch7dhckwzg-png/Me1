@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react'
 import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
 import SplitText from '@/components/SplitText'
 import { MAILTO } from '@/content'
@@ -9,9 +10,11 @@ import hero1920 from '@/assets/hero-1920.webp'
 import heroJpg from '@/assets/hero-1920.jpg'
 import logo from '@/assets/logo.svg'
 
+gsap.registerPlugin(ScrollTrigger)
+
 const HEADLINE = 'Marketing, design and imagery that gets you noticed.'
 
-export default function Hero({ reducedMotion }) {
+export default function Hero({ reducedMotion, playOnScroll = false }) {
   const scope = useRef(null)
   // The headline is the page's one big moment: it waits for the photo to start
   // fading in, then React Bits SplitText rises it in letter by letter.
@@ -21,17 +24,21 @@ export default function Hero({ reducedMotion }) {
   useGSAP(
     () => {
       if (reducedMotion) return
+      // After the intro, the entrance waits until the hero scrolls into view.
+      const scrollTrigger = playOnScroll
+        ? { trigger: scope.current, start: 'top 65%', once: true }
+        : undefined
       gsap
-        .timeline({ defaults: { ease: 'power3.out' } })
+        .timeline({ defaults: { ease: 'power3.out' }, scrollTrigger })
         .from('.hero-img', { opacity: 0, scale: 1.04, duration: 1.4 })
         .call(() => setHeadlineLive(true), null, 0.45)
         .from('.intro-copy > *', { y: 20, opacity: 0, duration: 0.8, stagger: 0.12 }, 1.1)
     },
-    { scope, dependencies: [reducedMotion] },
+    { scope, dependencies: [reducedMotion, playOnScroll] },
   )
 
   return (
-    <header className="hero" ref={scope}>
+    <header className="hero" id="home" ref={scope}>
       <nav className="nav" aria-label="Main">
         <a className="logo" href="#top">
           <img src={logo} width="2400" height="897" alt="Catalyze, back to top" />
