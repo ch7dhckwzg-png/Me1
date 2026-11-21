@@ -1,0 +1,26 @@
+{
+  "name": "catalyze-reel",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "studio": "remotion studio",
+    "trace": "bash scripts/trace-logo.sh",
+    "beats": "python3 scripts/beats.py",
+    "render": "remotion render Reel out/catalyze-reel.mp4",
+    "sheet": "node scripts/contact-sheet.mjs",
+    "verify": "python3 scripts/verify.py"
+  },
+  "dependencies": {
+    "@fontsource/hanken-grotesk": "5.3.0",
+    "@fontsource/ibm-plex-mono": "5.3.0",
+    "@remotion/cli": "4.0.545",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
+    "remotion": "4.0.545"
+  },
+  "devDependencies": {
+    "@types/react": "19.2.2",
+    "typescript": "5.9.3"
+  }
+}

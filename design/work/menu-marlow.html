@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en-GB"><head><meta charset="utf-8">
+<link rel="stylesheet" href="fonts.css"><link rel="stylesheet" href="illus.css">
+<style>
+  body { width: 1240px; height: 1754px; background: #10261f; color: #efe6d2; font-family: Archivo, sans-serif; padding: 70px; }
+  .frame { position: relative; height: 100%; border: 2px solid #c2a36b; padding: 100px 110px; }
+  .frame::before { content: ''; position: absolute; inset: 12px; border: 1px solid rgba(194,163,107,.5); pointer-events: none; }
+  header { text-align: center; margin-bottom: 70px; }
+  .fan { display: block; margin: 0 auto 26px; }
+  .name { font: 400 120px/1 'DM Serif Display', serif; letter-spacing: .04em; }
+  .tag { margin-top: 18px; font-size: 15px; letter-spacing: .5em; text-transform: uppercase; color: #c2a36b; padding-left: .5em; }
+  .drink { display: grid; grid-template-columns: 1fr auto; gap: 6px 30px; padding: 34px 0; border-bottom: 1px solid rgba(194,163,107,.25); }
+  .drink b { font: 400 46px/1.1 'DM Serif Display', serif; }
+  .drink .p { font: italic 400 32px 'DM Serif Display', serif; color: #c2a36b; }
+  .drink p { font-size: 18px; letter-spacing: .06em; text-transform: uppercase; color: #b9b19b; }
+  footer { position: absolute; left: 110px; right: 110px; bottom: 80px; text-align: center; font-size: 16px; color: #b9b19b; letter-spacing: .06em; }
+</style></head><body>
+  <div class="frame">
+    <header>
+      <svg class="fan" width="120" height="60" viewBox="0 0 120 60"><g fill="none" stroke="#c2a36b" stroke-width="1.5"><path d="M10 58 A 50 50 0 0 1 110 58"/><path d="M28 58 A 32 32 0 0 1 92 58"/><path d="M60 8 V 58 M 25 22 L 60 58 M 95 22 L 60 58 M 12 42 L 60 58 M 108 42 L 60 58"/></g></svg>
+      <div class="name">Marlow</div>
+      <div class="tag">Cocktails · From 5pm</div>
+    </header>
+    <div class="drink"><b>Marlow Martini</b><span class="p">12</span><p>Gin, dry vermouth, olive brine, lemon oil</p></div>
+    <div class="drink"><b>Smoked Old Fashioned</b><span class="p">13</span><p>Bourbon, demerara, walnut bitters, oak smoke</p></div>
+    <div class="drink"><b>Garden Spritz</b><span class="p">11</span><p>Elderflower, cucumber, prosecco, soda</p></div>
+    <div class="drink"><b>Velvet Paloma</b><span class="p">12</span><p>Tequila, pink grapefruit, agave, sea salt</p></div>
+    <div class="drink"><b>Espresso Negroni</b><span class="p">13</span><p>Gin, Campari, coffee vermouth</p></div>
+    <div class="drink"><b>Fig Leaf Sour</b><span class="p">12</span><p>Rye, fig leaf syrup, lemon, aquafaba</p></div>
+    <div class="drink" style="border:0"><b>Nothing Stronger</b><span class="p">7</span><p>Seedlip Grove, yuzu, tonic, thyme</p></div>
+    <footer>Ask the bar about this week’s off-menu special.</footer>
+  </div>
+</body></html>

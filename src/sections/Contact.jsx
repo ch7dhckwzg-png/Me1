@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
-import Grainient from '@/components/Grainient'
 import { EMAIL, MAILTO } from '@/content'
+import GiantWord from '@/components/kinetic/GiantWord'
+import Spark from '@/components/kinetic/Spark'
 
 const LABEL = 'Copy email address'
 
+/** The sign-off, on orange. */
 export default function Contact() {
   const [label, setLabel] = useState(LABEL)
   const timer = useRef(0)
@@ -23,28 +25,26 @@ export default function Contact() {
 
   return (
     <section className="contact" id="contact">
-      {/* React Bits Grainient: a slow, dark, grainy wash behind the sign-off. */}
-      <div className="contact-bg" aria-hidden="true">
-        <Grainient
-          colors={['#161616', '#1d1a16', '#2b241a', '#4a3c26']}
-          angle={160}
-          speed={0.35}
-          flow={0.6}
-          silk={0.25}
-          grainAmount={0.06}
-          contrast={0.9}
-          saturation={0.8}
-          interactive={false}
-          clickSwirl={false}
-          dpr={1.5}
-        />
-      </div>
+      <GiantWord className="giant-ink">
+        Let’s go <Spark className="giant-spark" outline /> Let’s go</GiantWord>
       <div className="wrap">
-        <h2 className="display">Tell us what you’re working on</h2>
-        <a className="mail display" href={MAILTO}>{EMAIL}</a>
-        <button className="btn btn-ghost" type="button" onClick={copy} aria-live="polite">
-          {label}
-        </button>
+        <h2 className="contact-title">Let’s make something worth noticing.</h2>
+        <p className="contact-lead">
+          Tell us a little about your business and what you have in mind. We’ll reply with a few
+          questions and a time to talk.
+        </p>
+        <a className="mail" href={MAILTO}>{EMAIL}</a>
+        <div className="cta">
+          <a className="btn btn-ink" href={MAILTO}>Email us</a>
+          <button className="btn btn-outline-ink" type="button" onClick={copy} aria-live="polite">
+            {label === 'Copied' && (
+              <svg className="copied-tick" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                <path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            )}
+            {label}
+          </button>
+        </div>
       </div>
     </section>
   )

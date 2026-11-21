@@ -24,3 +24,12 @@ dist-ssr
 *.sw?
 dist-single
 .playwright-mcp
+
+# Remotion renders (root only; reel/out is kept)
+/out/
+
+# Playwright CLI sessions
+.playwright-cli/
+
+# Single-file preview build (regenerate with npm run build:single)
+catalyze-site-preview.html

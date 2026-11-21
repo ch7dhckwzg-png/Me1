@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en-GB"><head><meta charset="utf-8">
+<link rel="stylesheet" href="fonts.css"><link rel="stylesheet" href="illus.css">
+<style>
+  body { width: 1240px; height: 1754px; background: #efe7db; color: #171310; font-family: Archivo, sans-serif; padding: 110px 120px; }
+  header { display: flex; flex-direction: column; align-items: center; gap: 18px; margin-bottom: 100px; }
+  .word { font: 700 84px/1 'Playfair Display', serif; letter-spacing: .16em; padding-left: .16em; }
+  .sub { font-size: 15px; letter-spacing: .42em; text-transform: uppercase; color: #c2462a; padding-left: .42em; }
+  .rule { width: 100%; display: flex; align-items: center; gap: 22px; margin: 0 0 50px; font: italic 400 50px 'Playfair Display', serif; }
+  .rule::before, .rule::after { content: ''; flex: 1; border-top: 1px solid rgba(23,19,16,.25); }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 90px; margin-bottom: 84px; }
+  .dish { display: grid; grid-template-columns: 1fr auto; gap: 8px 20px; margin-bottom: 42px; }
+  .dish b { font: 700 31px/1.2 'Playfair Display', serif; }
+  .dish span.p { font-size: 25px; font-weight: 500; }
+  .dish p { grid-column: 1 / -1; font-size: 20px; line-height: 1.5; color: #5d5249; }
+  footer { position: absolute; left: 120px; right: 120px; bottom: 90px; display: flex; justify-content: space-between; font-size: 16px; color: #5d5249; letter-spacing: .02em; }
+</style></head><body>
+  <header>
+    <svg width="58" height="74" viewBox="0 0 100 128"><path d="M50 4 C 64 30, 90 44, 86 80 C 83 106, 66 124, 50 124 C 32 124, 14 108, 14 82 C 14 62, 26 52, 32 36 C 40 52, 42 62, 50 64 C 46 44, 42 24, 50 4 Z" fill="#c2462a"/><path d="M50 70 C 58 84, 66 92, 64 104 C 62 114, 56 118, 50 118 C 43 118, 36 112, 36 102 C 36 94, 42 88, 44 80 C 47 88, 49 90, 52 90 C 50 82, 48 76, 50 70 Z" fill="#efe7db"/></svg>
+    <div class="word">EMBER</div><div class="sub">Dinner · Cooked over fire</div>
+  </header>
+  <div class="rule">Small plates</div>
+  <div class="grid">
+    <div class="dish"><b>Flatbread, whipped feta</b><span class="p">7</span><p>Charred over oak, hot honey, za’atar</p></div>
+    <div class="dish"><b>Burnt leeks</b><span class="p">8</span><p>Romesco, toasted almonds, smoked oil</p></div>
+    <div class="dish"><b>Beef tartare</b><span class="p">12</span><p>Ember-roasted egg yolk, pickled shallot, rye crisp</p></div>
+    <div class="dish"><b>Grilled octopus</b><span class="p">14</span><p>Nduja butter, crushed potatoes, lemon</p></div>
+  </div>
+  <div class="rule">From the fire</div>
+  <div class="grid">
+    <div class="dish"><b>Dry-aged sirloin, 300g</b><span class="p">34</span><p>Bone marrow butter, watercress, beef-fat chips</p></div>
+    <div class="dish"><b>Whole sea bream</b><span class="p">26</span><p>Salsa verde, blistered tomatoes, grilled lemon</p></div>
+    <div class="dish"><b>Half chicken</b><span class="p">22</span><p>Brined for a day, smoked garlic, charred greens</p></div>
+    <div class="dish"><b>Hispi cabbage</b><span class="p">17</span><p>Miso butter, crispy shallots, chilli crumb</p></div>
+  </div>
+  <div class="rule">Sweet</div>
+  <div class="grid">
+    <div class="dish"><b>Burnt Basque cheesecake</b><span class="p">8</span><p>Roasted plums, crème fraîche</p></div>
+    <div class="dish"><b>Smoked chocolate pot</b><span class="p">8</span><p>Sea salt, olive oil, sourdough crisp</p></div>
+  </div>
+  <footer><span>Please tell us about any allergies before you order.</span><span>A discretionary 12.5% service charge is added to your bill.</span></footer>
+</body></html>

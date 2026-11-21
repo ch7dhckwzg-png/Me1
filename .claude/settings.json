@@ -3,5 +3,8 @@
     "playwright",
     "context7",
     "shadcn"
-  ]
+  ],
+  "enabledPlugins": {
+    "figma@claude-plugins-official": true
+  }
 }
