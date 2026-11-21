@@ -26,7 +26,7 @@ import { gsap } from 'gsap'
  * polished gold star, and streaks of light rushing past it.
  *
  * When `go` turns true it warps in: the streaks race, the star spins up and scales in,
- * then everything decelerates to a slow cruise. Scrolling fast boosts the streaks
+ * then everything decelerates to a slow cruise. It never follows the pointer or the scroll
  * again; scrolling through the hero pushes the camera in. Rendering pauses when the
  * hero is off screen or the tab is hidden.
  */
@@ -180,10 +180,9 @@ export default function StarScene({ go = false, onFail, onReady }) {
     scene.add(streaks)
 
     // State the timeline and input push around.
-    const state = { warp: 0, spin: 0, boost: 0, tiltX: 0, tiltY: 0, pointerX: 0, pointerY: 0 }
+    const state = { warp: 0, spin: 0 }
     let visible = true
     let running = false // nothing is drawn until the warp starts
-    let lastScroll = window.scrollY
     let wide = true
 
     const resize = () => {
@@ -202,42 +201,25 @@ export default function StarScene({ go = false, onFail, onReady }) {
     const io = new IntersectionObserver(([e]) => (visible = e.isIntersecting))
     io.observe(el)
 
-    const onPointer = (e) => {
-      state.pointerX = e.clientX / window.innerWidth - 0.5
-      state.pointerY = e.clientY / window.innerHeight - 0.5
-    }
-    window.addEventListener('pointermove', onPointer, { passive: true })
 
     const tick = (_time, deltaMs) => {
       if (!running || !visible || document.hidden) return
       const dt = Math.min(deltaMs, 50) / 1000
 
-      // Scroll speed adds a burst of speed; scroll position pushes the camera in.
-      const sy = window.scrollY
-      const v = Math.abs(sy - lastScroll) / Math.max(dt, 0.001)
-      lastScroll = sy
-      state.boost += (Math.min(1, v / 2400) - state.boost) * 0.08
-      const progress = Math.min(1, sy / Math.max(1, el.clientHeight))
-
-      const speed = 0.7 + state.warp * 48 + state.boost * 14
+      const speed = 0.7 + state.warp * 48
       for (let i = 0; i < STREAKS; i++) {
         s.z[i] += speed * dt
         if (s.z[i] > 7.5) spawn(s, i, FAR)
-        const stretch = s.len[i] * (0.5 + state.warp * 7 + state.boost * 2.5)
+        const stretch = s.len[i] * (0.5 + state.warp * 7)
         linePos.set([s.x[i], s.y[i], s.z[i], s.x[i], s.y[i], s.z[i] - stretch], i * 6)
       }
       lineGeo.attributes.position.needsUpdate = true
 
-      // The star: spin that decays from the warp, plus a lean towards the pointer.
-      state.tiltX += (state.pointerY * 0.5 - state.tiltX) * 0.06
-      state.tiltY += (state.pointerX * 0.7 - state.tiltY) * 0.06
-      star.rotation.y += dt * (0.32 + state.spin * 10 + state.boost * 1.5)
-      star.rotation.x = state.tiltX + Math.sin(_time * 0.6) * 0.08
-      star.rotation.z = progress * 0.9
+      // The star: a slow turn, with the spin from the warp decaying into it.
+      star.rotation.y += dt * (0.32 + state.spin * 10)
+      star.rotation.x = Math.sin(_time * 0.6) * 0.08
       rig.position.x = wide ? 1.95 : 0
-      rig.position.y = (wide ? 0.32 : 0.95) + Math.sin(_time * 0.9) * 0.06 + progress * 1.2
-      camera.position.z = 7 - progress * 2.4
-      camera.rotation.y = state.tiltY * -0.04
+      rig.position.y = (wide ? 0.32 : 0.95) + Math.sin(_time * 0.9) * 0.06
 
       renderer.render(scene, camera)
     }
@@ -265,7 +247,6 @@ export default function StarScene({ go = false, onFail, onReady }) {
       gsap.ticker.remove(tick)
       ro.disconnect()
       io.disconnect()
-      window.removeEventListener('pointermove', onPointer)
       gsap.killTweensOf([state, lineMat, star.scale])
       star.geometry.dispose()
       star.material.dispose()

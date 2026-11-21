@@ -34,7 +34,7 @@ export default function SiteDock() {
 
   return (
     <nav className={`site-dock${shown ? ' is-shown' : ''}`} aria-label="Quick links" inert={!shown}>
-      <Dock iconSize={44} iconMagnification={56} className="site-dock-bar">
+      <Dock iconSize={44} disableMagnification className="site-dock-bar">
         {ITEMS.map(({ href, label, d }) => (
           <DockIcon key={href} className="site-dock-item">
             <a href={href} aria-label={label} data-label={label}>

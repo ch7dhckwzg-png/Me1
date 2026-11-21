@@ -21,6 +21,8 @@
   --accent-soft: rgba(210, 100, 44, 0.14);
   --ink: #15110e;
   --gutter: clamp(1.25rem, 4vw, 3.5rem);
+  --radius-control: 6px; /* buttons, tabs, tags: never pills */
+  --radius-card: 16px;
   --serif: 'Instrument Serif', 'Times New Roman', serif;
   --sans: 'Hanken Grotesk', system-ui, sans-serif;
   --bold: 'Anton', 'Impact', 'Arial Narrow', sans-serif; /* the kinetic, sporty voice */
@@ -87,7 +89,7 @@ dd {
   top: 0.75rem;
   left: 0.75rem;
   padding: 0.75rem 1.1rem;
-  border-radius: 999px;
+  border-radius: var(--radius-control);
   background: var(--fg);
   color: var(--ink);
   font-weight: 600;
@@ -189,7 +191,7 @@ img {
   right: var(--gutter);
   padding: 0.55rem 1.05rem;
   border: 1px solid var(--line);
-  border-radius: 999px;
+  border-radius: var(--radius-control);
   background: rgba(18, 16, 14, 0.5);
   color: var(--soft);
   font: 500 0.85rem var(--sans);
@@ -336,7 +338,7 @@ img {
   justify-content: center;
   gap: 0.4rem;
   padding: 0.85rem 1.5rem;
-  border-radius: 999px;
+  border-radius: var(--radius-control);
   font: 500 0.98rem var(--sans);
   text-decoration: none;
   cursor: pointer;
@@ -484,8 +486,8 @@ img {
 }
 
 .hero-title {
-  font-size: clamp(3rem, 8vw, 8rem);
-  line-height: 0.9;
+  font-size: clamp(1.9rem, 4.2vw, 4.2rem);
+  line-height: 1.02;
 }
 
 .hero-title .line-serif {
@@ -495,8 +497,8 @@ img {
 /* The NRC moment: huge condensed capitals. */
 .hero-title .line-bold {
   font-family: var(--bold);
-  font-size: clamp(4.6rem, 15.5vw, 16rem);
-  line-height: 0.86;
+  font-size: clamp(2.9rem, 9.4vw, 10.5rem);
+  line-height: 0.88;
   letter-spacing: 0.005em;
   text-transform: uppercase;
 }
@@ -655,6 +657,19 @@ img {
   font: 400 clamp(6rem, 20vw, 19rem)/0.9 var(--bold);
   text-transform: uppercase;
   white-space: nowrap;
+}
+
+.giant-spark {
+  display: inline-block;
+  width: 0.5em;
+  height: 0.5em;
+  margin: 0 0.25em;
+  vertical-align: 0.15em;
+  color: rgba(243, 237, 227, 0.22);
+}
+
+.giant-ink .giant-spark {
+  color: rgba(21, 17, 14, 0.28);
 }
 
 .giant-ink span {
@@ -852,7 +867,7 @@ img {
 .tags li {
   padding: 0.35rem 0.8rem;
   border: 1px solid var(--line);
-  border-radius: 999px;
+  border-radius: var(--radius-control);
   color: var(--soft);
   font-size: 0.85rem;
 }
@@ -1117,6 +1132,69 @@ details[open] .faq-icon::after {
   color: var(--fg);
 }
 
+.footer-home {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.footer-home .footer-logo {
+  margin-bottom: 0;
+}
+
+.footer-legal-links {
+  display: grid;
+  justify-items: start;
+  margin-bottom: 0.5rem;
+}
+
+/* ---------- Legal pages ---------- */
+
+.legal-header {
+  border-bottom: 1px solid var(--line);
+}
+
+.nav-back {
+  padding: 0.55rem 1.1rem;
+  font-size: 0.88rem;
+}
+
+.legal {
+  padding-block: clamp(3.5rem, 8vw, 6rem);
+}
+
+.legal-wrap {
+  max-width: calc(68ch + var(--gutter) * 2);
+}
+
+.legal h1 {
+  margin-bottom: 0.75rem;
+}
+
+.legal-updated {
+  margin-bottom: 3rem;
+  color: var(--muted);
+}
+
+.legal section + section {
+  margin-top: 2.5rem;
+}
+
+.legal h2 {
+  margin-bottom: 0.75rem;
+  font: 400 clamp(1.6rem, 2.6vw, 2rem) / 1.15 var(--serif);
+}
+
+.legal p {
+  max-width: 66ch;
+  color: var(--soft);
+}
+
+.legal p + p {
+  margin-top: 0.9rem;
+}
+
 /* ---------- Magic UI: scroll progress and dock ---------- */
 
 .scroll-progress {
@@ -1150,7 +1228,7 @@ details[open] .faq-icon::after {
   gap: 6px;
   padding: 8px 10px;
   border: 1px solid rgba(243, 237, 227, 0.14);
-  border-radius: 999px;
+  border-radius: 14px;
   background: rgba(18, 16, 14, 0.74);
   box-shadow: 0 14px 44px rgba(0, 0, 0, 0.5);
   -webkit-backdrop-filter: blur(14px);
@@ -1159,6 +1237,7 @@ details[open] .faq-icon::after {
 
 .site-dock-item {
   position: relative;
+  border-radius: 10px !important; /* overrides the component's rounded-full */
   color: var(--fg);
   background: rgba(243, 237, 227, 0.06);
   transition: background-color 0.2s;
@@ -1179,7 +1258,7 @@ details[open] .faq-icon::after {
   display: grid;
   place-items: center;
   color: inherit;
-  border-radius: 999px;
+  border-radius: 10px;
 }
 
 .site-dock-item a::after {

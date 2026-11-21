@@ -34,10 +34,10 @@ export default function Hero({ reducedMotion, prepare = true, ready = true, onSc
       if (reducedMotion) return
       entrance.current = gsap
         .timeline({ paused: true })
-        // "Made to" rises in calmly; "BE NOTICED." kicks up letter by letter.
+        // The lead-in rises in calmly; "MADE TO BE NOTICED." kicks up letter by letter.
         .from('.hero-title .line-serif > span', { yPercent: 105, duration: 1.2, ease: 'expo.out' }, 0.2)
         .from(
-          SplitText.create('.hero-title .line-bold > span', { type: 'chars' }).chars,
+          SplitText.create('.hero-title .line-bold > span', { type: 'words,chars' }).chars, // words first, so no word breaks across lines
           { yPercent: 115, skewY: 8, duration: 0.9, stagger: 0.035, ease: 'expo.out' },
           0.45,
         )
@@ -98,7 +98,8 @@ export default function Hero({ reducedMotion, prepare = true, ready = true, onSc
         <div className="hero-side">
           <p className="hero-sub">
             Catalyze is a creative studio for businesses that want to look as good as they are.
-            Branding, websites, photography and motion, made by one team so it all fits together.
+            One team designs your brand, builds your website and shoots your photos, so it all
+            fits together.
           </p>
           <div className="cta">
             {/* Magic UI shimmer: a slow light runs round the main action. */}
@@ -110,6 +111,7 @@ export default function Hero({ reducedMotion, prepare = true, ready = true, onSc
               shimmerColor="#FFE3CC"
               shimmerDuration="3.5s"
               shimmerSize="0.1em"
+              borderRadius="6px"
             >
               Start a project
             </ShimmerButton>
@@ -117,8 +119,8 @@ export default function Hero({ reducedMotion, prepare = true, ready = true, onSc
           </div>
         </div>
         <h1 className="hero-title">
-          <span className="line line-serif"><span>Made to</span></span>
-          <span className="line line-bold"><span>be noticed.</span></span>
+          <span className="line line-serif"><span>Branding, websites, photography and motion,</span></span>{' '}
+          <span className="line line-bold"><span>made to be noticed.</span></span>
         </h1>
       </div>
     </header>

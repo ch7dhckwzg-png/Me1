@@ -1,6 +1,6 @@
 /** A slowly turning sticker, Nike Run Club style: circular text around an arrow. */
 export default function RotatingBadge({ href, label = 'Start a project', className = '' }) {
-  const text = `${label} ✦ ${label} ✦ `
+  const text = `${label} · ${label} · `
   return (
     <a className={`badge-spin ${className}`} href={href} aria-label={label}>
       <svg className="badge-ring" viewBox="0 0 200 200" aria-hidden="true">

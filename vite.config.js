@@ -25,5 +25,14 @@ export default defineConfig(({ mode }) => ({
   build:
     mode === 'single'
       ? { outDir: 'dist-single', assetsInlineLimit: Number.MAX_SAFE_INTEGER, copyPublicDir: false }
-      : undefined,
+      : {
+          // Three pages: the site, the privacy policy and the terms.
+          rollupOptions: {
+            input: {
+              main: fileURLToPath(new URL('./index.html', import.meta.url)),
+              privacy: fileURLToPath(new URL('./privacy.html', import.meta.url)),
+              terms: fileURLToPath(new URL('./terms.html', import.meta.url)),
+            },
+          },
+        },
 }))

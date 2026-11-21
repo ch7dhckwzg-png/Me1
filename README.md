@@ -19,6 +19,7 @@ Node 22 (see `.nvmrc`).
 | Path | Purpose |
 | --- | --- |
 | `src/content.js` | **All the words**: services, websites, photography slots, process, FAQ, email |
+| `src/legal.js` | Privacy policy and terms, plus the business details to fill in |
 | `src/sections/` | Intro, Hero, Velocity strip, Statement, Services, Work, Process, FAQ, Contact |
 | `src/components/laptopScene.js` | The intro's 3D laptop (three.js) |
 | `src/components/StarScene.jsx` | The hero's 3D star (three.js); `HeroStar.jsx` is the SVG fallback |
@@ -30,25 +31,36 @@ Node 22 (see `.nvmrc`).
 | `src/assets/logo.svg` | The Catalyze logo (vector, traced from the 2000 px master) |
 | `public/_headers` | Cache and security headers (Netlify, Cloudflare Pages) |
 
+## Rules and launch
+
+- **`CLAUDE.md`**: the owner's standing rules (no purple gradients, pill buttons, fake reviews or metrics, vague hero text, emoji icons, em dashes, over-the-top scroll animation, cursor animation or AI slop). Every Claude session reads it.
+- **`LAUNCH.md`**: the launch gates (custom domain, favicon, no "Made with AI" tag, privacy policy, terms) and what's left.
+- **`npm run check:rules`**: scans the source, pages, concept designs and build for anything the rules ban. Run it before every deploy.
+
 ## Look and feel
 
-Chic meets sporty: warm near-black, ivory and one rich orange (`--accent: #d2642c`). Instrument Serif and Hanken Grotesk carry the elegant side; Anton (huge condensed capitals) carries the Nike Run Club-style energy in a few kinetic graphics: the hero's *BE NOTICED.*, crossing bands, activity rings, a progress track, a rotating sticker and giant outlined words. Generous space and a faint film grain keep it calm between those moments. Kinetic pieces live in `src/components/kinetic/`.
+Chic meets sporty: warm near-black, ivory and one rich orange (`--accent: #d2642c`). Instrument Serif and Hanken Grotesk carry the elegant side; Anton (condensed capitals) carries the Nike Run Club-style energy in a few graphics: the hero's *MADE TO BE NOTICED.*, crossing bands, activity rings, a progress track, a rotating sticker and giant outlined words. Controls share one small radius (`--radius-control`, 6px), never pills; cards use 16px.
 
 ## Motion
 
-- **Opening animation (three.js):** a brushed-aluminium laptop with a keyboard, trackpad, hinge and glass screen (`src/components/laptopScene.js`, choreographed in `src/sections/Intro.jsx`). It opens head on and its screen lights up, then turns to the side. One scroll, swipe, key press or click (or 5 s of waiting) plays the rest: the lid folds back a full 180° until the laptop lies flat, the camera rises above it, a beam of light shoots out of the screen and drives the laptop down, and the intro fades and slides away into the site. Page scroll is locked until then; "Skip intro" speeds it up. It plays once per browser session, and `?intro=0` on the URL skips it (handy for shared links and testing).
-  - The 3D code (one shared three.js chunk) and both scenes are set up before anything moves, and the intro waits for the hero's scene too, so nothing stutters part-way through.
-- **Hero (three.js):** a faceted copper-orange star, the logo's spark, with soft streaks of light. It warps in as the intro hands over, then turns slowly, leans towards the pointer and reacts gently to scroll.
-- **Hero type:** *Made to* rises in serif italic; *BE NOTICED.* kicks up letter by letter (GSAP SplitText). A rotating "Start a project" sticker links to email.
-- **Crossing bands:** two Magic UI `ScrollVelocity` rows on orange and ivory bands set at opposite angles, racing in opposite directions.
-- **Statement and rings:** words light up as you scroll; beside them, activity rings for branding, web, photography and motion close around "1 studio" (GSAP DrawSVG).
-- **Services:** a bold orange block sweeps across a row on hover.
-- **Process:** a progress track fills as you scroll and lights up each numbered step.
-- **Giant words:** outlined *THE WORK* and *LET'S GO* slide sideways as you scroll past.
-- **Work → Motion:** three live CSS animations (a product animation, a store walk-through and an animated logo). They play only while on screen, and each has a play/pause button.
-- **Magic UI for getting around:** a `ScrollProgress` bar, a `Dock` of quick links once you pass the hero (labels on hover and focus), and a `ShimmerButton` on the hero's main call to action.
+Motion plays once on load or on arrival, or answers a click. Nothing follows the cursor and nothing moves with scroll, apart from the two things the owner asked for: the opening laptop intro and the scroll progress bar.
 
-With `prefers-reduced-motion: reduce`: no intro, no WebGL (the SVG star is shown), no scroll effects, the strip stands still and the Motion cards start paused (press play to watch).
+- **Opening animation (three.js):** a brushed-aluminium laptop (`src/components/laptopScene.js`, choreographed in `src/sections/Intro.jsx`). It opens head on and lights up, then turns to the side. One scroll, swipe, key press or click (or 5 s of waiting) plays the rest: the lid folds flat 180°, a beam of light shoots out and drives the laptop down, and the intro fades into the site. "Skip intro" speeds it up. It plays once per browser session; `?intro=0` skips it.
+  - The 3D code and both scenes are set up before anything moves, so nothing stutters part-way through.
+- **Hero:** the lead-in *Branding, websites, photography and motion,* rises in; *MADE TO BE NOTICED.* kicks up letter by letter (GSAP SplitText, split by words so nothing breaks mid-word). Behind it, a copper-orange 3D star warps in on streaks of light, then turns slowly. A rotating "Start a project" sticker links to email.
+- **Crossing bands:** two Magic UI `ScrollVelocity` rows on orange and ivory bands, drifting at a steady pace in opposite directions.
+- **Why one studio:** the statement, with activity rings that close once as they come into view (GSAP DrawSVG).
+- **Services:** an orange block sweeps across a row on hover.
+- **Work, Motion:** three CSS animations (product, store walk-through, animated logo) that play only on screen, each with play/pause.
+- **Process:** when the steps come into view, a track fills once and lights each step in turn.
+- **Giant words:** outlined *THE WORK* and *LET'S GO*, still, behind their sections.
+- **Magic UI for getting around:** a `ScrollProgress` bar, a `Dock` of quick links after the hero (no magnification), and a `ShimmerButton` on the main call to action.
+
+With `prefers-reduced-motion: reduce`: no intro, no WebGL (an SVG star instead), the bands stand still, rings and steps show finished, and the Motion cards start paused.
+
+## Pages
+
+`index.html` (the site), `privacy.html` and `terms.html` (content in `src/legal.js`, rendered by `src/components/LegalPage.jsx`). All three share `src/components/SiteFooter.jsx`.
 
 ## Concept work
 

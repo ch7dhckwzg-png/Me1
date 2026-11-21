@@ -13,7 +13,7 @@
   min-height: 44px;
   padding: 0.5rem 1.1rem;
   border: 1px solid var(--line);
-  border-radius: 999px;
+  border-radius: var(--radius-control);
   color: var(--soft);
   font-size: 0.92rem;
   text-decoration: none;
@@ -171,7 +171,7 @@
   min-height: 44px;
   padding: 0.6rem 1.15rem;
   border: 1px solid var(--line);
-  border-radius: 999px;
+  border-radius: var(--radius-control);
   background: none;
   color: var(--soft);
   font: 500 0.95rem var(--sans);
@@ -249,7 +249,7 @@
   bottom: 1rem;
   padding: 0.3rem 0.7rem;
   border: 1px solid var(--line);
-  border-radius: 999px;
+  border-radius: var(--radius-control);
   color: var(--muted);
   font-size: 0.78rem;
   font-style: normal;
@@ -493,7 +493,7 @@
   right: 14%;
   top: 12%;
   bottom: 22%;
-  border-radius: 999px 999px 0 0;
+  border-radius: 999px 999px 0 0; /* rules-allow: arch shape in an illustration, not a control */
   background: linear-gradient(#e9cdbf, #dcb9a7);
 }
 

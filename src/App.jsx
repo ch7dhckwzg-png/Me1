@@ -3,6 +3,7 @@ import useReducedMotion from '@/hooks/useReducedMotion'
 import useSmoothScroll from '@/hooks/useSmoothScroll'
 import { ScrollProgress } from '@/components/ui/scroll-progress'
 import SiteDock from '@/components/SiteDock'
+import SiteFooter from '@/components/SiteFooter'
 import Intro from '@/sections/Intro'
 import Hero from '@/sections/Hero'
 import Velocity from '@/sections/Velocity'
@@ -12,10 +13,6 @@ import Work from '@/sections/Work'
 import Process from '@/sections/Process'
 import Faq from '@/sections/Faq'
 import Contact from '@/sections/Contact'
-import { EMAIL, MAILTO } from '@/content'
-import logo from '@/assets/logo.svg'
-
-const YEAR = new Date().getFullYear()
 
 // The intro plays once per browser session; `?intro=0` skips it (for shared links and testing).
 const INTRO_KEY = 'catalyze-intro-seen'
@@ -70,7 +67,7 @@ export default function App() {
         <Work reducedMotion={reducedMotion} />
         <Process reducedMotion={reducedMotion} />
         <Faq />
-        <Contact reducedMotion={reducedMotion} />
+        <Contact />
       </main>
       {phase !== 'intro' || reducedMotion ? (
         <>
@@ -78,25 +75,7 @@ export default function App() {
           <SiteDock />
         </>
       ) : null}
-      <footer className="site-footer">
-        <div className="wrap footer-grid">
-          <div>
-            <img src={logo} width="1275" height="477" alt="Catalyze" className="footer-logo" />
-            <p>A creative studio for brands that want to be noticed.</p>
-          </div>
-          <nav aria-label="Footer">
-            <a href="#services">Services</a>
-            <a href="#work">Work</a>
-            <a href="#process">Process</a>
-            <a href="#faq">Questions</a>
-            <a href="#contact">Contact</a>
-          </nav>
-          <div>
-            <a href={MAILTO} className="footer-mail">{EMAIL}</a>
-            <p className="footer-legal">© {YEAR} Catalyze. All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter />
     </>
   )
 }

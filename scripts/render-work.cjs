@@ -5,13 +5,17 @@
  *   node scripts/render-work.cjs            # everything
  *   node scripts/render-work.cjs norde      # only items whose name contains "norde"
  *
- * Needs Playwright with Chromium (npx playwright install chromium) and the dev
+ * Needs Playwright with Chromium (npx playwright install chromium, or set CHROME_PATH) and the dev
  * dependencies (sharp, the @fontsource packages used by design/work/fonts.css).
  */
 const path = require('node:path')
 const fs = require('node:fs')
 const { chromium } = require('playwright')
 const sharp = require('sharp')
+
+// Use a specific Chromium when one is given (or the cloud environment's pre-installed one);
+// otherwise Playwright's own download.
+const CHROME = process.env.CHROME_PATH || (fs.existsSync('/opt/pw-browsers/chromium') ? '/opt/pw-browsers/chromium' : undefined)
 
 const ROOT = path.resolve(__dirname, '..')
 const SRC = path.join(ROOT, 'design/work')
@@ -40,7 +44,7 @@ const ITEMS = [
 ;(async () => {
   const filter = process.argv[2]
   fs.mkdirSync(OUT, { recursive: true })
-  const browser = await chromium.launch()
+  const browser = await chromium.launch(CHROME ? { executablePath: CHROME } : {})
   for (const [name, width, height, scale, quality] of ITEMS) {
     if (filter && !name.includes(filter)) continue
     const file = path.join(SRC, `${name}.html`)

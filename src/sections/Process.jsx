@@ -1,40 +1,23 @@
 import { useRef } from 'react'
 import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
 import { PROCESS } from '@/content'
 
-/** How a project runs, as a training plan: a track fills as you scroll, lighting each step. */
+/** How a project runs: when the steps come into view, a track fills once and lights each step in turn. */
 export default function Process({ reducedMotion }) {
   const scope = useRef(null)
 
   useGSAP(
     () => {
+      const steps = gsap.utils.toArray('.step', scope.current)
       if (reducedMotion) {
-        gsap.set('.step', { className: 'step is-active' })
+        steps.forEach((step) => step.classList.add('is-active'))
         return
       }
-      gsap.fromTo(
-        '.track-fill',
-        { scaleX: 0 },
-        {
-          scaleX: 1,
-          ease: 'none',
-          scrollTrigger: { trigger: '.steps', start: 'top 75%', end: 'bottom 55%', scrub: 0.5 },
-        },
-      )
-      // Each step lights up as the track reaches it (and dims again if you scroll back).
-      const steps = gsap.utils.toArray('.step', scope.current)
+      const tl = gsap.timeline({ scrollTrigger: { trigger: '.steps', start: 'top 75%', once: true } })
+      tl.fromTo('.track-fill', { scaleX: 0 }, { scaleX: 1, duration: 1.6, ease: 'power2.inOut' }, 0)
       steps.forEach((step, i) => {
-        ScrollTrigger.create({
-          trigger: steps[0].parentElement,
-          start: () => {
-            const list = steps[0].parentElement
-            return `top+=${(i / steps.length) * list.offsetHeight} 75%`
-          },
-          onToggle: (self) => step.classList.toggle('is-active', self.isActive),
-          end: 'max',
-        })
+        tl.add(() => step.classList.add('is-active'), 0.15 + i * 0.4)
       })
     },
     { scope, dependencies: [reducedMotion] },
