@@ -1,4 +1,5 @@
 import React from 'react';
+import { rng } from './util';
 
 /**
  * Cast-concrete texture as an SVG filter: low-frequency mottling plus fine pitting,
@@ -45,8 +46,7 @@ export const ConcreteFilter: React.FC<{ id: string; seed?: number; unit?: number
 /** A full-size block of concrete in the given tone. */
 /** Small air holes ("bugholes") you get in cast concrete. */
 const Bugholes: React.FC<{ width: number; height: number; seed: number }> = ({ width, height, seed }) => {
-  let x = seed * 9301 + 49297;
-  const r = () => ((x = (x * 9301 + 49297) % 233280) / 233280);
+  const r = rng(seed * 101);
   const n = Math.round((width * height) / 9000);
   return (
     <g>
