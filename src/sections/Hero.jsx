@@ -2,7 +2,6 @@ import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { SplitText } from 'gsap/SplitText'
 import { useGSAP } from '@gsap/react'
-import HeroStar from '@/components/HeroStar'
 import { ShimmerButton } from '@/components/ui/shimmer-button'
 import RotatingBadge from '@/components/kinetic/RotatingBadge'
 import { MAILTO } from '@/content'
@@ -13,8 +12,8 @@ import logo from '@/assets/logo.svg'
 // one-off setup cost cannot be seen.
 gsap.registerPlugin(SplitText)
 
-const loadStarScene = () => import('@/components/StarScene')
-const StarScene = lazy(loadStarScene)
+const loadLogoScene = () => import('@/components/LogoScene')
+const LogoScene = lazy(loadLogoScene)
 
 export default function Hero({ reducedMotion, prepare = true, ready = true, onSceneReady }) {
   const scope = useRef(null)
@@ -55,7 +54,7 @@ export default function Hero({ reducedMotion, prepare = true, ready = true, onSc
   }, [ready, reducedMotion])
 
   useEffect(() => {
-    if (prepare && use3d) loadStarScene()
+    if (prepare && use3d) loadLogoScene()
   }, [prepare, use3d])
 
   // Without the 3D scene there is nothing to wait for.
@@ -69,12 +68,13 @@ export default function Hero({ reducedMotion, prepare = true, ready = true, onSc
         {use3d ? (
           prepare && (
             <Suspense fallback={null}>
-              <StarScene go={ready} onFail={onFail} onReady={onReady} />
+              <LogoScene go={ready} onFail={onFail} onReady={onReady} />
             </Suspense>
           )
         ) : (
           <div className="hero-fallback">
-            <HeroStar />
+            {/* Without WebGL, or with reduced motion: the flat logo, tilted like the badge. */}
+            <img src={logo} width="1286" height="488" alt="" />
           </div>
         )}
       </div>

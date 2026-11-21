@@ -22,7 +22,7 @@ Node 22 (see `.nvmrc`).
 | `src/legal.js` | Privacy policy and terms, plus the business details to fill in |
 | `src/sections/` | Intro, Hero, Velocity strip, Statement, Services, Work, Process, FAQ, Contact |
 | `src/components/laptopScene.js` | The intro's 3D laptop (three.js) |
-| `src/components/StarScene.jsx` | The hero's 3D star (three.js); `HeroStar.jsx` is the SVG fallback |
+| `src/components/LogoScene.jsx` | The hero's 3D logo badge (three.js), built from `src/assets/logo.svg`; the flat logo is the fallback |
 | `src/components/motion/` | The three live animations in Work → Motion |
 | `src/components/ui/` | Magic UI components, added with the CLI (see below) |
 | `src/styles/work.css` | Styles for the Work section and its animations |
@@ -47,7 +47,7 @@ Motion plays once on load or on arrival, or answers a click. Nothing follows the
 
 - **Opening animation (three.js):** a brushed-aluminium laptop (`src/components/laptopScene.js`, choreographed in `src/sections/Intro.jsx`). It opens head on and lights up, then turns to the side. One scroll, swipe, key press or click (or 5 s of waiting) plays the rest: the lid folds flat 180°, a beam of light shoots out and drives the laptop down, and the intro fades into the site. "Skip intro" speeds it up. It plays once per browser session; `?intro=0` skips it.
   - The 3D code and both scenes are set up before anything moves, so nothing stutters part-way through.
-- **Hero:** the lead-in *Branding, websites, photography and motion,* rises in; *MADE TO BE NOTICED.* kicks up letter by letter (GSAP SplitText, split by words so nothing breaks mid-word). Behind it, a copper-orange 3D star warps in on streaks of light, then turns slowly. A rotating "Start a project" sticker links to email.
+- **Hero:** the lead-in *Branding, websites, photography and motion,* rises in; *MADE TO BE NOTICED.* kicks up letter by letter (GSAP SplitText, split by words so nothing breaks mid-word). Behind it, the Catalyze logo as a 3D badge (orange outline, cream letters) warps in on streaks of light, then sways slowly. A rotating "Start a project" sticker links to email.
 - **Crossing bands:** two Magic UI `ScrollVelocity` rows on orange and ivory bands, drifting at a steady pace in opposite directions.
 - **Why one studio:** the statement, with activity rings that close once as they come into view (GSAP DrawSVG).
 - **Services:** an orange block sweeps across a row on hover.
@@ -56,7 +56,7 @@ Motion plays once on load or on arrival, or answers a click. Nothing follows the
 - **Giant words:** outlined *THE WORK* and *LET'S GO*, still, behind their sections.
 - **Magic UI for getting around:** a `ScrollProgress` bar, a `Dock` of quick links after the hero (no magnification), and a `ShimmerButton` on the main call to action.
 
-With `prefers-reduced-motion: reduce`: no intro, no WebGL (an SVG star instead), the bands stand still, rings and steps show finished, and the Motion cards start paused.
+With `prefers-reduced-motion: reduce`: no intro, no WebGL (the flat logo instead), the bands stand still, rings and steps show finished, and the Motion cards start paused.
 
 ## Pages
 
