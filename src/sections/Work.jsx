@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react'
 import Tabs from '@/components/Tabs'
 import Lightbox from '@/components/Lightbox'
+import GiantWord from '@/components/kinetic/GiantWord'
 import ProductAnim from '@/components/motion/ProductAnim'
 import StoreWalk from '@/components/motion/StoreWalk'
 import LogoAnim from '@/components/motion/LogoAnim'
@@ -240,6 +241,7 @@ export default function Work({ reducedMotion }) {
   const [open, setOpen] = useState(null)
   return (
     <section className="section work" id="work">
+      <GiantWord reducedMotion={reducedMotion}>The work ✦ The work</GiantWord>
       <div className="wrap">
         <header className="section-head">
           <p className="eyebrow">Selected work</p>

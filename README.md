@@ -32,15 +32,19 @@ Node 22 (see `.nvmrc`).
 
 ## Look and feel
 
-Warm near-black, ivory and one rich orange (`--accent: #d2642c`), set in Instrument Serif (display) and Hanken Grotesk (text), with generous space and a faint film grain. Motion is used for a few orchestrated moments rather than everywhere.
+Chic meets sporty: warm near-black, ivory and one rich orange (`--accent: #d2642c`). Instrument Serif and Hanken Grotesk carry the elegant side; Anton (huge condensed capitals) carries the Nike Run Club-style energy in a few kinetic graphics: the hero's *BE NOTICED.*, crossing bands, activity rings, a progress track, a rotating sticker and giant outlined words. Generous space and a faint film grain keep it calm between those moments. Kinetic pieces live in `src/components/kinetic/`.
 
 ## Motion
 
 - **Opening animation (three.js):** a brushed-aluminium laptop with a keyboard, trackpad, hinge and glass screen (`src/components/laptopScene.js`, choreographed in `src/sections/Intro.jsx`). It opens head on and its screen lights up, then turns to the side. One scroll, swipe, key press or click (or 5 s of waiting) plays the rest: the lid folds back a full 180° until the laptop lies flat, the camera rises above it, a beam of light shoots out of the screen and drives the laptop down, and the intro fades and slides away into the site. Page scroll is locked until then; "Skip intro" speeds it up.
   - The 3D code (one shared three.js chunk) and both scenes are set up before anything moves, and the intro waits for the hero's scene too, so nothing stutters part-way through.
 - **Hero (three.js):** a faceted copper-orange star, the logo's spark, with soft streaks of light. It warps in as the intro hands over, then turns slowly, leans towards the pointer and reacts gently to scroll.
-- **Velocity strip:** Magic UI `ScrollVelocity`, drifting slowly through what we make.
-- **Statement:** words light up as you scroll through it.
+- **Hero type:** *Made to* rises in serif italic; *BE NOTICED.* kicks up letter by letter (GSAP SplitText). A rotating "Start a project" sticker links to email.
+- **Crossing bands:** two Magic UI `ScrollVelocity` rows on orange and ivory bands set at opposite angles, racing in opposite directions.
+- **Statement and rings:** words light up as you scroll; beside them, activity rings for branding, web, photography and motion close around "1 studio" (GSAP DrawSVG).
+- **Services:** a bold orange block sweeps across a row on hover.
+- **Process:** a progress track fills as you scroll and lights up each numbered step.
+- **Giant words:** outlined *THE WORK* and *LET'S GO* slide sideways as you scroll past.
 - **Work → Motion:** three live CSS animations (a product animation, a store walk-through and an animated logo). They play only while on screen, and each has a play/pause button.
 - **Magic UI for getting around:** a `ScrollProgress` bar, a `Dock` of quick links once you pass the hero (labels on hover and focus), and a `ShimmerButton` on the hero's main call to action.
 

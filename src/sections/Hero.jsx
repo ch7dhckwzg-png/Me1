@@ -1,14 +1,18 @@
 import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
+import { SplitText } from 'gsap/SplitText'
 import { useGSAP } from '@gsap/react'
 import HeroStar from '@/components/HeroStar'
 import { ShimmerButton } from '@/components/ui/shimmer-button'
+import RotatingBadge from '@/components/kinetic/RotatingBadge'
 import { MAILTO } from '@/content'
 import logo from '@/assets/logo.svg'
 
 // three.js lives in its own chunk so the page opens fast. It is fetched while the intro
 // idles, and the scene is created at the reveal, under the full-screen flash, where its
 // one-off setup cost cannot be seen.
+gsap.registerPlugin(SplitText)
+
 const loadStarScene = () => import('@/components/StarScene')
 const StarScene = lazy(loadStarScene)
 
@@ -30,8 +34,14 @@ export default function Hero({ reducedMotion, prepare = true, ready = true, onSc
       if (reducedMotion) return
       entrance.current = gsap
         .timeline({ paused: true })
-        // The headline rises through its masks, line by line.
-        .from('.hero-title .line > span', { yPercent: 105, duration: 1.3, stagger: 0.12, ease: 'expo.out' }, 0.25)
+        // "Made to" rises in calmly; "BE NOTICED." kicks up letter by letter.
+        .from('.hero-title .line-serif > span', { yPercent: 105, duration: 1.2, ease: 'expo.out' }, 0.2)
+        .from(
+          SplitText.create('.hero-title .line-bold > span', { type: 'chars' }).chars,
+          { yPercent: 115, skewY: 8, duration: 0.9, stagger: 0.035, ease: 'expo.out' },
+          0.45,
+        )
+        .from('.badge-spin', { scale: 0, rotation: -120, duration: 1, ease: 'back.out(1.6)' }, 1.1)
         .from('.hero-side > *', { y: 26, opacity: 0, duration: 0.7, stagger: 0.08, ease: 'power3.out' }, 0.55)
         .from('.nav', { y: -20, opacity: 0, duration: 0.6, ease: 'power3.out' }, 0.5)
         .from('.hero-fallback', { scale: 0.6, opacity: 0, duration: 1.1, ease: 'back.out(1.6)' }, 0.1)
@@ -89,6 +99,8 @@ export default function Hero({ reducedMotion, prepare = true, ready = true, onSc
         <a className="btn btn-light nav-cta" href={MAILTO}>Start a project</a>
       </nav>
 
+      <RotatingBadge href={MAILTO} className="hero-badge" />
+
       <div className="hero-main">
         <div className="hero-side">
           <p className="hero-sub">
@@ -112,8 +124,8 @@ export default function Hero({ reducedMotion, prepare = true, ready = true, onSc
           </div>
         </div>
         <h1 className="hero-title">
-          <span className="line"><span>Made to</span></span>
-          <span className="line"><span>be noticed.</span></span>
+          <span className="line line-serif"><span>Made to</span></span>
+          <span className="line line-bold"><span>be noticed.</span></span>
         </h1>
       </div>
     </header>

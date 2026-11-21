@@ -42,9 +42,9 @@ export default function App() {
         <Statement reducedMotion={reducedMotion} />
         <Services />
         <Work reducedMotion={reducedMotion} />
-        <Process />
+        <Process reducedMotion={reducedMotion} />
         <Faq />
-        <Contact />
+        <Contact reducedMotion={reducedMotion} />
       </main>
       {phase !== 'intro' || reducedMotion ? (
         <>

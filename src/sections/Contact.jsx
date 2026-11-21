@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
 import { EMAIL, MAILTO } from '@/content'
+import GiantWord from '@/components/kinetic/GiantWord'
 
 const LABEL = 'Copy email address'
 
 /** The sign-off, on orange. */
-export default function Contact() {
+export default function Contact({ reducedMotion }) {
   const [label, setLabel] = useState(LABEL)
   const timer = useRef(0)
 
@@ -23,6 +24,7 @@ export default function Contact() {
 
   return (
     <section className="contact" id="contact">
+      <GiantWord reducedMotion={reducedMotion} className="giant-ink" from={-30} to={0}>Let’s go ✦ Let’s go</GiantWord>
       <div className="wrap">
         <p className="eyebrow">Start a project</p>
         <h2 className="contact-title">Let’s make something worth noticing.</h2>

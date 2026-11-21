@@ -1,6 +1,7 @@
 import { useRef } from 'react'
 import { gsap } from 'gsap'
 import { useGSAP } from '@gsap/react'
+import Rings from '@/components/kinetic/Rings'
 
 const STATEMENT =
   'Most businesses juggle a designer, a web developer, a photographer and someone for social media. We do all of it under one roof, so your logo, your website, your photos and your posts finally look like they belong to the same business.'
@@ -28,13 +29,16 @@ export default function Statement({ reducedMotion }) {
 
   return (
     <section className="section statement-wrap" id="about" ref={scope}>
-      <div className="wrap">
-        <p className="eyebrow">Why one studio</p>
-        <p className="statement">
-          {STATEMENT.split(' ').map((word, i) => (
-            <span className="w" key={i}>{word} </span>
-          ))}
-        </p>
+      <div className="wrap statement-grid">
+        <div>
+          <p className="eyebrow">Why one studio</p>
+          <p className="statement">
+            {STATEMENT.split(' ').map((word, i) => (
+              <span className="w" key={i}>{word} </span>
+            ))}
+          </p>
+        </div>
+        <Rings reducedMotion={reducedMotion} />
       </div>
     </section>
   )
