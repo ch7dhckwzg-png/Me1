@@ -30,28 +30,18 @@ export default function Hero({ reducedMotion, prepare = true, ready = true, onSc
       if (reducedMotion) return
       entrance.current = gsap
         .timeline({ paused: true })
-        // The headline slams in, line by line, leaning into the motion.
-        .from('.hero-title .line > span', {
-          xPercent: -108,
-          skewX: 28,
-          duration: 0.9,
-          stagger: 0.09,
-          ease: 'expo.out',
-        }, 0.15)
+        // The headline rises through its masks, line by line.
+        .from('.hero-title .line > span', { yPercent: 105, duration: 1.3, stagger: 0.12, ease: 'expo.out' }, 0.25)
         .from('.hero-side > *', { y: 26, opacity: 0, duration: 0.7, stagger: 0.08, ease: 'power3.out' }, 0.55)
         .from('.nav', { y: -20, opacity: 0, duration: 0.6, ease: 'power3.out' }, 0.5)
         .from('.hero-fallback', { scale: 0.6, opacity: 0, duration: 1.1, ease: 'back.out(1.6)' }, 0.1)
 
-      // Leaving the hero: the headline is pulled away sideways as you scroll.
-      gsap.to('.hero-title .line:nth-child(1)', {
-        xPercent: -18,
+      // Leaving the hero: the headline drifts up and fades, a little slower than the page.
+      gsap.to('.hero-title', {
+        yPercent: -18,
+        opacity: 0.2,
         ease: 'none',
-        scrollTrigger: { trigger: scope.current, start: 'top top', end: 'bottom top', scrub: 0.4 },
-      })
-      gsap.to('.hero-title .line:nth-child(2)', {
-        xPercent: 12,
-        ease: 'none',
-        scrollTrigger: { trigger: scope.current, start: 'top top', end: 'bottom top', scrub: 0.4 },
+        scrollTrigger: { trigger: scope.current, start: 'top top', end: 'bottom top', scrub: 0.5 },
       })
     },
     { scope, dependencies: [reducedMotion] },
@@ -74,7 +64,7 @@ export default function Hero({ reducedMotion, prepare = true, ready = true, onSc
     <header className="hero" id="home" ref={scope}>
       <div className="hero-stage">
         {use3d ? (
-          ready && (
+          prepare && (
             <Suspense fallback={null}>
               <StarScene go={ready} onFail={onFail} onReady={onReady} />
             </Suspense>
@@ -92,17 +82,18 @@ export default function Hero({ reducedMotion, prepare = true, ready = true, onSc
         </a>
         <ul>
           <li><a href="#services">Services</a></li>
-          <li><a href="#about">About</a></li>
+          <li><a href="#work">Work</a></li>
+          <li><a href="#process">Process</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>
-        <a className="btn btn-light nav-cta" href={MAILTO}>Email us</a>
+        <a className="btn btn-light nav-cta" href={MAILTO}>Start a project</a>
       </nav>
 
       <div className="hero-main">
         <div className="hero-side">
           <p className="hero-sub">
-            Marketing, design, web and photography from one studio. We speed up the reaction
-            between your business and the people it’s for.
+            Catalyze is a creative studio for businesses that want to look as good as they are.
+            Branding, websites, photography and motion, made by one team so it all fits together.
           </p>
           <div className="cta">
             {/* Magic UI shimmer: a slow light runs round the main action. */}
@@ -110,14 +101,14 @@ export default function Hero({ reducedMotion, prepare = true, ready = true, onSc
               as="a"
               href={MAILTO}
               className="btn-shimmer"
-              background="#E4CFA6"
-              shimmerColor="#FFFFFF"
+              background="#D2642C"
+              shimmerColor="#FFE3CC"
               shimmerDuration="3.5s"
               shimmerSize="0.1em"
             >
-              Email us
+              Start a project
             </ShimmerButton>
-            <a className="btn btn-ghost" href="#services">See what we do</a>
+            <a className="btn btn-ghost" href="#work">See our work</a>
           </div>
         </div>
         <h1 className="hero-title">

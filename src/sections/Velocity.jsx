@@ -1,5 +1,6 @@
 import { ScrollVelocityContainer, ScrollVelocityRow } from '@/components/ui/scroll-based-velocity'
-import { SERVICES } from '@/content'
+
+const WORDS = ['Branding', 'Web design', 'Photography', 'Motion', 'Menus', 'Logos', 'Packaging', 'Social media']
 
 const Spark = () => (
   <svg className="velocity-spark" viewBox="0 0 20 20" aria-hidden="true">
@@ -7,21 +8,15 @@ const Spark = () => (
   </svg>
 )
 
-/** Magic UI scroll-velocity strip: the four crafts race faster the faster you scroll. */
+/** Magic UI scroll-velocity strip: what we make, drifting slowly, quicker as you scroll. */
 export default function Velocity({ reducedMotion }) {
-  const words = SERVICES.map((s) => s.short)
-  const speed = reducedMotion ? 0 : 3
+  const speed = reducedMotion ? 0 : 1.4
   return (
-    <section className="velocity" aria-label="Marketing, design, web and photography">
+    <section className="velocity" aria-label={WORDS.join(', ')}>
       <ScrollVelocityContainer>
         <ScrollVelocityRow baseVelocity={speed} direction={1} scrollReactivity={!reducedMotion}>
-          {words.map((w) => (
-            <span className="velocity-word" key={w}>{w}<Spark /></span>
-          ))}
-        </ScrollVelocityRow>
-        <ScrollVelocityRow baseVelocity={speed} direction={-1} scrollReactivity={!reducedMotion}>
-          {words.map((w) => (
-            <span className="velocity-word is-outline" key={w}>{w}<Spark /></span>
+          {WORDS.map((w) => (
+            <span className="velocity-word" key={w} aria-hidden="true">{w}<Spark /></span>
           ))}
         </ScrollVelocityRow>
       </ScrollVelocityContainer>

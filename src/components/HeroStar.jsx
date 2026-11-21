@@ -38,8 +38,8 @@ const FACETS = TIPS.flatMap((tip, i) =>
     const key = Math.max(0, dot(n, norm(KEY))) ** 2.4
     const fill = Math.max(0, dot(n, norm(FILL))) ** 1.3
     let c = [13, 11, 10]
-    c = mix(c, [206, 158, 86], Math.min(1, fill * 1.05))
-    c = mix(c, [226, 196, 146], Math.min(0.55, key * 0.75))
+    c = mix(c, [214, 108, 50], Math.min(1, fill * 1.05))
+    c = mix(c, [238, 186, 148], Math.min(0.55, key * 0.75))
     return { d: `M${C} ${C} L${tip.join(' ')} L${valley.join(' ')} Z`, fill: rgb(c) }
   }),
 )
@@ -55,7 +55,7 @@ export default function HeroStar() {
           <feGaussianBlur stdDeviation="10" />
         </filter>
         <pattern id="halftone" width="13" height="13" patternUnits="userSpaceOnUse">
-          <circle cx="6.5" cy="6.5" r="2.6" fill="#E4CFA6" />
+          <circle cx="6.5" cy="6.5" r="2.6" fill="#D2642C" />
         </pattern>
         <radialGradient id="halftone-fade" cx="50%" cy="50%" r="50%">
           <stop offset="35%" stopColor="#fff" stopOpacity="0.9" />
@@ -67,12 +67,12 @@ export default function HeroStar() {
         <linearGradient id="gloss" x1="0" y1="0" x2="1" y2="1">
           <stop offset="0%" stopColor="#fff" stopOpacity="0.12" />
           <stop offset="45%" stopColor="#fff" stopOpacity="0" />
-          <stop offset="100%" stopColor="#E4CFA6" stopOpacity="0.18" />
+          <stop offset="100%" stopColor="#D2642C" stopOpacity="0.18" />
         </linearGradient>
         <linearGradient id="rim" x1="0" y1="0" x2="1" y2="1">
           <stop offset="0%" stopColor="#F6F0E4" stopOpacity="0.9" />
           <stop offset="50%" stopColor="#F6F0E4" stopOpacity="0.08" />
-          <stop offset="100%" stopColor="#E4CFA6" stopOpacity="0.85" />
+          <stop offset="100%" stopColor="#D2642C" stopOpacity="0.85" />
         </linearGradient>
         <linearGradient id="shine" x1="0" y1="0" x2="1" y2="0">
           <stop offset="0%" stopColor="#fff" stopOpacity="0" />
@@ -80,9 +80,9 @@ export default function HeroStar() {
           <stop offset="100%" stopColor="#fff" stopOpacity="0" />
         </linearGradient>
         <radialGradient id="floor" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="#F6E7C6" stopOpacity="0.95" />
-          <stop offset="40%" stopColor="#E4CFA6" stopOpacity="0.45" />
-          <stop offset="100%" stopColor="#E4CFA6" stopOpacity="0" />
+          <stop offset="0%" stopColor="#F7C9A6" stopOpacity="0.95" />
+          <stop offset="40%" stopColor="#D2642C" stopOpacity="0.45" />
+          <stop offset="100%" stopColor="#D2642C" stopOpacity="0" />
         </radialGradient>
         <linearGradient id="reflect-fade" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0%" stopColor="#fff" stopOpacity="0.35" />
@@ -97,8 +97,8 @@ export default function HeroStar() {
         </linearGradient>
         <radialGradient id="core">
           <stop offset="0%" stopColor="#FFFDF7" stopOpacity="1" />
-          <stop offset="35%" stopColor="#F6E2B8" stopOpacity="0.7" />
-          <stop offset="100%" stopColor="#E4CFA6" stopOpacity="0" />
+          <stop offset="35%" stopColor="#F3B48A" stopOpacity="0.7" />
+          <stop offset="100%" stopColor="#D2642C" stopOpacity="0" />
         </radialGradient>
         <clipPath id="star-clip">
           <path d={STAR} />
@@ -112,7 +112,7 @@ export default function HeroStar() {
 
       {/* Floor light and the star's faint reflection in it. */}
       <ellipse cx={C} cy="596" rx="250" ry="16" fill="url(#floor)" filter="url(#floor-blur)" />
-      <ellipse cx={C} cy="596" rx="170" ry="1.6" fill="#F6E7C6" opacity="0.8" />
+      <ellipse cx={C} cy="596" rx="170" ry="1.6" fill="#F7C9A6" opacity="0.8" />
       <g mask="url(#reflect-mask)">
         <g transform={`translate(0 ${2 * 596 - 40}) scale(1 -1)`}>
           <g className="hero-star-body-reflection">
@@ -124,7 +124,7 @@ export default function HeroStar() {
       </g>
 
       <g className="hero-star-body">
-        <path d={STAR} fill="#E9C98A" opacity="0.75" filter="url(#star-glow)" transform="translate(300 300) scale(1.08) translate(-300 -300)" />
+        <path d={STAR} fill="#E07A45" opacity="0.75" filter="url(#star-glow)" transform="translate(300 300) scale(1.08) translate(-300 -300)" />
         {FACETS.map((f) => (
           <path key={f.d} d={f.d} fill={f.fill} stroke={f.fill} strokeWidth="0.6" strokeLinejoin="round" />
         ))}

@@ -18,31 +18,56 @@ Node 22 (see `.nvmrc`).
 
 | Path | Purpose |
 | --- | --- |
-| `src/sections/` | Intro (opening animation), Hero, Velocity strip, Services, About, Contact |
-| `src/content.js` | Email address and service copy |
-| `src/hooks/useSmoothScroll.js` | Lenis smooth scroll wired to GSAP ScrollTrigger |
-| `src/hooks/useReducedMotion.js` | Live `prefers-reduced-motion` value |
-| `src/components/StarScene.jsx` | The hero's WebGL scene (three.js), loaded as its own chunk |
-| `src/components/HeroStar.jsx` | SVG star used when WebGL is unavailable or motion is reduced |
+| `src/content.js` | **All the words**: services, websites, photography slots, process, FAQ, email |
+| `src/sections/` | Intro, Hero, Velocity strip, Statement, Services, Work, Process, FAQ, Contact |
+| `src/components/laptopScene.js` | The intro's 3D laptop (three.js) |
+| `src/components/StarScene.jsx` | The hero's 3D star (three.js); `HeroStar.jsx` is the SVG fallback |
+| `src/components/motion/` | The three live animations in Work → Motion |
 | `src/components/ui/` | Magic UI components, added with the CLI (see below) |
+| `src/styles/work.css` | Styles for the Work section and its animations |
+| `design/work/` | Source HTML for the concept work (websites, logos, menus, graphics) |
+| `scripts/render-work.cjs` | Renders `design/work/*.html` to `src/assets/work/*.webp` |
 | `src/assets/logo.svg` | The Catalyze logo (vector, traced from the 2000 px master) |
 | `public/_headers` | Cache and security headers (Netlify, Cloudflare Pages) |
 
+## Look and feel
+
+Warm near-black, ivory and one rich orange (`--accent: #d2642c`), set in Instrument Serif (display) and Hanken Grotesk (text), with generous space and a faint film grain. Motion is used for a few orchestrated moments rather than everywhere.
+
 ## Motion
 
-The site is built around speed: a catalyst speeds up a reaction. Type is heavy, slanted capitals (Hanken Grotesk 900 italic), echoing the logotype.
+- **Opening animation (three.js):** a brushed-aluminium laptop with a keyboard, trackpad, hinge and glass screen (`src/components/laptopScene.js`, choreographed in `src/sections/Intro.jsx`). It opens head on and its screen lights up, then turns to the side. One scroll, swipe, key press or click (or 5 s of waiting) plays the rest: the lid folds back a full 180° until the laptop lies flat, the camera rises above it, a beam of light shoots out of the screen and drives the laptop down, and the intro fades and slides away into the site. Page scroll is locked until then; "Skip intro" speeds it up.
+  - The 3D code (one shared three.js chunk) and both scenes are set up before anything moves, and the intro waits for the hero's scene too, so nothing stutters part-way through.
+- **Hero (three.js):** a faceted copper-orange star, the logo's spark, with soft streaks of light. It warps in as the intro hands over, then turns slowly, leans towards the pointer and reacts gently to scroll.
+- **Velocity strip:** Magic UI `ScrollVelocity`, drifting slowly through what we make.
+- **Statement:** words light up as you scroll through it.
+- **Work → Motion:** three live CSS animations (a product animation, a store walk-through and an animated logo). They play only while on screen, and each has a play/pause button.
+- **Magic UI for getting around:** a `ScrollProgress` bar, a `Dock` of quick links once you pass the hero (labels on hover and focus), and a `ShimmerButton` on the hero's main call to action.
 
-- **Opening animation:** a laptop built in CSS 3D (`src/sections/Intro.jsx`). On load it opens, lights up with the logo and turns to the side. One scroll, swipe, key press or click (or 5 s of waiting) plays the rest: the screen halves fold out, light pours out, the view flies through, and a curtain of light pushes down to reveal the hero. Page scroll is locked until then. "Skip intro" speeds it up.
-- **Hero (WebGL):** a faceted, polished gold four-point star (the logo's spark) with streaks of light rushing past (`src/components/StarScene.jsx`, three.js). It warps in as the hero is revealed (streaks race, the star spins up and scales in, then decelerates), leans towards the pointer, speeds up again when you scroll fast, and the camera pushes in as you scroll through the hero. *MADE TO BE NOTICED.* slams in line by line, then the lines are pulled apart sideways as you scroll away.
-  - three.js is its own chunk, fetched while the intro idles. The scene is created under the intro's full-screen flash, which holds until the scene has drawn its first frame (at most 1.5 s), so its one-off setup is never seen as a stutter. Nothing renders before the reveal, or while the hero is off screen or the tab is hidden.
-- **Magic UI, for getting around:** a thin gold `ScrollProgress` bar at the top of the screen shows how far down the page you are; a `Dock` (`src/components/SiteDock.jsx`) slides up from the bottom once you pass the hero, with Back to top, Services, About, Contact and Email us within thumb reach (labels show on hover and keyboard focus, and it is hidden from keyboard and screen readers while off screen); the hero's *Email us* is a `ShimmerButton`, a slow light running round the main action. The copy-email button shows a tick when it has copied.
-- **Velocity strip:** Magic UI `ScrollVelocity`. The four crafts race sideways, faster the faster you scroll.
-- **Services:** on wide screens the section pins and scrolling drives four panels sideways, each a hard cut to a new colour, with titles rushing in. On narrow screens the panels stack and their titles slam in.
-- **About:** one statement whose words light up as you scroll through it.
-- **Contact:** a hard cut to gold; the sign-off slams in.
-- **Lenis + GSAP ScrollTrigger** for smooth scrolling and every scroll-linked effect. Everything animates `transform` and `opacity` only.
+With `prefers-reduced-motion: reduce`: no intro, no WebGL (the SVG star is shown), no scroll effects, the strip stands still and the Motion cards start paused (press play to watch).
 
-With `prefers-reduced-motion: reduce`: no intro, no WebGL (the SVG star is shown), no pinning (services stack), no scroll effects, and the velocity strip stands still.
+## Concept work
+
+The websites, logos, menus and graphic design in the Work section are **concept projects** for fictional brands (Norde, Lumen, Oak & Iron, Ember, Marlow), and the page says so. Each is an HTML file in `design/work/`, rendered to WebP:
+
+```bash
+node scripts/render-work.cjs          # all of them
+node scripts/render-work.cjs menu     # just the menus
+```
+
+It needs Playwright's Chromium (`npx playwright install chromium`) and the dev dependencies (`sharp` and the `@fontsource` fonts used by `design/work/fonts.css`).
+
+## Adding photos
+
+The photography section has twelve slots (headshots, food & drink, product, website imagery; three each) showing "Photo coming soon". To fill one, put the image in `src/assets/photos/`, import it at the top of `src/content.js`, and set that slot's `src`:
+
+```js
+import studioPortrait from '@/assets/photos/studio-portrait.jpg'
+// ...
+{ title: 'Studio portrait', note: 'Clean backdrop, flattering light', src: studioPortrait },
+```
+
+Use portrait images (4:5), about 1600 px tall, saved as WebP or JPEG.
 
 ### Magic UI components
 

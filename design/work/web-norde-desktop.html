@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en-GB"><head><meta charset="utf-8">
+<link rel="stylesheet" href="fonts.css"><link rel="stylesheet" href="illus.css">
+<style>
+  body { width: 1440px; height: 900px; background: #f3ece1; color: #2a1c14; font-family: Inter, sans-serif; }
+  .nav { display: flex; align-items: center; justify-content: space-between; padding: 30px 72px; }
+  .brand { display: flex; align-items: center; gap: 12px; font: 600 30px/1 Fraunces, serif; letter-spacing: -0.02em; }
+  .links { display: flex; gap: 40px; font-size: 15px; color: #5a4636; }
+  .basket { padding: 11px 20px; border: 1px solid rgba(42, 28, 20, 0.25); border-radius: 99px; font-size: 14px; font-weight: 500; }
+  .hero { display: grid; grid-template-columns: 1fr 1fr; align-items: center; padding: 34px 72px 0; height: 600px; }
+  .kicker { display: inline-flex; gap: 10px; align-items: center; margin-bottom: 26px; font-size: 14px; color: #6b4430; }
+  .kicker i { width: 8px; height: 8px; border-radius: 50%; background: #7f8f72; }
+  h1 { font: 400 104px/0.95 Fraunces, serif; letter-spacing: -0.035em; margin-bottom: 28px; }
+  h1 em { font-style: italic; color: #6b4430; }
+  .sub { max-width: 440px; font-size: 18px; line-height: 1.6; color: #5a4636; margin-bottom: 38px; }
+  .ctas { display: flex; gap: 14px; }
+  .btn { padding: 17px 30px; border-radius: 99px; font-size: 15px; font-weight: 600; }
+  .btn.dark { background: #2a1c14; color: #f7f2ea; }
+  .btn.line { border: 1px solid rgba(42, 28, 20, 0.35); }
+  .art { position: relative; height: 560px; }
+  .disc { position: absolute; right: 30px; top: 30px; width: 500px; height: 500px; border-radius: 50%; background: radial-gradient(circle at 40% 35%, #9aa98c, #7f8f72 60%, #6e7d62); }
+  .art .bag { position: absolute; left: 110px; top: 70px; transform: rotate(-4deg); }
+  .art .cup { position: absolute; right: 60px; bottom: 40px; }
+  .label .lname { font: 600 30px/1 Fraunces, serif; letter-spacing: -0.02em; }
+  .label .origin { font: 400 italic 22px/1.15 Fraunces, serif; }
+  .label .meta { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #6b4430; }
+  .label .notes { font-size: 12px; line-height: 1.5; color: #5a4636; }
+  .label hr { width: 40px; border: 0; border-top: 1px solid #c9865a; }
+  .strip { position: absolute; left: 72px; right: 72px; bottom: 34px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .card { display: flex; align-items: center; justify-content: space-between; padding: 18px 22px; border-radius: 16px; background: #f9f5ee; border: 1px solid rgba(42, 28, 20, 0.08); }
+  .card b { display: block; font: 600 19px Fraunces, serif; margin-bottom: 4px; }
+  .card span { font-size: 13px; color: #6b4430; }
+  .card .price { font-weight: 600; font-size: 15px; }
+</style></head><body>
+  <nav class="nav">
+    <div class="brand">
+      <svg width="34" height="34" viewBox="0 0 34 34"><ellipse cx="17" cy="17" rx="12" ry="15" fill="#2a1c14" transform="rotate(28 17 17)"/><path d="M11 6 C 20 12, 14 22, 23 28" stroke="#f3ece1" stroke-width="2.4" fill="none" stroke-linecap="round"/></svg>
+      norde
+    </div>
+    <div class="links"><span>Shop coffee</span><span>Subscriptions</span><span>Our cafés</span><span>Brew guides</span></div>
+    <div class="basket">Basket (2)</div>
+  </nav>
+  <section class="hero">
+    <div>
+      <div class="kicker"><i></i> New harvest: Ethiopia Guji is back</div>
+      <h1>Coffee,<br>roasted <em>slowly.</em></h1>
+      <p class="sub">Seasonal single origins, roasted in small batches every Tuesday and posted to your door while they’re at their best.</p>
+      <div class="ctas"><span class="btn dark">Shop coffee</span><span class="btn line">Start a subscription</span></div>
+    </div>
+    <div class="art">
+      <div class="disc"></div>
+      <div class="bag"><div class="label">
+        <div class="lname">norde</div>
+        <div><div class="origin">Ethiopia<br>Guji</div></div>
+        <hr>
+        <div class="meta">Washed · 250g</div>
+        <div class="notes">Peach, jasmine<br>&amp; wildflower honey</div>
+      </div></div>
+      <div class="cup"></div>
+    </div>
+  </section>
+  <div class="strip">
+    <div class="card"><div><b>Colombia Huila</b><span>Red apple · panela · cocoa</span></div><div class="price">£11.50</div></div>
+    <div class="card"><div><b>Ethiopia Guji</b><span>Peach · jasmine · honey</span></div><div class="price">£12.50</div></div>
+    <div class="card"><div><b>Brazil Cerrado</b><span>Hazelnut · caramel · milk chocolate</span></div><div class="price">£10.00</div></div>
+  </div>
+</body></html>

@@ -31,7 +31,7 @@ import { gsap } from 'gsap'
  * hero is off screen or the tab is hidden.
  */
 
-const STREAKS = 420
+const STREAKS = 220
 
 /**
  * A tiny painted studio for the gold to reflect: dark above, a cream softbox up and to
@@ -44,10 +44,10 @@ function studioTexture() {
   c.height = 128
   const g = c.getContext('2d')
   const sky = g.createLinearGradient(0, 0, 0, 128)
-  sky.addColorStop(0, '#2a241c')
-  sky.addColorStop(0.45, '#6e5634')
-  sky.addColorStop(0.75, '#b48848')
-  sky.addColorStop(1, '#ffd796')
+  sky.addColorStop(0, '#221a15')
+  sky.addColorStop(0.45, '#5e3a24')
+  sky.addColorStop(0.75, '#b0582a')
+  sky.addColorStop(1, '#ffc79a')
   g.fillStyle = sky
   g.fillRect(0, 0, 256, 128)
   const box = g.createRadialGradient(70, 34, 4, 70, 34, 56)
@@ -56,8 +56,8 @@ function studioTexture() {
   g.fillStyle = box
   g.fillRect(0, 0, 256, 128)
   const rim = g.createRadialGradient(196, 66, 4, 196, 66, 46)
-  rim.addColorStop(0, '#ffcf8a')
-  rim.addColorStop(1, 'rgba(255, 207, 138, 0)')
+  rim.addColorStop(0, '#ff9a5c')
+  rim.addColorStop(1, 'rgba(255, 154, 92, 0)')
   g.fillStyle = rim
   g.fillRect(0, 0, 256, 128)
   const tex = new CanvasTexture(c)
@@ -131,9 +131,9 @@ export default function StarScene({ go = false, onFail, onReady }) {
       starGeometry(),
       // Standard (not physical) material: a much smaller shader, so it compiles quickly.
       new MeshStandardMaterial({
-        color: new Color('#E2B066'),
+        color: new Color('#DB7A42'),
         metalness: 1,
-        roughness: 0.26,
+        roughness: 0.3,
         envMapIntensity: 1.35,
         flatShading: true,
       }),
@@ -146,7 +146,7 @@ export default function StarScene({ go = false, onFail, onReady }) {
 
     const key = new DirectionalLight('#FFF4E0', 1.6)
     key.position.set(-3, 4, 5)
-    const rim = new PointLight('#FFB45C', 45, 12)
+    const rim = new PointLight('#FF8A4C', 40, 12)
     rim.position.set(2.5, -2.2, -1.5)
     scene.add(key, rim)
 
@@ -160,7 +160,7 @@ export default function StarScene({ go = false, onFail, onReady }) {
     for (let i = 0; i < STREAKS; i++) spawn(s, i, FAR + Math.random() * (7 - FAR))
     const linePos = new Float32Array(STREAKS * 6)
     const lineCol = new Float32Array(STREAKS * 6)
-    const gold = new Color('#E4CFA6')
+    const gold = new Color('#E07A45')
     const cream = new Color('#FFF8EA')
     for (let i = 0; i < STREAKS; i++) {
       const head = Math.random() < 0.3 ? cream : gold
@@ -219,11 +219,11 @@ export default function StarScene({ go = false, onFail, onReady }) {
       state.boost += (Math.min(1, v / 2400) - state.boost) * 0.08
       const progress = Math.min(1, sy / Math.max(1, el.clientHeight))
 
-      const speed = 1.2 + state.warp * 70 + state.boost * 28
+      const speed = 0.7 + state.warp * 48 + state.boost * 14
       for (let i = 0; i < STREAKS; i++) {
         s.z[i] += speed * dt
         if (s.z[i] > 7.5) spawn(s, i, FAR)
-        const stretch = s.len[i] * (0.6 + state.warp * 9 + state.boost * 4)
+        const stretch = s.len[i] * (0.5 + state.warp * 7 + state.boost * 2.5)
         linePos.set([s.x[i], s.y[i], s.z[i], s.x[i], s.y[i], s.z[i] - stretch], i * 6)
       }
       lineGeo.attributes.position.needsUpdate = true
@@ -231,7 +231,7 @@ export default function StarScene({ go = false, onFail, onReady }) {
       // The star: spin that decays from the warp, plus a lean towards the pointer.
       state.tiltX += (state.pointerY * 0.5 - state.tiltX) * 0.06
       state.tiltY += (state.pointerX * 0.7 - state.tiltY) * 0.06
-      star.rotation.y += dt * (0.45 + state.spin * 14 + state.boost * 3)
+      star.rotation.y += dt * (0.32 + state.spin * 10 + state.boost * 1.5)
       star.rotation.x = state.tiltX + Math.sin(_time * 0.6) * 0.08
       star.rotation.z = progress * 0.9
       rig.position.x = wide ? 1.95 : 0
@@ -253,10 +253,10 @@ export default function StarScene({ go = false, onFail, onReady }) {
         running = true
         return gsap
           .timeline()
-          .to(lineMat, { opacity: 0.85, duration: 0.25, ease: 'power1.out' }, 0)
+          .to(lineMat, { opacity: 0.7, duration: 0.35, ease: 'power1.out' }, 0)
           .fromTo(state, { warp: 1, spin: 1 }, { warp: 0, spin: 0, duration: 2.6, ease: 'expo.out' }, 0)
           .to(star.scale, { x: 1, y: 1, z: 1, duration: 1.4, ease: 'back.out(1.6)' }, 0.15)
-          .to(lineMat, { opacity: 0.5, duration: 1.8, ease: 'power2.out' }, 0.9)
+          .to(lineMat, { opacity: 0.32, duration: 2.2, ease: 'power2.out' }, 0.9)
       },
     }
 
