@@ -1,98 +1,57 @@
-import { useEffect, useId, useRef, useState } from 'react'
+import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { useGSAP } from '@gsap/react'
 import HeroStar from '@/components/HeroStar'
-import { MAILTO, SERVICES } from '@/content'
+import { MAILTO } from '@/content'
 import logo from '@/assets/logo.svg'
 
-const CYCLE_S = 4.5
+// three.js lives in its own chunk so the page opens fast. It is fetched while the intro
+// idles, and the scene is created at the reveal, under the full-screen flash, where its
+// one-off setup cost cannot be seen.
+const loadStarScene = () => import('@/components/StarScene')
+const StarScene = lazy(loadStarScene)
 
-/** Glass bar along the bottom of the hero: the four crafts, cycling, with a progress line. */
-function ServiceTabs({ running }) {
-  const [active, setActive] = useState(0)
-  const [paused, setPaused] = useState(false)
-  const id = useId()
-
-  return (
-    <div
-      className="hero-tabs"
-      onPointerEnter={() => setPaused(true)}
-      onPointerLeave={() => setPaused(false)}
-      onFocus={() => setPaused(true)}
-      onBlur={() => setPaused(false)}
-    >
-      <p className="tab-desc" id={`${id}-panel`} role="tabpanel" aria-labelledby={`${id}-tab-${active}`}>
-        <strong>{SERVICES[active].title}.</strong> {SERVICES[active].body}
-      </p>
-      <div className="tab-list" role="tablist" aria-label="What we do">
-        {SERVICES.map((s, i) => (
-          <button
-            key={s.title}
-            id={`${id}-tab-${i}`}
-            type="button"
-            role="tab"
-            aria-selected={i === active}
-            aria-controls={`${id}-panel`}
-            className="tab"
-            onClick={() => setActive(i)}
-          >
-            {s.short}
-            <span className="tab-track" aria-hidden="true">
-              {i === active && (
-                <span
-                  key={`${active}-${running}`}
-                  className={`tab-progress${running ? ' is-running' : ''}`}
-                  style={{
-                    animationDuration: `${CYCLE_S}s`,
-                    animationPlayState: paused ? 'paused' : 'running',
-                  }}
-                  onAnimationEnd={() => setActive((a) => (a + 1) % SERVICES.length)}
-                />
-              )}
-            </span>
-          </button>
-        ))}
-      </div>
-    </div>
-  )
-}
-
-export default function Hero({ reducedMotion, ready = true }) {
+export default function Hero({ reducedMotion, prepare = true, ready = true, onSceneReady }) {
   const scope = useRef(null)
   const entrance = useRef(null)
+  const [webgl, setWebgl] = useState(true)
+  const onFail = useCallback(() => setWebgl(false), [])
+  const use3d = webgl && !reducedMotion
+  const readyCb = useRef(onSceneReady)
+  useEffect(() => {
+    readyCb.current = onSceneReady
+  })
+  const onReady = useCallback(() => readyCb.current?.(), [])
 
-  // The entrance is built straight away (so its start states hide the elements),
-  // but held until `ready`: the intro hands off by flipping it to true.
+  // Built straight away so the start states hide everything, then held until `ready`.
   useGSAP(
     () => {
       if (reducedMotion) return
-      const idle = () => {
-        gsap.to('.hero-star', { y: -14, duration: 3.2, ease: 'sine.inOut', yoyo: true, repeat: -1 })
-        gsap
-          .timeline({ repeat: -1, repeatDelay: 4.5, delay: 0.6 })
-          .fromTo('.hero-star-shine', { x: -260 }, { x: 900, duration: 1.4, ease: 'power2.inOut' })
-      }
       entrance.current = gsap
-        .timeline({ paused: true, defaults: { ease: 'power3.out' }, onComplete: idle })
-        .from('.hero-visual', { opacity: 0, scale: 0.9, y: 40, duration: 1.6 }, 0)
-        .from('.hero-title .line > span', { yPercent: 110, duration: 1.1, stagger: 0.12 }, 0.2)
-        .from('.hero-copy .badge', { opacity: 0, y: 12, duration: 0.7 }, 0.15)
-        .from(['.hero-sub', '.hero-copy .cta'], { opacity: 0, y: 18, duration: 0.8, stagger: 0.1 }, 0.6)
-        .from('.nav', { opacity: 0, y: -14, duration: 0.8 }, 0.4)
-        .from('.hero-tabs', { opacity: 0, y: 24, duration: 0.9 }, 0.8)
+        .timeline({ paused: true })
+        // The headline slams in, line by line, leaning into the motion.
+        .from('.hero-title .line > span', {
+          xPercent: -108,
+          skewX: 28,
+          duration: 0.9,
+          stagger: 0.09,
+          ease: 'expo.out',
+        }, 0.15)
+        .from('.hero-side > *', { y: 26, opacity: 0, duration: 0.7, stagger: 0.08, ease: 'power3.out' }, 0.55)
+        .from('.nav', { y: -20, opacity: 0, duration: 0.6, ease: 'power3.out' }, 0.5)
+        .from('.hero-fallback', { scale: 0.6, opacity: 0, duration: 1.1, ease: 'back.out(1.6)' }, 0.1)
 
-      // A small tilt towards the pointer, on devices with one.
-      if (window.matchMedia('(pointer: fine)').matches) {
-        const rx = gsap.quickTo('.hero-tilt', 'rotationX', { duration: 0.9, ease: 'power3.out' })
-        const ry = gsap.quickTo('.hero-tilt', 'rotationY', { duration: 0.9, ease: 'power3.out' })
-        const onMove = (e) => {
-          ry((e.clientX / window.innerWidth - 0.5) * 14)
-          rx((e.clientY / window.innerHeight - 0.5) * -10)
-        }
-        scope.current.addEventListener('pointermove', onMove)
-        return () => scope.current?.removeEventListener('pointermove', onMove)
-      }
-      return undefined
+      // Leaving the hero: the headline is pulled away sideways as you scroll.
+      gsap.to('.hero-title .line:nth-child(1)', {
+        xPercent: -18,
+        ease: 'none',
+        scrollTrigger: { trigger: scope.current, start: 'top top', end: 'bottom top', scrub: 0.4 },
+      })
+      gsap.to('.hero-title .line:nth-child(2)', {
+        xPercent: 12,
+        ease: 'none',
+        scrollTrigger: { trigger: scope.current, start: 'top top', end: 'bottom top', scrub: 0.4 },
+      })
     },
     { scope, dependencies: [reducedMotion] },
   )
@@ -101,8 +60,31 @@ export default function Hero({ reducedMotion, ready = true }) {
     if (ready) entrance.current?.play()
   }, [ready, reducedMotion])
 
+  useEffect(() => {
+    if (prepare && use3d) loadStarScene()
+  }, [prepare, use3d])
+
+  // Without the 3D scene there is nothing to wait for.
+  useEffect(() => {
+    if (ready && !use3d) readyCb.current?.()
+  }, [ready, use3d])
+
   return (
     <header className="hero" id="home" ref={scope}>
+      <div className="hero-stage">
+        {use3d ? (
+          ready && (
+            <Suspense fallback={null}>
+              <StarScene go={ready} onFail={onFail} onReady={onReady} />
+            </Suspense>
+          )
+        ) : (
+          <div className="hero-fallback">
+            <HeroStar />
+          </div>
+        )}
+      </div>
+
       <nav className="nav" aria-label="Main">
         <a className="logo" href="#home">
           <img src={logo} width="1275" height="477" alt="Catalyze, back to top" />
@@ -115,39 +97,21 @@ export default function Hero({ reducedMotion, ready = true }) {
         <a className="btn btn-light nav-cta" href={MAILTO}>Email us</a>
       </nav>
 
-      <div className="hero-body">
-        <div className="hero-copy">
-          <p className="badge">
-            <svg viewBox="0 0 20 20" width="12" height="12" aria-hidden="true">
-              <path d="M10 0 L12.4 7.6 L20 10 L12.4 12.4 L10 20 L7.6 12.4 L0 10 L7.6 7.6 Z" fill="currentColor" />
-            </svg>
-            Marketing · Design · Imagery
-          </p>
-          <h1 className="hero-title">
-            <span className="line"><span>Made to</span></span>
-            <span className="line"><span>be noticed.</span></span>
-          </h1>
+      <div className="hero-main">
+        <div className="hero-side">
           <p className="hero-sub">
-            Marketing, design, web and photography from one studio, so your business looks and
-            sounds like itself everywhere.
+            Marketing, design, web and photography from one studio. We speed up the reaction
+            between your business and the people it’s for.
           </p>
           <div className="cta">
             <a className="btn btn-primary" href={MAILTO}>Email us</a>
             <a className="btn btn-ghost" href="#services">See what we do</a>
           </div>
         </div>
-
-        <div className="hero-visual">
-          <div className="hero-tilt">
-            <div className="hero-star">
-              <HeroStar />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="hero-foot">
-        <ServiceTabs running={ready && !reducedMotion} />
+        <h1 className="hero-title">
+          <span className="line"><span>Made to</span></span>
+          <span className="line"><span>be noticed.</span></span>
+        </h1>
       </div>
     </header>
   )

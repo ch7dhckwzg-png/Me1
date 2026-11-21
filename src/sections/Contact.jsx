@@ -1,14 +1,32 @@
 import { useEffect, useRef, useState } from 'react'
-import Grainient from '@/components/Grainient'
+import { gsap } from 'gsap'
+import { useGSAP } from '@gsap/react'
 import { EMAIL, MAILTO } from '@/content'
 
 const LABEL = 'Copy email address'
 
-export default function Contact() {
+/** A hard cut to gold for the sign-off. */
+export default function Contact({ reducedMotion }) {
+  const scope = useRef(null)
   const [label, setLabel] = useState(LABEL)
   const timer = useRef(0)
 
   useEffect(() => () => clearTimeout(timer.current), [])
+
+  useGSAP(
+    () => {
+      if (reducedMotion) return
+      gsap.from('.contact-title .line > span', {
+        xPercent: -108,
+        skewX: 28,
+        duration: 0.9,
+        stagger: 0.09,
+        ease: 'expo.out',
+        scrollTrigger: { trigger: scope.current, start: 'top 70%', once: true },
+      })
+    },
+    { scope, dependencies: [reducedMotion] },
+  )
 
   const copy = async () => {
     try {
@@ -22,27 +40,14 @@ export default function Contact() {
   }
 
   return (
-    <section className="contact" id="contact">
-      {/* React Bits Grainient: a slow, dark, grainy wash behind the sign-off. */}
-      <div className="contact-bg" aria-hidden="true">
-        <Grainient
-          colors={['#161616', '#1d1a16', '#2b241a', '#4a3c26']}
-          angle={160}
-          speed={0.35}
-          flow={0.6}
-          silk={0.25}
-          grainAmount={0.06}
-          contrast={0.9}
-          saturation={0.8}
-          interactive={false}
-          clickSwirl={false}
-          dpr={1.5}
-        />
-      </div>
+    <section className="contact" id="contact" ref={scope}>
       <div className="wrap">
-        <h2 className="display">Tell us what you’re working on</h2>
-        <a className="mail display" href={MAILTO}>{EMAIL}</a>
-        <button className="btn btn-ghost" type="button" onClick={copy} aria-live="polite">
+        <h2 className="contact-title">
+          <span className="line"><span>Let’s get you</span></span>
+          <span className="line"><span>noticed.</span></span>
+        </h2>
+        <a className="mail" href={MAILTO}>{EMAIL}</a>
+        <button className="btn btn-dark" type="button" onClick={copy} aria-live="polite">
           {label}
         </button>
       </div>

@@ -17,14 +17,15 @@ import logo from '@/assets/logo.svg'
 const KEYS = new Set(['ArrowDown', 'PageDown', ' ', 'Enter', 'Spacebar'])
 const IDLE_MS = 5000
 
-export default function Intro({ onReveal, onDone }) {
+export default function Intro({ onIdle, onReveal, onDone, heroReady = false }) {
   const root = useRef(null)
-  const callbacks = useRef({ onReveal, onDone })
+  const callbacks = useRef({ onIdle, onReveal, onDone })
   useEffect(() => {
-    callbacks.current = { onReveal, onDone }
+    callbacks.current = { onIdle, onReveal, onDone }
   })
   const go = useRef(() => {})
   const skip = useRef(() => {})
+  const resume = useRef(() => {})
 
   useGSAP(
     () => {
@@ -58,9 +59,12 @@ export default function Intro({ onReveal, onDone }) {
             repeat: -1,
           })
           idleTimer = window.setTimeout(() => go.current(), IDLE_MS)
+          // The laptop is open and waiting: a quiet moment for the hero to get ready.
+          callbacks.current.onIdle?.()
         })
 
       // ---- Part 2: unfold, light, push into the site ------------------------
+      let holdTimer = 0
       const unfold = () => {
         window.clearTimeout(idleTimer)
         bob?.kill()
@@ -84,6 +88,18 @@ export default function Intro({ onReveal, onDone }) {
             gsap.set(root.current, { backgroundColor: 'transparent' })
             gsap.set(behind, { autoAlpha: 0 })
             callbacks.current.onReveal()
+            // Hold on the full-screen flash while the hero sets up its 3D scene, so that
+            // one-off cost is hidden. It resumes when the hero is ready, or after 1.5 s.
+            const tl = gsap.getTweensOf(q('.intro-flash'))[0]?.parent
+            if (tl) {
+              tl.pause()
+              resume.current = () => {
+                window.clearTimeout(holdTimer)
+                resume.current = () => {}
+                tl.play()
+              }
+              holdTimer = window.setTimeout(() => resume.current(), 1500)
+            }
           }, 1.65)
           .to(q('.intro-flash'), { yPercent: 100, duration: 1.05, ease: 'power2.inOut' }, 1.7)
       }
@@ -91,6 +107,7 @@ export default function Intro({ onReveal, onDone }) {
       go.current = (speed = 1) => {
         if (started) return
         started = true
+        callbacks.current.onIdle?.()
         if (open.isActive()) {
           // Scrolled before the laptop finished opening: finish quickly, then continue.
           open.timeScale(2.6).eventCallback('onComplete', () => unfold().timeScale(speed))
@@ -118,6 +135,7 @@ export default function Intro({ onReveal, onDone }) {
 
       return () => {
         window.clearTimeout(idleTimer)
+        window.clearTimeout(holdTimer)
         window.removeEventListener('wheel', onWheel)
         window.removeEventListener('keydown', onKey)
         window.removeEventListener('touchstart', onTouchStart)
@@ -126,6 +144,10 @@ export default function Intro({ onReveal, onDone }) {
     },
     { scope: root },
   )
+
+  useEffect(() => {
+    if (heroReady) resume.current()
+  }, [heroReady])
 
   const screen = (side) => (
     <div className={`lt-half lt-half--${side}`}>

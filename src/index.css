@@ -410,65 +410,50 @@ html.is-locked body {
   }
 }
 
-/* ---------- Hero ---------- */
+/* ---------- Shared type ---------- */
 
-.hero {
-  position: relative;
-  isolation: isolate;
-  display: grid;
-  grid-template-rows: auto 1fr auto;
-  min-height: 100svh;
+/* The voice of the site: heavy, slanted capitals, like the logotype moving at speed. */
+.hero-title,
+.velocity-word,
+.panel h3,
+.contact-title {
+  font-family: 'Hanken Grotesk', system-ui, sans-serif;
+  font-style: italic;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+}
+
+/* Lines that slam in through their own mask. Extra right padding keeps the slant unclipped. */
+.hero-title .line,
+.contact-title .line {
+  display: block;
   overflow: hidden;
-  padding-bottom: clamp(1rem, 2.5vw, 1.75rem);
-  background:
-    radial-gradient(ellipse 55% 45% at 72% 78%, rgba(132, 94, 44, 0.32), transparent 70%),
-    var(--bg);
+  padding: 0.04em 0.12em 0.05em 0;
 }
 
-/* On narrow screens the star sits at the top, so the warm light follows it. */
-@media (max-width: 879px) {
-  .hero {
-    background:
-      radial-gradient(ellipse 80% 30% at 50% 26%, rgba(132, 94, 44, 0.3), transparent 70%),
-      var(--bg);
-  }
+.hero-title .line > span,
+.contact-title .line > span {
+  display: block;
 }
 
-/* A faint field of stars, drawn with gradients: nothing to load, nothing to animate. */
-.hero::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background-image:
-    radial-gradient(1px 1px at 12% 18%, rgba(241, 235, 221, 0.5), transparent),
-    radial-gradient(1px 1px at 68% 12%, rgba(241, 235, 221, 0.4), transparent),
-    radial-gradient(1.4px 1.4px at 84% 34%, rgba(228, 207, 166, 0.55), transparent),
-    radial-gradient(1px 1px at 46% 28%, rgba(241, 235, 221, 0.3), transparent),
-    radial-gradient(1px 1px at 92% 62%, rgba(241, 235, 221, 0.35), transparent),
-    radial-gradient(1.2px 1.2px at 58% 52%, rgba(241, 235, 221, 0.3), transparent),
-    radial-gradient(1px 1px at 24% 66%, rgba(241, 235, 221, 0.25), transparent);
-  background-size: 640px 520px;
-  -webkit-mask-image: linear-gradient(to bottom, #000 50%, transparent 95%);
-  mask-image: linear-gradient(to bottom, #000 50%, transparent 95%);
-  pointer-events: none;
+.kicker {
+  margin-bottom: 1.25rem;
+  color: var(--accent);
+  font-size: 1rem;
+  font-weight: 600;
 }
 
-.nav,
-.hero-body,
-.hero-foot {
-  width: 100%;
-  max-width: 1240px;
-  margin: 0 auto;
-  padding-inline: var(--gutter);
-}
+/* ---------- Nav and buttons ---------- */
 
 .nav {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: calc(env(safe-area-inset-top, 0px) + 1.1rem) var(--gutter) 0.75rem;
   display: flex;
   align-items: center;
   gap: clamp(1rem, 3vw, 2.25rem);
-  padding-top: calc(env(safe-area-inset-top, 0px) + 1.1rem);
-  padding-bottom: 0.75rem;
 }
 
 .nav .logo {
@@ -502,7 +487,7 @@ html.is-locked body {
   opacity: 1;
 }
 
-.nav-cta {
+.nav .nav-cta {
   padding: 0.5rem 1rem;
   font-size: 0.88rem;
 }
@@ -511,64 +496,6 @@ html.is-locked body {
   .nav .nav-cta {
     display: none;
   }
-}
-
-.hero-body {
-  display: grid;
-  align-items: center;
-  gap: clamp(1rem, 4vw, 3rem);
-  padding-block: clamp(1.5rem, 5vh, 3.5rem);
-}
-
-@media (min-width: 880px) {
-  .hero-body {
-    grid-template-columns: 1.1fr 1fr;
-  }
-}
-
-.badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.55rem;
-  margin-bottom: 1.6rem;
-  padding: 0.4rem 0.9rem;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  background: rgba(241, 235, 221, 0.04);
-  color: var(--soft);
-  font-size: 0.82rem;
-  letter-spacing: 0.02em;
-}
-
-.badge svg {
-  color: var(--accent);
-}
-
-.hero-title {
-  margin-bottom: 1.4rem;
-  font-size: clamp(3.1rem, 8.4vw, 7rem);
-  font-weight: 300;
-  letter-spacing: -0.05em;
-  line-height: 0.96;
-}
-
-/* Each line rises through its own mask on entrance. */
-.hero-title .line {
-  display: block;
-  overflow: hidden;
-  padding-bottom: 0.08em;
-  margin-bottom: -0.08em;
-}
-
-.hero-title .line > span {
-  display: block;
-}
-
-.hero-sub {
-  max-width: 40ch;
-  margin-bottom: 2rem;
-  color: var(--soft);
-  font-size: clamp(1rem, 1.4vw, 1.12rem);
 }
 
 .cta {
@@ -581,7 +508,7 @@ html.is-locked body {
   display: inline-block;
   padding: 0.8rem 1.45rem;
   border-radius: 999px;
-  font: 500 0.98rem 'Hanken Grotesk', system-ui, sans-serif;
+  font: 600 0.98rem 'Hanken Grotesk', system-ui, sans-serif;
   text-decoration: none;
   cursor: pointer;
   transition:
@@ -620,235 +547,281 @@ html.is-locked body {
   border-color: var(--fg);
 }
 
-.hero-visual {
-  justify-self: center;
-  width: min(100%, 520px);
-  perspective: 900px;
+.btn-dark {
+  border: 1px solid rgba(22, 22, 22, 0.45);
+  color: var(--ink);
+  background: none;
+}
+
+.btn-dark:hover {
+  background: var(--ink);
+  color: var(--accent);
+}
+
+/* ---------- Hero ---------- */
+
+.hero {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  min-height: 100svh;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 55% 55% at 72% 48%, rgba(132, 94, 44, 0.3), transparent 70%),
+    var(--bg);
 }
 
 @media (max-width: 879px) {
-  .hero-visual {
-    width: min(78%, 360px);
-    order: -1;
-    margin-bottom: -1rem;
+  .hero {
+    background:
+      radial-gradient(ellipse 85% 35% at 50% 30%, rgba(132, 94, 44, 0.3), transparent 70%),
+      var(--bg);
   }
 }
 
-.hero-tilt,
-.hero-star {
-  will-change: transform;
-}
-
-.hero-star-svg {
-  display: block;
-  width: 100%;
-  height: auto;
-  overflow: visible;
-}
-
-/* Frosted glass bar: the four crafts, cycling. */
-.hero-tabs {
-  display: grid;
-  gap: 0.9rem 2rem;
-  padding: 1rem 1.25rem 0.9rem;
-  border: 1px solid rgba(241, 235, 221, 0.12);
-  border-radius: 18px;
-  background: rgba(241, 235, 221, 0.045);
-  -webkit-backdrop-filter: blur(14px);
-  backdrop-filter: blur(14px);
-}
-
-@media (min-width: 880px) {
-  .hero-tabs {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr);
-    align-items: center;
-  }
-}
-
-.tab-desc {
-  min-height: 2lh;
-  color: var(--muted);
-  font-size: 0.92rem;
-  line-height: 1.45;
-}
-
-.tab-desc strong {
-  color: var(--fg);
-  font-weight: 500;
-}
-
-.tab-list {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0.75rem;
-}
-
-.tab {
-  display: grid;
-  gap: 0.55rem;
-  padding: 0.35rem 0 0;
-  border: 0;
-  background: none;
-  color: var(--muted);
-  font: 500 clamp(0.8rem, 1.6vw, 0.92rem) 'Hanken Grotesk', system-ui, sans-serif;
-  text-align: left;
-  cursor: pointer;
-  transition: color 0.2s;
-}
-
-.tab:hover,
-.tab[aria-selected='true'] {
-  color: var(--fg);
-}
-
-.tab-track {
-  position: relative;
-  height: 2px;
-  overflow: hidden;
-  border-radius: 2px;
-  background: rgba(241, 235, 221, 0.14);
-}
-
-.tab-progress {
-  position: absolute;
-  inset: 0;
-  background: var(--accent);
-  transform-origin: 0 50%;
-}
-
-.tab-progress.is-running {
-  animation: tab-progress linear forwards;
-}
-
-@keyframes tab-progress {
-  from {
-    transform: scaleX(0);
-  }
-  to {
-    transform: scaleX(1);
-  }
-}
-
-/* ---------- Sections ---------- */
-
-.wrap {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: clamp(3.5rem, 9vw, 7rem) var(--gutter);
-}
-
-h2 {
-  font-size: clamp(1.9rem, 4.5vw, 3rem);
-  margin-bottom: 2.5rem;
-}
-
-.services ul {
-  list-style: none;
-  padding: 0;
-}
-
-.service {
-  border-top: 1px solid var(--line);
-}
-
-.service:last-child {
-  border-bottom: 1px solid var(--line);
-}
-
-/* Override React Bits GlareHover's centred inline-grid so the row lays out like the original. */
-.glare-hover.service-row {
-  display: grid;
-  place-items: stretch;
-  gap: 0.5rem;
-  padding: 1.5rem 0;
-  border: 0;
-}
-
-.service h3 {
-  font-size: clamp(1.6rem, 3.2vw, 2.4rem);
-  transition: color 0.2s;
-}
-
-.service:hover h3 {
-  color: var(--accent);
-}
-
-.service p {
-  color: var(--muted);
-  max-width: 38ch;
-}
-
-@media (min-width: 760px) {
-  .glare-hover.service-row {
-    grid-template-columns: 1fr 1fr;
-    align-items: baseline;
-  }
-}
-
-.about {
-  display: grid;
-  gap: 1rem;
-}
-
-.about p {
-  color: var(--muted);
-  max-width: 56ch;
-  font-size: 1.15rem;
-}
-
-@media (min-width: 760px) {
-  .about {
-    grid-template-columns: 1fr 1fr;
-    gap: 3rem;
-  }
-
-  .about h2 {
-    margin-bottom: 0;
-  }
-}
-
-/* ---------- Contact ---------- */
-
-.contact {
-  position: relative;
-  isolation: isolate;
-  border-top: 1px solid var(--line);
-}
-
-.contact-bg {
+.hero-stage {
   position: absolute;
   inset: 0;
   z-index: -1;
-  pointer-events: none;
 }
 
-/* Fade the gradient into the page so the section edge stays a hairline, not a block. */
-.contact-bg::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to bottom, var(--bg) 0%, transparent 45%);
-}
-
-.contact .mail {
+.star-scene,
+.star-scene canvas {
   display: block;
-  font-size: clamp(1.2rem, 5vw, 3rem);
-  text-decoration: none;
-  overflow-wrap: anywhere;
-  margin-bottom: 1.5rem;
-  transition: color 0.2s;
+  width: 100%;
+  height: 100%;
 }
 
-.contact .mail:hover {
+.hero-fallback {
+  position: absolute;
+  top: 46%;
+  right: 6vw;
+  width: min(42vw, 520px);
+  translate: 0 -50%;
+}
+
+@media (max-width: 879px) {
+  .hero-fallback {
+    top: 32%;
+    right: 50%;
+    width: min(70vw, 340px);
+    translate: 50% -50%;
+  }
+}
+
+.hero-main {
+  align-self: end;
+  display: grid;
+  gap: clamp(1.5rem, 4vh, 2.5rem);
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 var(--gutter) clamp(1.5rem, 4vh, 3rem);
+}
+
+.hero-side {
+  display: grid;
+  gap: 1.25rem;
+  max-width: 36ch;
+}
+
+
+.hero-sub {
+  color: var(--soft);
+  font-size: clamp(1rem, 1.3vw, 1.1rem);
+}
+
+.hero-title {
+  margin: 0 0 0 -0.04em;
+  font-size: clamp(2.6rem, 11.6vw, 12.5rem);
+  line-height: 0.84;
+}
+
+@media (max-width: 560px) {
+  .hero-title {
+    font-size: 12.8vw;
+  }
+}
+
+/* ---------- Momentum strip (Magic UI scroll velocity) ---------- */
+
+.velocity {
+  padding: clamp(2rem, 6vw, 4.5rem) 0;
+  overflow: hidden;
+  border-block: 1px solid var(--line);
+}
+
+.velocity-word {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.32em;
+  padding-right: 0.32em;
+  color: var(--fg);
+  font-size: clamp(2.6rem, 8vw, 7.5rem);
+  line-height: 1.02;
+}
+
+.velocity-word.is-outline {
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--accent);
+}
+
+.velocity-spark {
+  flex-shrink: 0;
+  width: 0.4em;
+  height: 0.4em;
   color: var(--accent);
 }
 
-.contact .btn-ghost {
-  border-color: var(--line);
+/* ---------- Services: a pinned, sideways scene ---------- */
+
+.services {
+  overflow: hidden;
 }
 
-.contact .btn-ghost:hover {
-  border-color: var(--fg);
+.panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 1.5rem;
+  padding: clamp(2rem, 6vw, 5rem) var(--gutter);
+}
+
+.panel h3 {
+  max-width: 9ch;
+  font-size: clamp(3rem, 8.6vw, 9rem);
+  line-height: 0.86;
+}
+
+.panel p {
+  max-width: 34ch;
+  font-size: clamp(1.05rem, 1.5vw, 1.25rem);
+  line-height: 1.5;
+}
+
+.panel-intro p {
+  max-width: 14ch;
+  font-size: clamp(2rem, 4.4vw, 4.2rem);
+  font-weight: 700;
+  line-height: 1.04;
+  letter-spacing: -0.025em;
+}
+
+/* Hard cuts: each craft gets its own ground. */
+.panel-1 {
+  background: #1f1d1a;
+}
+
+.panel-1 p,
+.panel-4 p {
+  color: var(--muted);
+}
+
+.panel-2 {
+  background: var(--fg);
+  color: var(--ink);
+}
+
+.panel-3 {
+  background: var(--accent);
+  color: var(--ink);
+}
+
+.panel-2 p,
+.panel-3 p {
+  color: rgba(22, 22, 22, 0.72);
+}
+
+.panel-4 {
+  background: #121211;
+}
+
+@media (min-width: 880px) {
+  .services-track {
+    display: flex;
+    width: max-content;
+    height: 100svh;
+  }
+
+  .panel {
+    flex: 0 0 auto;
+    width: min(76vw, 1100px);
+    height: 100%;
+    padding-inline: clamp(2.5rem, 6vw, 5.5rem);
+  }
+
+  .panel-intro {
+    width: 46vw;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 879px) {
+  .panel {
+    min-height: 72svh;
+  }
+
+  .panel-intro {
+    min-height: 0;
+    padding-top: clamp(4rem, 14vw, 6rem);
+  }
+}
+
+/* ---------- About: one statement, lit word by word ---------- */
+
+.wrap {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: clamp(5rem, 13vw, 10rem) var(--gutter);
+}
+
+.statement {
+  max-width: 24ch;
+  font-size: clamp(1.9rem, 4.9vw, 4.6rem);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.028em;
+}
+
+/* ---------- Contact: a hard cut to gold ---------- */
+
+.contact {
+  background: var(--accent);
+  color: var(--ink);
+}
+
+.contact :focus-visible {
+  outline-color: var(--ink);
+}
+
+.contact-title {
+  margin-bottom: clamp(2rem, 5vw, 3.5rem);
+  font-size: clamp(2.8rem, 10.4vw, 10.5rem);
+  line-height: 0.86;
+}
+
+.contact .mail {
+  display: inline-block;
+  margin-bottom: 1.75rem;
+  color: var(--ink);
+  font-size: clamp(1.3rem, 4.4vw, 3.2rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+  border-bottom: 2px solid transparent;
+  transition: border-color 0.2s;
+}
+
+.contact .mail:hover {
+  border-color: var(--ink);
+}
+
+.contact .btn-dark {
+  display: block;
+  width: fit-content;
 }
 
 footer {
@@ -864,6 +837,18 @@ footer div {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .services-track {
+    display: block !important;
+    width: auto !important;
+    height: auto !important;
+  }
+
+  .panel {
+    width: auto !important;
+    height: auto !important;
+    min-height: 60svh;
+  }
+
   html {
     scroll-behavior: auto;
   }

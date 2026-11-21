@@ -18,24 +18,30 @@ Node 22 (see `.nvmrc`).
 
 | Path | Purpose |
 | --- | --- |
-| `src/sections/` | Intro (opening animation), Hero, Services, About, Contact |
+| `src/sections/` | Intro (opening animation), Hero, Velocity strip, Services, About, Contact |
 | `src/content.js` | Email address and service copy |
 | `src/hooks/useSmoothScroll.js` | Lenis smooth scroll wired to GSAP ScrollTrigger |
 | `src/hooks/useReducedMotion.js` | Live `prefers-reduced-motion` value |
-| `src/components/` | React Bits components, added with the CLI (see below) |
+| `src/components/StarScene.jsx` | The hero's WebGL scene (three.js), loaded as its own chunk |
+| `src/components/HeroStar.jsx` | SVG star used when WebGL is unavailable or motion is reduced |
+| `src/components/ui/` | Magic UI components, added with the CLI (see below) |
 | `src/assets/logo.svg` | The Catalyze logo (vector, traced from the 2000 px master) |
 | `public/_headers` | Cache and security headers (Netlify, Cloudflare Pages) |
 
 ## Motion
 
-- **Opening animation:** a laptop built in CSS 3D (`src/sections/Intro.jsx`, styles under "Intro" in `src/index.css`). On load it opens, its screen lights up with the logo, and it turns to the side. One scroll, swipe, key press or click (or 5 s of waiting) plays the rest: it turns back, the two halves of the screen fold out like doors, light and rays pour out, the view flies through, and a curtain of light pushes down to reveal the hero, whose entrance then plays. Page scroll is locked until then. Only `transform` and `opacity` are animated, so it stays on the GPU. "Skip intro" speeds it up.
-- **Hero:** a cinematic layout: a thin, large headline (*Made to be noticed.*) and pill buttons on the left, and on the right a faceted glass four-point star, the spark from the logo, lit gold from below with the logo's halftone dots around it (`src/components/HeroStar.jsx`, pure SVG). The palette is two base colours (ink, cream) plus one accent (gold) that also lights the star and floor. A frosted-glass bar along the bottom cycles through the four services with a progress line, and pauses on hover or focus. After the intro the headline lines rise through masks; then the star floats, catches a shine every few seconds and tilts slightly towards the pointer.
-- **Service rows:** React Bits `GlareHover`. A faint warm sheen passes across a row on hover.
-- **Contact background:** React Bits `Grainient`. A slow, dark, grainy gradient. It pauses when off screen and does not react to the pointer.
-- **GSAP + ScrollTrigger:** the hero entrance and service rows fading up as you scroll.
-- **Lenis:** smooth scrolling and smooth anchor links.
+The site is built around speed: a catalyst speeds up a reaction. Type is heavy, slanted capitals (Hanken Grotesk 900 italic), echoing the logotype.
 
-With `prefers-reduced-motion: reduce`, the opening animation is skipped entirely, Lenis and every GSAP tween are skipped. GlareHover doesn't sweep, and Grainient draws a single still frame.
+- **Opening animation:** a laptop built in CSS 3D (`src/sections/Intro.jsx`). On load it opens, lights up with the logo and turns to the side. One scroll, swipe, key press or click (or 5 s of waiting) plays the rest: the screen halves fold out, light pours out, the view flies through, and a curtain of light pushes down to reveal the hero. Page scroll is locked until then. "Skip intro" speeds it up.
+- **Hero (WebGL):** a faceted, polished gold four-point star (the logo's spark) with streaks of light rushing past (`src/components/StarScene.jsx`, three.js). It warps in as the hero is revealed (streaks race, the star spins up and scales in, then decelerates), leans towards the pointer, speeds up again when you scroll fast, and the camera pushes in as you scroll through the hero. *MADE TO BE NOTICED.* slams in line by line, then the lines are pulled apart sideways as you scroll away.
+  - three.js is its own chunk, fetched while the intro idles. The scene is created under the intro's full-screen flash, which holds until the scene has drawn its first frame (at most 1.5 s), so its one-off setup is never seen as a stutter. Nothing renders before the reveal, or while the hero is off screen or the tab is hidden.
+- **Velocity strip:** Magic UI `ScrollVelocity`. The four crafts race sideways, faster the faster you scroll.
+- **Services:** on wide screens the section pins and scrolling drives four panels sideways, each a hard cut to a new colour, with titles rushing in. On narrow screens the panels stack and their titles slam in.
+- **About:** one statement whose words light up as you scroll through it.
+- **Contact:** a hard cut to gold; the sign-off slams in.
+- **Lenis + GSAP ScrollTrigger** for smooth scrolling and every scroll-linked effect. Everything animates `transform` and `opacity` only.
+
+With `prefers-reduced-motion: reduce`: no intro, no WebGL (the SVG star is shown), no pinning (services stack), no scroll effects, and the velocity strip stands still.
 
 ### Magic UI components
 
@@ -47,15 +53,9 @@ npx shadcn@latest add @magicui/marquee
 
 They land in `src/components/ui/`, converted to JavaScript. Magic UI is built on Tailwind CSS, so Tailwind v4 is set up through `@tailwindcss/vite` with only its theme and utility layers (no Preflight reset, so the hand-written CSS is unaffected), plus the `cn` helper in `src/lib/utils.js`. The CLI adds any packages a component needs (usually `motion`) and its keyframes to `src/index.css`.
 
-### React Bits components
+### React Bits
 
-These were added with the shadcn CLI, using the JS + CSS variants:
-
-```bash
-npx shadcn@latest add @react-bits/SplitText-JS-CSS @react-bits/GlareHover-JS-CSS @react-bits/Grainient-JS-CSS
-```
-
-They are left exactly as the CLI wrote them, so re-running that command updates them. Any styling changes go in `src/index.css` or in props. The lint config skips `src/components/`.
+The `@react-bits` registry is still configured in `components.json` (`npx shadcn@latest add @react-bits/<Name>-JS-CSS`), but no React Bits components are in use any more.
 
 ## Deploy (free tier)
 
