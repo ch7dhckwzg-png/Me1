@@ -30,3 +30,6 @@ dist-single
 
 # Playwright CLI sessions
 .playwright-cli/
+
+# Single-file preview build (regenerate with npm run build:single)
+catalyze-site-preview.html
