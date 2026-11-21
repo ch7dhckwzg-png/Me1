@@ -15,7 +15,7 @@ export default function Statement({ reducedMotion }) {
       if (reducedMotion) return
       gsap.fromTo(
         '.statement .w',
-        { opacity: 0.16 },
+        { opacity: 0.42 }, // still legible (3:1) before the words light up
         {
           opacity: 1,
           stagger: 0.06,
@@ -31,7 +31,6 @@ export default function Statement({ reducedMotion }) {
     <section className="section statement-wrap" id="about" ref={scope}>
       <div className="wrap statement-grid">
         <div>
-          <p className="eyebrow">Why one studio</p>
           <p className="statement">
             {STATEMENT.split(' ').map((word, i) => (
               <span className="w" key={i}>{word} </span>

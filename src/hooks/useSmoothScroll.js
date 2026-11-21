@@ -24,7 +24,20 @@ export default function useSmoothScroll(disabled, locked = false) {
     gsap.ticker.add(raf)
     gsap.ticker.lagSmoothing(0)
 
+    // Keyboard users: smoothing would leave a newly focused element off screen for a
+    // moment, so jump straight to it (clear of the header and the floating dock).
+    const onFocusIn = (e) => {
+      const el = e.target
+      if (!(el instanceof Element) || !el.matches(':focus-visible')) return
+      const r = el.getBoundingClientRect()
+      if (r.top < 80 || r.bottom > window.innerHeight - 110) {
+        lenis.scrollTo(el, { offset: -window.innerHeight * 0.3, immediate: true })
+      }
+    }
+    document.addEventListener('focusin', onFocusIn)
+
     return () => {
+      document.removeEventListener('focusin', onFocusIn)
       gsap.ticker.remove(raf)
       gsap.ticker.lagSmoothing(500, 33)
       lenis.destroy()

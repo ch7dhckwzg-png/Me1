@@ -26,7 +26,6 @@ export default function Contact({ reducedMotion }) {
     <section className="contact" id="contact">
       <GiantWord reducedMotion={reducedMotion} className="giant-ink" from={-30} to={0}>Let’s go ✦ Let’s go</GiantWord>
       <div className="wrap">
-        <p className="eyebrow">Start a project</p>
         <h2 className="contact-title">Let’s make something worth noticing.</h2>
         <p className="contact-lead">
           Tell us a little about your business and what you have in mind. We’ll reply with a few

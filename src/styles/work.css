@@ -8,7 +8,10 @@
 }
 
 .work-nav a {
-  padding: 0.5rem 1rem;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0.5rem 1.1rem;
   border: 1px solid var(--line);
   border-radius: 999px;
   color: var(--soft);
@@ -165,6 +168,7 @@
 }
 
 .tab {
+  min-height: 44px;
   padding: 0.6rem 1.15rem;
   border: 1px solid var(--line);
   border-radius: 999px;
@@ -227,7 +231,7 @@
   width: 100%;
   aspect-ratio: 4 / 5;
   object-fit: cover;
-  border-radius: 18px;
+  border-radius: 16px;
 }
 
 .photo-slot {
@@ -236,9 +240,7 @@
   place-items: center;
   color: rgba(243, 237, 227, 0.4);
   border: 1px solid var(--line);
-  background:
-    radial-gradient(ellipse 70% 60% at 50% 40%, var(--tone, rgba(210, 100, 44, 0.18)), transparent 70%),
-    linear-gradient(170deg, #201c18, #15120f);
+  background: linear-gradient(170deg, var(--tone, #201c18), #15120f);
 }
 
 .photo-slot em {
@@ -254,19 +256,19 @@
 }
 
 .photos-headshots .photo-slot {
-  --tone: rgba(214, 170, 140, 0.2);
+  --tone: #2a221d;
 }
 
 .photos-food .photo-slot {
-  --tone: rgba(210, 100, 44, 0.24);
+  --tone: #2d1f16;
 }
 
 .photos-product .photo-slot {
-  --tone: rgba(243, 237, 227, 0.12);
+  --tone: #262320;
 }
 
 .photos-web .photo-slot {
-  --tone: rgba(150, 160, 130, 0.18);
+  --tone: #22241d;
 }
 
 @media (max-width: 719px) {
@@ -370,7 +372,7 @@
   max-height: 92svh;
   padding: 0;
   border: 0;
-  border-radius: 18px;
+  border-radius: 16px;
   background: var(--surface);
   color: var(--fg);
   overflow: hidden;
@@ -426,7 +428,7 @@
   aspect-ratio: 4 / 5;
   overflow: hidden;
   border: 1px solid var(--line);
-  border-radius: 18px;
+  border-radius: 16px;
   isolation: isolate;
 }
 
@@ -1089,5 +1091,9 @@
 @media (prefers-reduced-motion: reduce) {
   .tab-panel {
     animation: none;
+  }
+
+  .design-tile img {
+    transition: none;
   }
 }

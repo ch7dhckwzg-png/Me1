@@ -44,7 +44,6 @@ export default function Process({ reducedMotion }) {
     <section className="section process" id="process" ref={scope}>
       <div className="wrap">
         <header className="section-head">
-          <p className="eyebrow">How we work</p>
           <h2 className="display">Simple, from first chat to launch</h2>
         </header>
         <div className="track" aria-hidden="true">

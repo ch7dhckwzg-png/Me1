@@ -46,13 +46,6 @@ export default function Hero({ reducedMotion, prepare = true, ready = true, onSc
         .from('.nav', { y: -20, opacity: 0, duration: 0.6, ease: 'power3.out' }, 0.5)
         .from('.hero-fallback', { scale: 0.6, opacity: 0, duration: 1.1, ease: 'back.out(1.6)' }, 0.1)
 
-      // Leaving the hero: the headline drifts up and fades, a little slower than the page.
-      gsap.to('.hero-title', {
-        yPercent: -18,
-        opacity: 0.2,
-        ease: 'none',
-        scrollTrigger: { trigger: scope.current, start: 'top top', end: 'bottom top', scrub: 0.5 },
-      })
     },
     { scope, dependencies: [reducedMotion] },
   )
@@ -96,7 +89,7 @@ export default function Hero({ reducedMotion, prepare = true, ready = true, onSc
           <li><a href="#process">Process</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>
-        <a className="btn btn-light nav-cta" href={MAILTO}>Start a project</a>
+        <a className="btn btn-primary nav-cta" href={MAILTO}>Start a project</a>
       </nav>
 
       <RotatingBadge href={MAILTO} className="hero-badge" />

@@ -6,7 +6,6 @@ export default function Faq() {
     <section className="section faq" id="faq">
       <div className="wrap faq-grid">
         <header className="section-head">
-          <p className="eyebrow">Questions</p>
           <h2 className="display">Good to know</h2>
           <p className="lead">Anything else, just ask. We’re happy to talk it through.</p>
         </header>

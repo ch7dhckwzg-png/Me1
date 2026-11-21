@@ -17,6 +17,13 @@ const IMG = Object.fromEntries(
   ]),
 )
 
+// Intrinsic sizes, so tiles hold their shape before the image arrives (no layout shift).
+const SIZE = (file) =>
+  file.startsWith('logo') ? [1200, 900]
+  : file.startsWith('menu') || file === 'graphic-poster' ? [1240, 1754]
+  : file === 'graphic-social' ? [1800, 1000]
+  : [1600, 1000]
+
 const DESIGN = {
   logos: {
     label: 'Logos',
@@ -179,7 +186,14 @@ function Design({ onOpen }) {
                     onClick={() => onOpen({ src: IMG[it.file], alt: it.alt, caption: it.caption })}
                     aria-label={`View larger: ${it.caption}`}
                   >
-                    <img src={IMG[it.file]} alt={it.alt} loading="lazy" decoding="async" />
+                    <img
+                      src={IMG[it.file]}
+                      alt={it.alt}
+                      width={SIZE(it.file)[0]}
+                      height={SIZE(it.file)[1]}
+                      loading="lazy"
+                      decoding="async"
+                    />
                   </button>
                   <p className="design-cap">{it.caption}</p>
                 </li>
@@ -244,7 +258,6 @@ export default function Work({ reducedMotion }) {
       <GiantWord reducedMotion={reducedMotion}>The work ✦ The work</GiantWord>
       <div className="wrap">
         <header className="section-head">
-          <p className="eyebrow">Selected work</p>
           <h2 className="display">A taste of what we make</h2>
           <p className="lead">
             The brands below are concept projects, created by Catalyze to show our range. Yours could be next.
