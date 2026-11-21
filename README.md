@@ -41,7 +41,7 @@ With `prefers-reduced-motion: reduce`, Lenis and every GSAP tween are skipped. S
 These were added with the shadcn CLI, using the JS + CSS variants:
 
 ```bash
-npx shadcn@latest add https://reactbits.dev/r/SplitText-JS-CSS https://reactbits.dev/r/GlareHover-JS-CSS https://reactbits.dev/r/Grainient-JS-CSS
+npx shadcn@latest add @react-bits/SplitText-JS-CSS @react-bits/GlareHover-JS-CSS @react-bits/Grainient-JS-CSS
 ```
 
 They are left exactly as the CLI wrote them, so re-running that command updates them. Any styling changes go in `src/index.css` or in props. The lint config skips `src/components/`.
@@ -53,3 +53,10 @@ It's a static build (`npm run build` → `dist/`), so any of these works:
 - **Netlify:** import the repo. `netlify.toml` already sets the build command, output folder and Node version.
 - **Vercel:** import the repo. It detects Vite on its own, and `vercel.json` adds long cache headers for `/assets`.
 - **Cloudflare Pages:** connect the repo with framework preset *Vite*, build command `npm run build` and output directory `dist`. `public/_headers` is applied automatically.
+
+## Claude Code setup
+
+`.mcp.json` adds three MCP servers: Playwright (browser testing), Context7 (up-to-date library docs) and shadcn (component registries, including `@react-bits`). `.claude/settings.json` approves them and turns on the `frontend-design` plugin.
+
+For cloud sessions, the **Me1** environment allows context7.com and mcp.context7.com, and points Playwright at the browser that's already installed:
+`PLAYWRIGHT_MCP_EXECUTABLE_PATH=/opt/pw-browsers/chromium`, `PLAYWRIGHT_MCP_HEADLESS=true`, `PLAYWRIGHT_MCP_SANDBOX=false`.
