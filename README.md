@@ -67,7 +67,7 @@ It's a static build (`npm run build` → `dist/`), so any of these works:
 
 ## Claude Code setup
 
-`.mcp.json` adds four MCP servers: Playwright (browser testing), Context7 (up-to-date library docs) shadcn (component registries, including `@react-bits` and `@magicui`) and Magic UI (component docs and examples). Approve the Magic UI server when Claude Code asks. `.claude/settings.json` approves them. `.claude/skills/` holds UI/UX skills (frontend-design, design-critique, accessibility-review, ux-copy) that load in every session, including on mobile.
+`.mcp.json` adds four MCP servers: Playwright (browser testing), Context7 (up-to-date library docs), shadcn (component registries, including `@react-bits` and `@magicui`) and Magic UI (component docs and examples). `.claude/settings.json` pre-approves the first three; Claude Code asks once before starting the Magic UI server. `.claude/skills/` holds UI/UX skills (frontend-design, design-critique, accessibility-review, ux-copy) that load in every session, including on mobile.
 
 For cloud sessions, the **Me1** environment allows context7.com and mcp.context7.com, and points Playwright at the browser that's already installed:
 `PLAYWRIGHT_MCP_EXECUTABLE_PATH=/opt/pw-browsers/chromium`, `PLAYWRIGHT_MCP_HEADLESS=true`, `PLAYWRIGHT_MCP_SANDBOX=false`.
