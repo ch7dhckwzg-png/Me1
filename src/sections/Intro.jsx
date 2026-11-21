@@ -1,125 +1,185 @@
-import { useEffect, useRef, useState } from 'react'
-import { Player } from '@remotion/player'
-import { CatalyzeIntro } from '@/remotion/CatalyzeIntro'
-import { AUTOPLAY_END, DURATION, FPS } from '@/remotion/timing'
+import { useEffect, useRef } from 'react'
+import { gsap } from 'gsap'
+import { useGSAP } from '@gsap/react'
+import logo from '@/assets/logo.svg'
 
-// The composition is always 1080 high and as wide as the viewport's aspect ratio,
-// so it fills the screen on any device without letterboxing.
-const compositionSize = () => ({
-  width: Math.round(Math.min(2600, Math.max(480, (1080 * window.innerWidth) / window.innerHeight))),
-  height: 1080,
-})
-
-/**
- * Opening animation. The first 2.5 s play on their own; after that the story is
- * scrubbed by scroll: the section is tall and the Player is sticky inside it, so
- * scrolling through the section moves through the frames, then releases into the hero.
+/*
+ * Opening animation, built in CSS 3D and animated with GSAP (transforms and opacity
+ * only, so it stays on the compositor and runs at the display's frame rate).
+ *
+ * 1. On load: a closed laptop opens, its screen lights up with the logo, and it
+ *    turns to the side. It then floats, waiting.
+ * 2. One scroll (or swipe, key, click, or 5 s of waiting): it turns back to face
+ *    you, the two halves of the screen fold out like doors, light pours out, the
+ *    camera flies through it, and the light pushes down to reveal the site.
  */
-export default function Intro() {
-  const section = useRef(null)
-  const player = useRef(null)
-  const [size, setSize] = useState(compositionSize)
-  const [scrolled, setScrolled] = useState(false)
 
+const KEYS = new Set(['ArrowDown', 'PageDown', ' ', 'Enter', 'Spacebar'])
+const IDLE_MS = 5000
+
+export default function Intro({ onReveal, onDone }) {
+  const root = useRef(null)
+  const callbacks = useRef({ onReveal, onDone })
   useEffect(() => {
-    let timer
-    const onResize = () => {
-      clearTimeout(timer)
-      timer = setTimeout(() => setSize(compositionSize()), 150)
-    }
-    window.addEventListener('resize', onResize)
-    return () => {
-      clearTimeout(timer)
-      window.removeEventListener('resize', onResize)
-    }
-  }, [])
+    callbacks.current = { onReveal, onDone }
+  })
+  const go = useRef(() => {})
+  const skip = useRef(() => {})
 
-  useEffect(() => {
-    let raf = 0
-    let start = 0
-    let shown = 0
-    let lastSeek = -1
-    let hintGone = false
-    let cancelled = false
+  useGSAP(
+    () => {
+      const q = gsap.utils.selector(root)
+      let idleTimer = 0
+      let bob = null
+      let started = false
 
-    const tick = (now) => {
-      raf = requestAnimationFrame(tick)
-      const el = section.current
-      if (!el || !player.current) return
+      gsap.set(q('.lt-float'), { yPercent: -18 })
+      gsap.set(q('.lt'), { rotationX: -24, scale: 0.9 })
+      gsap.set(q('.lt-lid'), { rotationX: -88 })
+      gsap.set([q('.lt-half--l'), q('.lt-half--r')], { z: 1 })
+      gsap.set([q('.intro-rays'), q('.intro-glow')], { autoAlpha: 0, scale: 0.15 })
 
-      const rect = el.getBoundingClientRect()
-      if (rect.bottom < -50) return // scrolled well past: nothing to draw
+      // ---- Part 1: plays on load --------------------------------------------
+      const open = gsap
+        .timeline({ defaults: { ease: 'power3.out' } })
+        .from(q('.intro-scene'), { autoAlpha: 0, y: 40, duration: 0.8 })
+        .to(q('.lt'), { scale: 1, duration: 1.3 }, 0.1)
+        .to(q('.lt-lid'), { rotationX: 10, duration: 1.35, ease: 'power2.inOut' }, 0.35)
+        .to(q('.lt-screen-on'), { opacity: 1, duration: 0.7, ease: 'power1.out' }, 1.1)
+        .to(q('.lt'), { rotationY: -32, rotationX: -14, duration: 1.5, ease: 'power2.inOut' }, 1.2)
+        .from(q('.intro-caption'), { autoAlpha: 0, y: 12, duration: 0.7 }, 1.9)
+        .from(q('.intro-hint'), { autoAlpha: 0, duration: 0.6 }, 2.3)
+        .add(() => {
+          bob = gsap.to(q('.lt-float'), {
+            y: -10,
+            duration: 2.4,
+            ease: 'sine.inOut',
+            yoyo: true,
+            repeat: -1,
+          })
+          idleTimer = window.setTimeout(() => go.current(), IDLE_MS)
+        })
 
-      const travel = rect.height - window.innerHeight
-      const progress = Math.min(1, Math.max(0, -rect.top / travel))
-      const auto = Math.min(AUTOPLAY_END, ((now - start) / 1000) * FPS)
-      const fromScroll = AUTOPLAY_END + progress * (DURATION - 1 - AUTOPLAY_END)
-      const target = progress > 0.002 ? Math.max(auto, fromScroll) : auto
-
-      // Ease towards the target so jumps (a fast flick, an anchor link) still glide.
-      shown += (target - shown) * 0.22
-      if (Math.abs(target - shown) < 0.05) shown = target
-
-      const frame = Math.round(shown)
-      if (frame !== lastSeek) {
-        player.current.seekTo(frame)
-        lastSeek = frame
+      // ---- Part 2: unfold, light, push into the site ------------------------
+      const unfold = () => {
+        window.clearTimeout(idleTimer)
+        bob?.kill()
+        return gsap
+          .timeline({ defaults: { ease: 'power3.inOut' }, onComplete: () => callbacks.current.onDone() })
+          .to([q('.intro-caption'), q('.intro-hint')], { autoAlpha: 0, duration: 0.3, ease: 'power1.out' }, 0)
+          .to(q('.lt-float'), { y: 0, yPercent: 0, duration: 0.9 }, 0)
+          .to(q('.lt'), { rotationY: 0, rotationX: 0, scale: 1.25, duration: 0.9 }, 0)
+          .to(q('.lt-lid'), { rotationX: 0, duration: 0.9 }, 0)
+          .to([q('.lt-base'), q('.lt-shadow')], { opacity: 0, duration: 0.5, ease: 'power1.out' }, 0.1)
+          .to(q('.lt-light'), { opacity: 1, duration: 0.45, ease: 'power1.in' }, 0.55)
+          .to(q('.lt-half--l'), { rotationY: -112, duration: 0.95 }, 0.6)
+          .to(q('.lt-half--r'), { rotationY: 112, duration: 0.95 }, 0.6)
+          .to(q('.intro-glow'), { autoAlpha: 1, scale: 1, duration: 0.9, ease: 'power2.out' }, 0.7)
+          .to(q('.intro-rays'), { autoAlpha: 1, scale: 1, rotation: 24, duration: 1.3, ease: 'power2.out' }, 0.85)
+          .to(q('.lt'), { scale: 6, duration: 0.85, ease: 'power3.in' }, 1.05)
+          .to(q('.intro-flash'), { opacity: 1, duration: 0.45, ease: 'power2.in' }, 1.2)
+          .add(() => {
+            const behind = [q('.intro-scene'), q('.intro-rays'), q('.intro-glow')]
+            gsap.killTweensOf(behind)
+            gsap.set(root.current, { backgroundColor: 'transparent' })
+            gsap.set(behind, { autoAlpha: 0 })
+            callbacks.current.onReveal()
+          }, 1.65)
+          .to(q('.intro-flash'), { yPercent: 100, duration: 1.05, ease: 'power2.inOut' }, 1.7)
       }
 
-      if (!hintGone && progress > 0.01) {
-        hintGone = true
-        setScrolled(true)
+      go.current = (speed = 1) => {
+        if (started) return
+        started = true
+        if (open.isActive()) {
+          // Scrolled before the laptop finished opening: finish quickly, then continue.
+          open.timeScale(2.6).eventCallback('onComplete', () => unfold().timeScale(speed))
+        } else {
+          unfold().timeScale(speed)
+        }
       }
-    }
 
-    // Wait (briefly) for the display font so the first headline never flashes in a fallback.
-    const fontReady = Promise.race([
-      document.fonts?.load("400 1em 'Saira Stencil One'") ?? Promise.resolve(),
-      new Promise((resolve) => setTimeout(resolve, 900)),
-    ])
-    fontReady.then(() => {
-      if (cancelled) return
-      start = performance.now()
-      raf = requestAnimationFrame(tick)
-    })
+      skip.current = () => {
+        if (!started) go.current(2.2)
+        else gsap.getTweensOf(q('.intro-flash')).forEach((t) => t.parent?.timeScale(2.2))
+      }
 
-    return () => {
-      cancelled = true
-      cancelAnimationFrame(raf)
-    }
-  }, [])
+      // ---- Input: one gesture is enough ------------------------------------
+      let touchY = null
+      const onWheel = (e) => e.deltaY > 4 && go.current()
+      const onKey = (e) => KEYS.has(e.key) && (e.preventDefault(), go.current())
+      const onTouchStart = (e) => (touchY = e.touches[0].clientY)
+      const onTouchMove = (e) => touchY !== null && touchY - e.touches[0].clientY > 24 && go.current()
 
-  return (
-    <section className="intro-reel" ref={section} aria-label="Intro animation">
-      <div className="intro-stage">
-        <div className="intro-player" aria-hidden="true">
-          <Player
-            ref={player}
-            component={CatalyzeIntro}
-            durationInFrames={DURATION}
-            fps={FPS}
-            compositionWidth={size.width}
-            compositionHeight={size.height}
-            style={{ width: '100%', height: '100%' }}
-            controls={false}
-            clickToPlay={false}
-            doubleClickToFullscreen={false}
-            spaceKeyToPlayOrPause={false}
-            moveToBeginningWhenEnded={false}
-            // Remotion is free for individuals and companies of up to 3 people.
-            // Larger teams need a company licence: https://remotion.dev/license
-            acknowledgeRemotionLicense
-          />
-        </div>
+      window.addEventListener('wheel', onWheel, { passive: true })
+      window.addEventListener('keydown', onKey)
+      window.addEventListener('touchstart', onTouchStart, { passive: true })
+      window.addEventListener('touchmove', onTouchMove, { passive: true })
 
-        <a className="intro-skip" href="#home">
-          Skip intro
-        </a>
-        <div className={`intro-hint${scrolled ? ' is-gone' : ''}`} aria-hidden="true">
-          <span>Scroll</span>
-          <i />
+      return () => {
+        window.clearTimeout(idleTimer)
+        window.removeEventListener('wheel', onWheel)
+        window.removeEventListener('keydown', onKey)
+        window.removeEventListener('touchstart', onTouchStart)
+        window.removeEventListener('touchmove', onTouchMove)
+      }
+    },
+    { scope: root },
+  )
+
+  const screen = (side) => (
+    <div className={`lt-half lt-half--${side}`}>
+      <div className="lt-face">
+        <div className="lt-screen">
+          <div className="lt-screen-on">
+            <div className="lt-logo">
+              <img src={logo} alt="" width="2400" height="897" />
+            </div>
+          </div>
         </div>
       </div>
-    </section>
+      <div className="lt-face lt-face--back" />
+    </div>
+  )
+
+  return (
+    <div className="opening" ref={root} onClick={() => go.current()}>
+      <div className="intro-scene" aria-hidden="true">
+        <div className="lt-shadow" />
+        <div className="lt-float">
+          <div className="lt">
+            <div className="lt-base" />
+            <div className="lt-lid">
+              <div className="lt-lid-back">
+                <img src={logo} alt="" width="2400" height="897" />
+              </div>
+              <div className="lt-light" />
+              {screen('l')}
+              {screen('r')}
+            </div>
+          </div>
+        </div>
+        <p className="intro-caption">Marketing, design, web and photography.</p>
+      </div>
+
+      <div className="intro-glow" aria-hidden="true" />
+      <div className="intro-rays" aria-hidden="true" />
+      <div className="intro-flash" aria-hidden="true" />
+
+      <button
+        type="button"
+        className="intro-skip"
+        onClick={(e) => {
+          e.stopPropagation()
+          skip.current()
+        }}
+      >
+        Skip intro
+      </button>
+      <button type="button" className="intro-hint" aria-label="Open the site">
+        <span>Scroll</span>
+        <i />
+      </button>
+    </div>
   )
 }

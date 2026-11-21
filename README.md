@@ -18,8 +18,7 @@ Node 22 (see `.nvmrc`).
 
 | Path | Purpose |
 | --- | --- |
-| `src/sections/` | Intro, Hero, Services, About, Contact |
-| `src/remotion/` | The opening animation, a Remotion composition (`CatalyzeIntro.jsx`, beats in `timing.js`) |
+| `src/sections/` | Intro (opening animation), Hero, Services, About, Contact |
 | `src/content.js` | Email address and service copy |
 | `src/hooks/useSmoothScroll.js` | Lenis smooth scroll wired to GSAP ScrollTrigger |
 | `src/hooks/useReducedMotion.js` | Live `prefers-reduced-motion` value |
@@ -29,7 +28,7 @@ Node 22 (see `.nvmrc`).
 
 ## Motion
 
-- **Opening animation (Remotion):** "the reaction". Four crafts (marketing, design, web, photography) orbit apart, a catalyst pulls them together, they collide, and the logo is sprayed on with *One studio for the whole picture.* The first 2.5 s play by themselves. After that, scrolling drives the frames: `src/sections/Intro.jsx` puts `@remotion/player` in a sticky stage inside a 360svh section and seeks to match scroll position, then hands off to the hero. Its entrance now plays when it scrolls into view. Edit it in Remotion Studio with `npm run intro:studio` (`CatalyzeIntro` for desktop, `CatalyzeIntroPhone` for portrait). Remotion is free for individuals and companies of up to 3 people; see [remotion.dev/license](https://www.remotion.dev/license).
+- **Opening animation:** a laptop built in CSS 3D (`src/sections/Intro.jsx`, styles under "Intro" in `src/index.css`). On load it opens, its screen lights up with the logo, and it turns to the side. One scroll, swipe, key press or click (or 5 s of waiting) plays the rest: it turns back, the two halves of the screen fold out like doors, light and rays pour out, the view flies through, and a curtain of light pushes down to reveal the hero, whose entrance then plays. Page scroll is locked until then. Only `transform` and `opacity` are animated, so it stays on the GPU. "Skip intro" speeds it up.
 - **Hero headline:** React Bits `SplitText`. Letters rise through a mask with a gold-to-cream colour sweep, starting as the photo fades in. This is the page's one big moment.
 - **Service rows:** React Bits `GlareHover`. A faint warm sheen passes across a row on hover.
 - **Contact background:** React Bits `Grainient`. A slow, dark, grainy gradient. It pauses when off screen and does not react to the pointer.

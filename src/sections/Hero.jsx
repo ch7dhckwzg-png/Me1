@@ -1,6 +1,5 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
 import SplitText from '@/components/SplitText'
 import { MAILTO } from '@/content'
@@ -10,32 +9,34 @@ import hero1920 from '@/assets/hero-1920.webp'
 import heroJpg from '@/assets/hero-1920.jpg'
 import logo from '@/assets/logo.svg'
 
-gsap.registerPlugin(ScrollTrigger)
-
 const HEADLINE = 'Marketing, design and imagery that gets you noticed.'
 
-export default function Hero({ reducedMotion, playOnScroll = false }) {
+export default function Hero({ reducedMotion, ready = true }) {
   const scope = useRef(null)
+  const entrance = useRef(null)
   // The headline is the page's one big moment: it waits for the photo to start
   // fading in, then React Bits SplitText rises it in letter by letter.
   const [headlineLive, setHeadlineLive] = useState(false)
   const showHeadline = reducedMotion || headlineLive
 
+  // The entrance is built straight away (so its start states hide the elements),
+  // but held until `ready`: the intro hands off by flipping it to true.
   useGSAP(
     () => {
       if (reducedMotion) return
-      // After the intro, the entrance waits until the hero scrolls into view.
-      const scrollTrigger = playOnScroll
-        ? { trigger: scope.current, start: 'top 65%', once: true }
-        : undefined
-      gsap
-        .timeline({ defaults: { ease: 'power3.out' }, scrollTrigger })
-        .from('.hero-img', { opacity: 0, scale: 1.04, duration: 1.4 })
-        .call(() => setHeadlineLive(true), null, 0.45)
-        .from('.intro-copy > *', { y: 20, opacity: 0, duration: 0.8, stagger: 0.12 }, 1.1)
+      entrance.current = gsap
+        .timeline({ paused: true, defaults: { ease: 'power3.out' } })
+        .from('.hero-img', { opacity: 0, scale: 1.06, duration: 1.4 })
+        .call(() => setHeadlineLive(true), null, 0.35)
+        .from('.nav', { y: -16, opacity: 0, duration: 0.8 }, 0.2)
+        .from('.intro-copy > *', { y: 20, opacity: 0, duration: 0.8, stagger: 0.12 }, 0.9)
     },
-    { scope, dependencies: [reducedMotion, playOnScroll] },
+    { scope, dependencies: [reducedMotion] },
   )
+
+  useEffect(() => {
+    if (ready) entrance.current?.play()
+  }, [ready, reducedMotion])
 
   return (
     <header className="hero" id="home" ref={scope}>
