@@ -143,6 +143,10 @@ export const PROCESS = [
 
 export const FAQ = [
   {
+    q: 'Where are you based?',
+    a: 'We work mobile, so we come to you for photo and video shoots, and meet in person or on a video call, whichever suits you.',
+  },
+  {
     q: 'Do I have to use all of your services?',
     a: 'Not at all. Bring us in for one thing, like a logo or a set of headshots, or for everything at once. Whatever we make is designed to work with the rest if you add more later.',
   },
@@ -160,6 +164,6 @@ export const FAQ = [
   },
   {
     q: 'What do you need from me to get started?',
-    a: 'Just an email with a little about your business and what you’d like to do. We’ll take it from there and arrange a time to talk.',
+    a: 'Just an email with a little about your business and what you’d like to do. We’ll reply within two working days and arrange a time to talk.',
   },
 ]

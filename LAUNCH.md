@@ -35,16 +35,15 @@ alt text on every image, privacy policy page.
 
 Waiting on real information (never invented, see `CLAUDE.md`):
 
-- [ ] **Response time promise:** how quickly do you actually reply? Then it goes by the
-      contact email.
-- [ ] **Real reviews:** genuine client words, with their permission.
-- [ ] **Case studies:** real client projects (the current work is labelled concept work).
-- [ ] **Team photo:** a real photo of you or your team.
-- [ ] **Map and directions + local business schema:** only if clients visit you; needs the
-      address you're happy to publish.
-- [ ] **Analytics:** Google Analytics needs a cookie consent banner and a privacy policy
-      update. A cookieless option (Netlify, Cloudflare or Plausible analytics) needs neither.
-      Decide which.
+- [x] **Response time promise:** "within two working days", by the contact email and in the FAQ.
+- [x] **Map and directions:** not needed. Catalyze works mobile (stated in the contact
+      section and FAQ), so there's no address to show.
+- [ ] **Analytics:** decided: cookie-free, so no consent banner. Switch it on in the host
+      once deployed (Cloudflare Pages: Web Analytics, free, one toggle. Netlify: Analytics
+      add-on, paid, no code). Then set `BUSINESS.analytics` in `src/legal.js` to its name,
+      and the privacy policy updates itself.
+- Not for now (owner's decision): reviews and case studies (no client work yet; add only
+  real ones later), a photo of the owner (not wanted).
 - [ ] **Thank-you page:** only applies once there's a contact form; today "Start a project"
       opens your email app, so there is no page to thank people on.
 

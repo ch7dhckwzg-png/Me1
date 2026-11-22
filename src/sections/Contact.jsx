@@ -30,8 +30,8 @@ export default function Contact() {
       <div className="wrap">
         <h2 className="contact-title">Let’s make something worth noticing.</h2>
         <p className="contact-lead">
-          Tell us a little about your business and what you have in mind. We’ll reply with a few
-          questions and a time to talk.
+          Tell us a little about your business and what you have in mind. We’ll reply within two
+          working days with a few questions and a time to talk. We work mobile, so we come to you.
         </p>
         <a className="mail" href={MAILTO}>{EMAIL}</a>
         <div className="cta">
