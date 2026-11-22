@@ -13,6 +13,8 @@ These skills load automatically in any Claude Code session on this repo, includi
 | `gsap-core`, `gsap-timeline`, `gsap-scrolltrigger`, `gsap-react`, `gsap-plugins`, `gsap-utils`, `gsap-performance`, `gsap-frameworks` | [greensock/gsap-skills](https://github.com/greensock/gsap-skills) (official) | MIT |
 | `threejs-*` (13 skills) | [CloudAI-X/threejs-skills](https://github.com/CloudAI-X/threejs-skills) (community, not official three.js) | MIT |
 | `shadcn` | [shadcn-ui/ui](https://github.com/shadcn-ui/ui/tree/main/skills/shadcn) (official; evals and Codex config left out) | MIT |
+| `ponytail`, `ponytail-review`, `ponytail-audit`, `ponytail-debt`, `ponytail-gain`, `ponytail-help` | [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail) (skills only; its hooks and status line are left out). Say "stop ponytail" or "normal mode" to turn it off for a session | MIT |
+| `skill-inspector` | [NVIDIA/SkillSpector](https://github.com/NVIDIA/SkillSpector). Checks a skill is safe before installing it. Needs the `skillspector` CLI: `uv tool install --python 3.13 git+https://github.com/NVIDIA/skillspector.git` | Apache 2.0 |
 | `playwright-cli` | Written by `playwright-cli install --skills` ([microsoft/playwright-cli](https://github.com/microsoft/playwright-cli)) | Apache 2.0 |
 | `design-taste-frontend` (Taste) | [Leonxlnx/taste-skill](https://github.com/Leonxlnx/taste-skill) | See repo |
 | `img2threejs` | [img2threejs/img2threejs](https://github.com/img2threejs/img2threejs) | Apache 2.0 |
