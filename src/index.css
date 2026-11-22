@@ -440,11 +440,16 @@ img {
   z-index: -1;
 }
 
-.star-scene,
-.star-scene canvas {
-  display: block;
-  width: 100%;
-  height: 100%;
+.particle-spark {
+  position: absolute;
+  inset: 0;
+}
+
+/* The component's own copy block stays empty (the hero has its own); it only sets
+   the layout band, so it is kept but hidden. */
+.particle-spark .sh-content,
+.particle-spark .sh-hint {
+  visibility: hidden;
 }
 
 .hero-fallback {

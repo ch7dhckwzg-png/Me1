@@ -1,39 +1,35 @@
-import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react'
+import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { SplitText } from 'gsap/SplitText'
 import { useGSAP } from '@gsap/react'
 import HeroStar from '@/components/HeroStar'
+import sparkUrl from '@/assets/hero/spark.webp'
 import { ShimmerButton } from '@/components/ui/shimmer-button'
 import RotatingBadge from '@/components/kinetic/RotatingBadge'
 import { MAILTO } from '@/content'
 import logo from '@/assets/logo.svg'
 
-// three.js lives in its own chunk so the page opens fast. It is fetched while the intro
-// idles, and the scene is created at the reveal, under the full-screen flash, where its
-// one-off setup cost cannot be seen.
 gsap.registerPlugin(SplitText)
 
-const loadStarScene = () => import('@/components/StarScene')
-const StarScene = lazy(loadStarScene)
+// The particle spark is its own chunk, fetched (with its image) while the intro plays.
+// It mounts once the hero's text has finished animating in, so its one-off setup work
+// (sampling the image into ~100k particles) never interrupts another animation; then it
+// assembles once, on an otherwise still screen.
+const loadSpark = () => import('@/components/ParticleSpark')
+const ParticleSpark = lazy(loadSpark)
 
-export default function Hero({ reducedMotion, prepare = true, ready = true, onSceneReady }) {
+export default function Hero({ reducedMotion, prepare = true, ready = true }) {
   const scope = useRef(null)
   const entrance = useRef(null)
-  const [webgl, setWebgl] = useState(true)
-  const onFail = useCallback(() => setWebgl(false), [])
-  const use3d = webgl && !reducedMotion
-  const readyCb = useRef(onSceneReady)
-  useEffect(() => {
-    readyCb.current = onSceneReady
-  })
-  const onReady = useCallback(() => readyCb.current?.(), [])
+  const use3d = !reducedMotion
+  const [entered, setEntered] = useState(false)
 
   // Built straight away so the start states hide everything, then held until `ready`.
   useGSAP(
     () => {
       if (reducedMotion) return
       entrance.current = gsap
-        .timeline({ paused: true })
+        .timeline({ paused: true, onComplete: () => setEntered(true) })
         // The lead-in rises in calmly; "MADE TO BE NOTICED." kicks up letter by letter.
         .from('.hero-title .line-serif > span', { yPercent: 105, duration: 1.2, ease: 'expo.out' }, 0.2)
         .from(
@@ -55,21 +51,20 @@ export default function Hero({ reducedMotion, prepare = true, ready = true, onSc
   }, [ready, reducedMotion])
 
   useEffect(() => {
-    if (prepare && use3d) loadStarScene()
+    if (!prepare || !use3d) return
+    loadSpark()
+    const img = new Image()
+    img.src = sparkUrl
   }, [prepare, use3d])
-
-  // Without the 3D scene there is nothing to wait for.
-  useEffect(() => {
-    if (ready && !use3d) readyCb.current?.()
-  }, [ready, use3d])
 
   return (
     <header className="hero" id="home" ref={scope}>
       <div className="hero-stage">
         {use3d ? (
-          prepare && (
+          ready &&
+          entered && (
             <Suspense fallback={null}>
-              <StarScene go={ready} onFail={onFail} onReady={onReady} />
+              <ParticleSpark />
             </Suspense>
           )
         ) : (
