@@ -11,7 +11,7 @@ const LINKS = [
 /**
  * The global nav: thin, frosted and sticky on every page, with the main action always
  * one tap away (it doubles as the sticky call to action on phones).
- * `base` is '' on the home page, './' on inner pages and '/' on the 404 page.
+ * `base` is '' on the home page and '/' elsewhere, so section links work from any page.
  */
 export default function SiteNav({ base = '' }) {
   return (

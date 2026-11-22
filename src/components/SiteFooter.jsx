@@ -3,12 +3,8 @@ import logo from '@/assets/logo.svg'
 
 const YEAR = new Date().getFullYear()
 
-/**
- * One footer for every page. `base` is '' on the home page, './' on the privacy and
- * terms pages, and '/' on the 404 page (which can be shown at any address).
- */
+/** One footer for every page. `base` is '' on the home page and '/' elsewhere, for section links. */
 export default function SiteFooter({ base = '' }) {
-  const pages = base || './'
   return (
     <footer className="site-footer">
       <div className="wrap footer-grid">
@@ -28,8 +24,8 @@ export default function SiteFooter({ base = '' }) {
         <div>
           <a href={MAILTO} className="footer-mail">{EMAIL}</a>
           <nav className="footer-legal-links" aria-label="Legal">
-            <a href={`${pages}privacy.html`}>Privacy policy</a>
-            <a href={`${pages}terms.html`}>Terms and conditions</a>
+            <a href="/privacy.html">Privacy policy</a>
+            <a href="/terms.html">Terms and conditions</a>
           </nav>
           <p className="footer-legal">© {YEAR} Catalyze. All rights reserved.</p>
         </div>

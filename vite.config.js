@@ -18,8 +18,6 @@ const inlineFavicon = () => ({
 })
 
 export default defineConfig(({ mode }) => ({
-  // `npm run build:preview` makes a copy with relative paths, for hosting under a sub-path.
-  base: mode === 'preview' ? './' : '/',
   plugins: [react(), tailwindcss(), ...(mode === 'single' ? [inlineFavicon(), viteSingleFile()] : [])],
   resolve: {
     alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) },
@@ -28,7 +26,6 @@ export default defineConfig(({ mode }) => ({
     mode === 'single'
       ? { outDir: 'dist-single', assetsInlineLimit: Number.MAX_SAFE_INTEGER, copyPublicDir: false }
       : {
-          ...(mode === 'preview' ? { outDir: 'dist-preview' } : {}),
           // Four pages: the site, the privacy policy, the terms and the 404 page.
           rollupOptions: {
             input: {
