@@ -107,6 +107,32 @@ It's a static build (`npm run build` → `dist/`), so any of these works:
 - **Vercel:** import the repo. It detects Vite on its own, and `vercel.json` adds long cache headers for `/assets`.
 - **Cloudflare Pages:** connect the repo with framework preset *Vite*, build command `npm run build` and output directory `dist`. `public/_headers` is applied automatically.
 
+## PostZen (social posts)
+
+[PostZen](https://www.postzen.dev) drafts, schedules and publishes Catalyze's social posts
+(Instagram, LinkedIn, TikTok and more) from this project, through `scripts/postzen.mjs`.
+It runs on your computer or in a Claude session, never in the website: anything in the
+site's code is public, so the API key must never go there.
+
+1. Connect your social accounts at https://app.postzen.dev.
+2. Copy `.env.example` to `.env` and paste your key from https://app.postzen.dev/api-keys.
+   `.env` is git-ignored, so the key never reaches GitHub.
+3. Use it:
+
+```bash
+npm run postzen -- accounts                                   # list connected accounts and their ids
+npm run postzen -- draft "Post text" --account <id>           # save a draft (safe, publishes nothing)
+npm run postzen -- schedule "Post text" --account <id> --at 2026-12-01T09:30:00Z
+npm run postzen -- publish "Post text" --account <id> --yes   # posts now; --yes is required
+```
+
+Add `--account` more than once to post to several accounts, and `--media <public URL>` for an
+image or video. Each post gets a request id, so retrying a command never posts twice.
+
+In the **Me1** cloud environment the key is saved as a network secret for `api.postzen.dev`,
+so Claude sessions run the same commands with `POSTZEN_API_KEY=proxy-injected` (a placeholder;
+the proxy adds the real key). Claude only saves drafts unless you ask for a post to go out.
+
 ## Claude Code setup
 
 `.mcp.json` adds four MCP servers: Playwright (browser testing), Context7 (up-to-date library docs), shadcn (component registries, including `@react-bits` and `@magicui`) and Magic UI (component docs and examples). `.claude/settings.json` pre-approves the first three; Claude Code asks once before starting the Magic UI server. `.claude/skills/` holds skills that load in every session, including on mobile: Anthropic's UI/UX skills (frontend-design, design-critique, accessibility-review, ux-copy), Taste (`design-taste-frontend`), Impeccable, Playwright CLI (`npx playwright-cli`, a dev dependency), img2threejs, and Remotion's skills. `design/references/` holds the Awesome Design `DESIGN.md` library. See `.claude/skills/README.md`.
