@@ -2,11 +2,10 @@ import { useState } from 'react'
 import useReducedMotion from '@/hooks/useReducedMotion'
 import useSmoothScroll from '@/hooks/useSmoothScroll'
 import { ScrollProgress } from '@/components/ui/scroll-progress'
-import SiteDock from '@/components/SiteDock'
+import SiteNav from '@/components/SiteNav'
 import SiteFooter from '@/components/SiteFooter'
 import Intro from '@/sections/Intro'
 import Hero from '@/sections/Hero'
-import Velocity from '@/sections/Velocity'
 import Statement from '@/sections/Statement'
 import Services from '@/sections/Services'
 import Work from '@/sections/Work'
@@ -52,13 +51,13 @@ export default function App() {
           }}
         />
       )}
+      <SiteNav />
       <Hero
         reducedMotion={reducedMotion}
         ready={reducedMotion || phase !== 'intro'}
       />
       <main id="main" tabIndex={-1}>
-        <Velocity reducedMotion={reducedMotion} />
-        <Statement reducedMotion={reducedMotion} />
+        <Statement />
         <Services />
         <Work reducedMotion={reducedMotion} />
         <Process reducedMotion={reducedMotion} />
@@ -68,7 +67,6 @@ export default function App() {
       {phase !== 'intro' || reducedMotion ? (
         <>
           <ScrollProgress className="scroll-progress" aria-hidden="true" />
-          <SiteDock />
         </>
       ) : null}
       <SiteFooter />

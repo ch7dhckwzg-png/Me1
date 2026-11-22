@@ -16,7 +16,7 @@ export default function useSmoothScroll(disabled, locked = false) {
   useEffect(() => {
     if (disabled) return undefined
 
-    const lenis = new Lenis({ lerp: 0.1, anchors: true })
+    const lenis = new Lenis({ lerp: 0.1, anchors: { offset: -64 } }) // clear the sticky nav
     const raf = (time) => lenis.raf(time * 1000)
     lenisRef.current = lenis
 
