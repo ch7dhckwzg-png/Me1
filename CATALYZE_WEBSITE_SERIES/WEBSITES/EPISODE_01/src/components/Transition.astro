@@ -1,0 +1,44 @@
+---
+// The Day/Night transition: a fine-line coffee cup turns into a pizza
+// (or back), while the new mode spreads out from the centre.
+---
+<div class="xf" data-xf hidden aria-hidden="true">
+  <div class="xf-bg xf-from"></div>
+  <div class="xf-bg xf-to"></div>
+  <div class="xf-stage">
+    <svg viewBox="0 0 200 200" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+      <g class="cup">
+        <path class="ln" pathLength="1" d="M60 84 H140 V116 C140 141 123 153 100 153 C77 153 60 141 60 116 Z"/>
+        <path class="ln" pathLength="1" d="M140 94 C160 94 162 126 140 126"/>
+        <path class="ln" pathLength="1" d="M38 163 H162"/>
+        <path class="ln steam" pathLength="1" d="M84 72 C77 62 91 56 84 44"/>
+        <path class="ln steam" pathLength="1" d="M100 72 C93 60 107 53 100 38"/>
+        <path class="ln steam" pathLength="1" d="M116 72 C109 62 123 56 116 44"/>
+      </g>
+      <g class="pizza">
+        <circle class="ln" pathLength="1" cx="100" cy="104" r="64" transform="rotate(-90 100 104)"/>
+        <circle class="ln" pathLength="1" cx="100" cy="104" r="54" transform="rotate(-90 100 104)"/>
+        <path class="ln cut" pathLength="1" d="M100 50 V158"/>
+        <path class="ln cut" pathLength="1" d="M53.2 77 L146.8 131"/>
+        <path class="ln cut" pathLength="1" d="M146.8 77 L53.2 131"/>
+        <g class="tops">
+          <circle cx="82" cy="84" r="6"/><circle cx="124" cy="96" r="6"/><circle cx="92" cy="126" r="6"/><circle cx="120" cy="128" r="5"/><circle cx="74" cy="108" r="5"/><circle cx="110" cy="72" r="4.5"/>
+        </g>
+      </g>
+    </svg>
+    <p class="xf-word"><span data-xf-word></span></p>
+  </div>
+</div>
+
+<style>
+  .xf { position: fixed; inset: 0; z-index: 95; pointer-events: none; }
+  .xf[hidden] { display: none; }
+  .xf-bg { position: absolute; inset: 0; }
+  .xf-from { background: var(--xf-from-bg); }
+  .xf-to { background: var(--xf-to-bg); clip-path: circle(0% at 50% 50%); }
+  .xf-stage { position: absolute; inset: 0; display: grid; place-items: center; align-content: center; gap: 18px; color: #fff; mix-blend-mode: difference; }
+  .xf-stage svg { width: min(46vw, 240px); height: auto; overflow: visible; }
+  .ln { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  .tops circle { stroke: var(--xf-accent); opacity: 0; transform-box: fill-box; transform-origin: center; }
+  .xf-word { margin: 0; font: 400 12px/1 var(--font-mono); letter-spacing: .3em; text-transform: uppercase; min-height: 1em; }
+</style>

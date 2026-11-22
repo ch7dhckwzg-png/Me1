@@ -1,45 +1,37 @@
 ---
 import site from '../content/site.json';
 const { visit, business, hours, concept } = site;
-const fmt = (t: string) => {
-  if (t === 'late') return 'late';
-  const [h, m] = t.split(':').map(Number);
-  const s = `${((h + 11) % 12) + 1}${m ? ':' + String(m).padStart(2, '0') : ''}`;
-  return `${s}${h < 12 ? 'am' : 'pm'}`;
-};
+const fmt = (t: string) => (t === 'late' ? 'Late' : t);
 ---
 <section id="visit" class="visit">
   <div class="wrap grid">
     <div class="reveal">
-      <p class="kicker">{visit.kicker}</p>
+      <p class="label label-accent">{visit.kicker}</p>
       <h2 class="h-section">{visit.headline}</h2>
       <address>{business.address.map((l) => <span>{l}</span>)}</address>
       <div class="ctas">
         <a class="btn btn-solid" href={business.mapsUrl} target="_blank" rel="noopener">{visit.mapsLabel}
-          <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M6 14 14 6M8 6h6v6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M6 14 14 6M8 6h6v6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
         <a class="btn" href={business.instagram.url} target="_blank" rel="noopener">Instagram</a>
         <a class="btn" href={business.facebook.url} target="_blank" rel="noopener">Facebook</a>
       </div>
-      <p class="dogs">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><g fill="currentColor"><ellipse cx="6" cy="9" rx="2.2" ry="2.8"/><ellipse cx="10.2" cy="5.6" rx="2.2" ry="2.8"/><ellipse cx="14.8" cy="5.6" rx="2.2" ry="2.8"/><ellipse cx="19" cy="9" rx="2.2" ry="2.8"/><path d="M12.5 10.5c-3.2 0-6.2 4.4-6.2 7 0 2 1.6 2.9 3.2 2.9 1.2 0 2-.6 3-.6s1.8.6 3 .6c1.6 0 3.2-.9 3.2-2.9 0-2.6-3-7-6.2-7Z"/></g></svg>
-        {visit.dogs}
-      </p>
+      <p class="dogs">{visit.dogs}</p>
     </div>
 
-    <div class="hours reveal">
+    <div class="reveal">
       <table>
-        <caption>Opening hours</caption>
+        <caption class="label">Opening hours</caption>
         <tbody>
           {hours.week.map((d) => (
             <tr data-day={d.day}>
-              <th scope="row">{d.day}</th>
+              <th scope="row">{d.day}<span class="tag">Today</span></th>
               <td>{d.closed ? 'Closed' : `${fmt(d.open!)} to ${fmt(d.close!)}`}</td>
             </tr>
           ))}
         </tbody>
       </table>
-      <p class="fine">Brunch {fmt(hours.brunch.from)} to {fmt(hours.brunch.to)}. Pizza from {fmt(hours.pizzaFrom)}. Hours from public listings, to be confirmed.</p>
+      <p class="fine">Brunch {hours.brunch.from} to {hours.brunch.to}. Pizza from {hours.pizzaFrom}. Hours from public listings, to be confirmed.</p>
     </div>
   </div>
 </section>
@@ -52,25 +44,23 @@ const fmt = (t: string) => {
 </footer>
 
 <style>
-  .visit { background: var(--bg); transition: background-color var(--t); }
-  .grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(32px, 6vw, 96px); align-items: start; }
-  address { font-style: normal; display: flex; flex-direction: column; font-size: 20px; line-height: 1.45; }
-  .ctas { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
-  .dogs { display: flex; gap: 10px; align-items: center; margin-top: 26px; font-weight: 500; }
-  .dogs svg { width: 22px; height: 22px; color: var(--accent); }
-  .hours { background: var(--bg-2); border: 1px solid var(--line); border-radius: var(--radius-card); padding: 10px 24px 20px; transition: background-color var(--t), border-color var(--t); }
+  .grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(40px, 7vw, 120px); align-items: start; }
+  address { font-style: normal; display: flex; flex-direction: column; font-size: 19px; line-height: 1.55; color: var(--muted); }
+  .ctas { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 32px; }
+  .dogs { margin: 28px 0 0; font-size: 15px; color: var(--muted); }
   table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
-  caption { text-align: left; font: 500 13px/1 var(--font-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--accent); padding: 16px 0 8px; }
-  th, td { text-align: left; padding: 13px 0; border-bottom: 1px solid var(--line); font-size: 17px; }
-  th { font-weight: 500; }
-  td { text-align: right; color: var(--muted); }
-  tr.today th, tr.today td { color: var(--fg); font-weight: 700; }
-  tr.today th::after { content: "Today"; margin-left: 10px; font: 500 11px/1 var(--font-mono); letter-spacing: .1em; text-transform: uppercase; background: var(--accent); color: var(--accent-ink); padding: 4px 6px; border-radius: 4px; vertical-align: 2px; }
-  .fine { font-size: 13px; color: var(--muted); margin: 14px 0 0; }
-  .foot { background: var(--ink); color: var(--glass-clear); padding-block: 40px calc(40px + env(safe-area-inset-bottom, 0px)); }
-  .foot-in { display: flex; flex-wrap: wrap; gap: 14px 40px; align-items: baseline; justify-content: space-between; }
-  .fmark { font-family: var(--font-display); font-weight: 800; font-size: 34px; }
-  .foot p { max-width: 70ch; margin: 0; font-size: 14px; color: #b9b4a9; }
-  .foot b { color: var(--glass-mustard); font-weight: 600; }
+  caption { text-align: left; padding-bottom: 14px; }
+  th, td { text-align: left; padding: 17px 0; border-top: 1px solid var(--line); font-size: 17px; font-weight: 400; }
+  tr:last-child th, tr:last-child td { border-bottom: 1px solid var(--line); }
+  td { text-align: right; color: var(--muted); font-family: var(--font-mono); font-size: 14px; letter-spacing: .04em; }
+  .tag { display: none; margin-left: 12px; font: 400 10px/1 var(--font-mono); letter-spacing: .16em; text-transform: uppercase; color: var(--accent); vertical-align: 2px; }
+  tr:global(.today) th, tr:global(.today) td { color: var(--fg); }
+  tr:global(.today) .tag { display: inline; }
+  .fine { font-size: 13px; color: var(--muted); margin: 16px 0 0; }
+  .foot { background: #0b0e15; color: #e6dfd2; padding-block: 48px calc(48px + env(safe-area-inset-bottom, 0px)); }
+  .foot-in { display: flex; flex-wrap: wrap; gap: 16px 48px; align-items: baseline; justify-content: space-between; }
+  .fmark { font-family: var(--font-display); font-weight: 420; font-size: 32px; letter-spacing: -0.02em; }
+  .foot p { max-width: 68ch; margin: 0; font-size: 13px; color: #9a9fab; }
+  .foot b { color: #e6dfd2; font-weight: 500; }
   @media (max-width: 860px) { .grid { grid-template-columns: 1fr; } }
 </style>

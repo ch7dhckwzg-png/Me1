@@ -1,60 +1,45 @@
 ---
 import site from '../content/site.json';
 const { business, modes, hours } = site;
-
-// The leaded-glass transom above their shopfront: mostly clear panes with
-// mustard, teal and sky accents. Seeded so it's the same on every load.
-let seed = 114;
-const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
-const COLS = 32, ROWS = 3;
-const palette = ['clear', 'clear', 'clear', 'clear', 'mustard', 'teal', 'sky', 'clear', 'mustard'];
-const panes = Array.from({ length: COLS * ROWS }, (_, i) => ({
-  tone: palette[Math.floor(rnd() * palette.length)],
-  delay: Math.round((i % COLS) * 28 + Math.floor(i / COLS) * 90 + rnd() * 60),
-}));
+// A small nod to the leaded glass above their shopfront.
+const glass = ['c', 'm', 'c', 's', 'c', 't', 'c', 'm', 'c'];
 ---
 <section class="hero" id="top">
-  <div class="transom" style={`--cols:${COLS}`} aria-hidden="true">
-    {panes.map((p) => <i class={`pane ${p.tone}`} style={`--d:${p.delay}ms`}></i>)}
-  </div>
-
   <div class="wrap">
-    <h1 class="h-display word" aria-label={business.wordmark}>
+    <div class="meta">
+      <span class="label">{business.address[0]}, {business.address[1]}</span>
+      <span class="glass" aria-hidden="true">{glass.map((g) => <i class={g}></i>)}</span>
+      <span class="label live"><span data-clock>--:--</span> in New Brighton</span>
+    </div>
+
+    <h1 class="word" aria-label={business.wordmark}>
       {business.wordmark.split('').map((c, i) => <span style={`--i:${i}`} aria-hidden="true">{c === ' ' ? ' ' : c}</span>)}
     </h1>
 
-    <div class="row">
-      <div class="copy">
-        <p class="kicker">
-          <span class="for-day">{modes.day.kicker}</span><span class="for-night">{modes.night.kicker}</span>
-          <span class="sep">/</span> {business.address[0]}, {business.address[1]}
-        </p>
-        <p class="mode-head for-day">{modes.day.headline}</p>
-        <p class="mode-head for-night">{modes.night.headline}</p>
-        <p class="lead for-day">{modes.day.body}</p>
-        <p class="lead for-night">{modes.night.body}</p>
-        <div class="ctas">
-          <a class="btn btn-solid" href="#menu">See the menu
-            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11M11 5l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </a>
-          <a class="btn" href="#visit">Find us</a>
-        </div>
-      </div>
+    <div class="split" role="group" aria-label="Day or night">
+      <button type="button" class="side" data-set-mode="day" aria-pressed="false">
+        <span class="label">{modes.day.kicker} <span class="t">9:30 to 15:00</span></span>
+        <span class="side-h">{modes.day.headline}</span>
+        <span class="side-b">{modes.day.body}</span>
+      </button>
+      <button type="button" class="side" data-set-mode="night" aria-pressed="false">
+        <span class="label">{modes.night.kicker} <span class="t">From 18:00</span></span>
+        <span class="side-h">{modes.night.headline}</span>
+        <span class="side-b">{modes.night.body}</span>
+      </button>
+    </div>
 
-      <aside class="today" aria-label="Today at Social 114" data-today>
-        <div class="today-top">
-          <span class="kicker">Today on Victoria Road</span>
-          <span class="clock" data-clock>--:--</span>
-        </div>
-        <p class="status" data-status>Checking the time in New Brighton</p>
-        <div class="line" data-line>
-          <div class="seg brunch" data-seg="brunch"><span>Brunch</span></div>
-          <div class="seg pizza" data-seg="pizza"><span>Pizza</span></div>
-          <div class="now" data-now><i></i></div>
-        </div>
-        <div class="ticks" data-ticks></div>
-        <p class="fine">Hours from public listings, to be confirmed.</p>
-      </aside>
+    <div class="day-line" aria-label="Today's hours" data-today>
+      <div class="rail"><i class="seg" data-seg="brunch"></i><i class="seg pz" data-seg="pizza"></i><b class="now" data-now></b></div>
+      <div class="ticks" data-ticks></div>
+      <p class="status" data-status>Checking the time in New Brighton</p>
+    </div>
+
+    <div class="ctas">
+      <a class="btn btn-solid" href="#menu">See the menu
+        <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11M11 5l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a class="btn" href="#visit">Find us</a>
     </div>
   </div>
 </section>
@@ -62,49 +47,49 @@ const panes = Array.from({ length: COLS * ROWS }, (_, i) => ({
 <script is:inline type="application/json" id="hours-data" set:html={JSON.stringify(hours)}></script>
 
 <style>
-  .hero { padding-block: 0 clamp(56px, 8vw, 110px); position: relative; overflow: hidden; background: linear-gradient(180deg, var(--sky-top), var(--sky-bottom) 70%); transition: background var(--t); }
-  .transom { display: grid; grid-template-columns: repeat(var(--cols), 1fr); gap: 4px; padding: 4px; background: var(--ink); }
-  .pane { display: block; aspect-ratio: 1.15; border-radius: 1px; background: var(--glass-clear); transition: filter var(--t), box-shadow var(--t), background-color var(--t); }
-  .pane.mustard { background: var(--glass-mustard); }
-  .pane.teal { background: var(--glass-teal); }
-  .pane.sky { background: var(--glass-sky); }
-  :global(.js) .pane { animation: drop .7s cubic-bezier(.2,.8,.2,1) both; animation-delay: var(--d); }
-  @keyframes drop { from { opacity: 0; transform: translateY(-14px) scale(.85); } to { opacity: 1; transform: none; } }
-  :global([data-mode="night"]) .pane { filter: brightness(1.12) saturate(1.25); box-shadow: 0 0 14px 1px rgba(255, 196, 92, .55); }
-  :global([data-mode="night"]) .pane.clear { background: #ffd58a; }
+  .hero { border-top: 0; padding-block: clamp(28px, 4vw, 48px) clamp(72px, 9vw, 128px); }
+  .meta { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  .glass { display: flex; gap: 3px; }
+  .glass i { width: 9px; height: 9px; border: 1px solid var(--line); }
+  .glass .m { background: var(--glass-mustard); border-color: transparent; }
+  .glass .t { background: var(--glass-teal); border-color: transparent; }
+  .glass .s { background: var(--glass-sky); border-color: transparent; }
+  .live [data-clock] { color: var(--fg); font-variant-numeric: tabular-nums; }
 
-  .word { font-size: clamp(64px, 15.5vw, 236px); margin: clamp(28px, 4vw, 54px) 0 0; display: flex; flex-wrap: wrap; white-space: nowrap; }
+  .word { font-family: var(--font-display); font-weight: 420; font-size: clamp(48px, 16vw, 248px); line-height: .9; letter-spacing: -0.045em; margin: clamp(40px, 6vw, 88px) 0 clamp(40px, 5vw, 72px); white-space: nowrap; display: flex; }
   .word span { display: inline-block; }
-  :global(.js) .word span { animation: rise .9s cubic-bezier(.2,.8,.2,1) both; animation-delay: calc(500ms + var(--i) * 45ms); }
-  .word span:last-child { color: var(--accent); transition: color var(--t); }
-  @keyframes rise { from { opacity: 0; transform: translateY(.35em) rotate(4deg); } to { opacity: 1; transform: none; } }
+  .word span:last-child { color: var(--accent); }
+  :global(.js) .word span { animation: up 1.2s var(--ease) both; animation-delay: calc(150ms + var(--i) * 40ms); }
+  @keyframes up { from { opacity: 0; transform: translateY(.25em); filter: blur(6px); } to { opacity: 1; transform: none; filter: none; } }
 
-  .row { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: clamp(28px, 5vw, 80px); margin-top: clamp(24px, 3vw, 40px); align-items: end; }
-  .sep { opacity: .5; margin: 0 6px; }
-  .mode-head { font-family: var(--font-display); font-weight: 600; font-size: clamp(26px, 3vw, 40px); line-height: 1.08; margin: 14px 0 12px; max-width: 20ch; text-wrap: balance; }
-  .ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; }
+  .split { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--line); }
+  .side { all: unset; cursor: pointer; display: flex; flex-direction: column; gap: 14px; padding: 28px 40px 32px 0; transition: opacity .6s var(--ease); opacity: .38; }
+  .side + .side { padding-left: 40px; border-left: 1px solid var(--line); }
+  .side:hover { opacity: .7; }
+  .side[aria-pressed="true"] { opacity: 1; }
+  .side[aria-pressed="true"] .label { color: var(--accent); }
+  .side:focus-visible { outline: 1.5px solid var(--accent); outline-offset: 4px; }
+  .t { margin-left: 10px; color: var(--muted); }
+  .side-h { font-family: var(--font-display); font-weight: 400; font-size: clamp(26px, 2.6vw, 38px); line-height: 1.1; letter-spacing: -0.015em; text-wrap: balance; }
+  .side-b { color: var(--muted); max-width: 46ch; }
 
-  .for-night { display: none; }
-  :global([data-mode="night"]) .for-night { display: revert; }
-  :global([data-mode="night"]) .for-day { display: none; }
-  .kicker .for-night, .kicker .for-day { display: inline; }
-  :global([data-mode="night"]) .kicker .for-day { display: none; }
-  :global([data-mode="day"]) .kicker .for-night { display: none; }
-
-  .today { background: var(--bg-2); border: 1px solid var(--line); border-radius: var(--radius-card); padding: 22px 22px 18px; transition: background-color var(--t), border-color var(--t); min-width: 0; }
-  .today-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
-  .clock { font: 500 28px/1 var(--font-mono); font-variant-numeric: tabular-nums; }
-  .status { font-family: var(--font-display); font-size: 24px; font-weight: 600; line-height: 1.15; margin: 14px 0 20px; min-height: 2.3em; }
-  .status :global(b) { color: var(--accent); font-weight: 700; transition: color var(--t); }
-  .line { position: relative; height: 38px; border-radius: var(--radius); background: color-mix(in srgb, var(--fg) 7%, transparent); overflow: hidden; }
-  .seg { position: absolute; top: 0; bottom: 0; display: flex; align-items: center; padding-left: 10px; font: 500 12px/1 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; white-space: nowrap; overflow: hidden; }
-  .seg.brunch { background: var(--glass-mustard); color: var(--ink); }
-  .seg.pizza { background: var(--door); color: #fff; }
-  .now { position: absolute; top: -4px; bottom: -4px; width: 2px; background: var(--fg); transition: left 1s; }
-  .now i { position: absolute; top: -3px; left: -4px; width: 10px; height: 10px; border-radius: 50%; background: var(--fg); }
-  .ticks { position: relative; height: 22px; font: 400 11px/22px var(--font-mono); color: var(--muted); }
+  .day-line { margin-top: 18px; }
+  .rail { position: relative; height: 1px; background: var(--line); margin-top: 26px; }
+  .seg { position: absolute; top: -1px; height: 3px; background: var(--fg); opacity: .55; }
+  .seg.pz { background: var(--accent); opacity: 1; }
+  .now { position: absolute; top: -5px; width: 11px; height: 11px; margin-left: -5px; border-radius: 50%; background: var(--bg); border: 1.5px solid var(--fg); transition: left 1s var(--ease); }
+  .ticks { position: relative; height: 26px; font: 400 11px/26px var(--font-mono); color: var(--muted); letter-spacing: .06em; }
   .ticks :global(span) { position: absolute; transform: translateX(-50%); }
-  .fine { margin: 6px 0 0; font-size: 12px; color: var(--muted); }
+  .ticks :global(span:first-child) { transform: none; }
+  .ticks :global(span:last-child) { transform: translateX(-100%); }
+  .status { margin: 10px 0 0; font-family: var(--font-display); font-size: 20px; }
+  .status :global(b) { font-weight: 400; font-style: italic; color: var(--accent); }
 
-  @media (max-width: 860px) { .row { grid-template-columns: 1fr; } .transom { --cols: 16 !important; } .transom .pane:nth-child(n+49) { display: none; } }
+  .ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 36px; }
+  @media (max-width: 760px) {
+    .split { grid-template-columns: 1fr; }
+    .side, .side + .side { padding: 24px 0; border-left: 0; }
+    .side + .side { border-top: 1px solid var(--line); }
+    .glass { display: none; }
+  }
 </style>

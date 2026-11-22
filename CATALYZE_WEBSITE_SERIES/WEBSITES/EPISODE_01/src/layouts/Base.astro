@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import site from '../content/site.json';
+import Transition from '../components/Transition.astro';
 const { business, hours, concept } = site;
 const title = `${business.name} | Coffee, brunch and wood-fired pizza, New Brighton`;
 const description = `${business.tagline} ${business.address.join(', ')}.`;
@@ -13,7 +14,7 @@ const description = `${business.tagline} ${business.address.join(', ')}.`;
     <meta name="robots" content="noindex, nofollow" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#1d2433" />
+    <meta name="theme-color" content="#121722" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <!-- Pick Day or Night before first paint, from the real time in New Brighton. ?mode=day|night overrides (used for screen recordings). -->
     <script is:inline define:vars={{ tz: hours.timezone, nightStarts: hours.nightStarts }}>
@@ -35,16 +36,16 @@ const description = `${business.tagline} ${business.address.join(', ')}.`;
     <a class="skip" href="#menu">Skip to the menu</a>
     <div class="concept-strip"><span>{concept.label}</span><span class="concept-detail">{concept.detail}</span></div>
     <slot />
-    <div class="mode-wipe" aria-hidden="true"></div>
+    <Transition />
     <script>
       import '../scripts/main.ts';
     </script>
     <style is:global>
       .skip { position: absolute; left: -9999px; }
-      .skip:focus { left: 12px; top: 12px; z-index: 100; background: var(--paper); color: var(--ink); padding: 10px 14px; border-radius: var(--radius); }
-      .concept-strip { display: flex; flex-wrap: wrap; gap: 4px 14px; justify-content: center; padding: 8px max(20px, env(safe-area-inset-left, 0px)); font: 500 12px/1.4 var(--font-mono); letter-spacing: .04em; background: var(--ink); color: var(--glass-clear); text-align: center; }
-      .concept-strip span:first-child { color: var(--glass-mustard); text-transform: uppercase; letter-spacing: .12em; }
-      @media (max-width: 700px) { .concept-detail { display: none; } }
+      .skip:focus { left: 12px; top: 12px; z-index: 100; background: var(--bg); color: var(--fg); padding: 10px 14px; border-radius: var(--radius); }
+      .concept-strip { display: flex; flex-wrap: wrap; gap: 4px 16px; justify-content: center; padding: 9px var(--gutter-r) 9px var(--gutter-l); font: 400 11px/1.4 var(--font-mono); letter-spacing: .06em; background: #0b0e15; color: #9a9fab; text-align: center; }
+      .concept-strip span:first-child { color: #e6dfd2; text-transform: uppercase; letter-spacing: .16em; }
+      @media (max-width: 760px) { .concept-detail { display: none; } }
     </style>
   </body>
 </html>

@@ -1,82 +1,61 @@
 ---
 import site from '../content/site.json';
 const { street } = site;
-// Their shopfront, drawn: black frame, two big windows, the orange door,
-// a row of leaded glass above. Panes are seeded to match the hero.
+// Shopfront elevation, drawn in fine line. Glass panes seeded so they're stable.
 let seed = 7;
 const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
-const tones = ['#efe9db', '#efe9db', '#efe9db', '#e8b631', '#3f8c86', '#79a9c8', '#efe9db'];
-const transom = (x0: number, w: number, cols: number) =>
-  Array.from({ length: cols * 2 }, (_, i) => ({
-    x: x0 + (i % cols) * (w / cols) + 2,
-    y: 22 + Math.floor(i / cols) * 22 + 2,
-    w: w / cols - 4,
-    fill: tones[Math.floor(rnd() * tones.length)],
-  }));
-const left = transom(30, 300, 10), door = transom(350, 120, 4), right = transom(490, 300, 10);
+const tint = () => { const r = rnd(); return r < .14 ? 'm' : r < .22 ? 't' : r < .3 ? 's' : ''; };
+const row = (x0: number, w: number, cols: number) =>
+  Array.from({ length: cols * 2 }, (_, i) => ({ x: x0 + (i % cols) * (w / cols), y: 40 + Math.floor(i / cols) * 20, w: w / cols, t: tint() }));
+const panes = [...row(40, 300, 12), ...row(360, 120, 4), ...row(500, 300, 12)];
 ---
 <section class="street">
-  <div class="wrap">
-    <div class="head reveal">
-      <p class="kicker">{street.kicker}</p>
+  <div class="wrap grid">
+    <div class="reveal">
+      <p class="label label-accent">{street.kicker}</p>
       <h2 class="h-section">{street.headline}</h2>
       <p class="lead">{street.body}</p>
+      <p class="dir">{street.directions}</p>
     </div>
 
-    <figure class="front reveal" aria-label="Drawing of the Social 114 shopfront on Victoria Road">
-      <svg viewBox="0 0 820 420" role="img" aria-label="Illustration of the Social 114 shopfront">
-        <rect x="0" y="0" width="820" height="420" rx="6" class="facade"/>
-        {[...left, ...door, ...right].map((p) => <rect x={p.x} y={p.y} width={p.w} height="18" fill={p.fill} class="glass"/>)}
-        <g class="win">
-          <rect x="30" y="74" width="300" height="270" />
-          <rect x="490" y="74" width="300" height="270" />
-        </g>
-        <g class="inside">
-          <rect x="60" y="250" width="120" height="8" rx="2" />
-          <rect x="70" y="258" width="4" height="60" /><rect x="166" y="258" width="4" height="60" />
-          <path d="M226 300 q10 -60 0 -110 q20 30 14 110z M240 300 q-14 -40 -30 -70 q30 18 38 70z" class="plant"/>
-          <rect x="520" y="250" width="240" height="8" rx="2" />
-          <circle cx="600" cy="140" r="9" class="bulb"/><circle cx="700" cy="140" r="9" class="bulb"/>
-          <path d="M600 74v57M700 74v57" class="cord"/>
-        </g>
-        <text x="180" y="200" text-anchor="middle" class="sign">Social 114.</text>
-        <rect x="350" y="74" width="120" height="296" class="door"/>
-        <rect x="368" y="96" width="84" height="120" class="doorglass"/>
-        <circle cx="452" cy="250" r="5" fill="#15171c"/>
-        <rect x="0" y="370" width="820" height="50" class="pave"/>
-        <text x="410" y="402" text-anchor="middle" class="num">114</text>
+    <figure class="front reveal">
+      <svg viewBox="0 0 840 470" role="img" aria-label="Fine line drawing of the Social 114 shopfront" fill="none" stroke="currentColor" stroke-width="1">
+        <g class="glass">{panes.map((p) => <rect x={p.x} y={p.y} width={p.w} height="20" class={p.t} />)}</g>
+        <rect x="20" y="24" width="800" height="380" />
+        <rect x="40" y="88" width="300" height="296" class="win" />
+        <rect x="500" y="88" width="300" height="296" class="win" />
+        <path d="M40 300 H340 M500 300 H800" class="sill" />
+        <rect x="360" y="88" width="120" height="316" class="door" />
+        <rect x="378" y="110" width="84" height="130" class="win" />
+        <circle cx="462" cy="290" r="3.5" />
+        <text x="190" y="214" text-anchor="middle" class="sign">Social 114.</text>
+        <path d="M600 88 V150 M700 88 V150" />
+        <circle cx="600" cy="158" r="8" class="bulb" /><circle cx="700" cy="158" r="8" class="bulb" />
+        <path d="M0 404 H840" />
+        <path d="M20 440 H820 M20 434 V446 M820 434 V446" class="dim" />
+        <text x="420" y="462" text-anchor="middle" class="note">114 VICTORIA ROAD, NEW BRIGHTON</text>
       </svg>
-      <figcaption>Drawn from the street. Real photography would replace this in a finished build.</figcaption>
     </figure>
-
-    <p class="dir reveal">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5a7 7 0 0 0-7 7c0 5.2 7 12 7 12s7-6.8 7-12a7 7 0 0 0-7-7Zm0 9.6a2.6 2.6 0 1 1 0-5.2 2.6 2.6 0 0 1 0 5.2Z" fill="currentColor"/></svg>
-      {street.directions}
-    </p>
   </div>
 </section>
 
 <style>
-  .street { background: var(--bg-2); transition: background-color var(--t); }
-  .head { max-width: 760px; }
-  .front { margin: clamp(28px, 4vw, 48px) 0 0; }
-  .front svg { width: 100%; height: auto; display: block; }
-  .facade { fill: #15171c; }
-  .win rect { fill: #cfe1ea; transition: fill var(--t); }
-  .inside rect, .inside .cord { fill: #8b6a43; stroke: #8b6a43; stroke-width: 2; transition: fill var(--t), stroke var(--t); }
-  .inside .plant { fill: #3c6b4a; }
-  .bulb { fill: #f4efe6; transition: fill var(--t), filter var(--t); }
-  .sign { font-family: var(--font-display); font-weight: 800; font-size: 46px; fill: #15171c; transition: fill var(--t); }
-  .door { fill: var(--door); }
-  .doorglass { fill: #cfe1ea; transition: fill var(--t); }
-  .pave { fill: #2a2d35; }
-  .num { font: 500 14px var(--font-mono); fill: #8d929c; letter-spacing: .2em; }
-  .glass { transition: filter var(--t); }
-  :global([data-mode="night"]) .win rect, :global([data-mode="night"]) .doorglass { fill: #ffcf7a; }
-  :global([data-mode="night"]) .bulb { fill: #fff3c9; filter: drop-shadow(0 0 10px #ffd27a); }
-  :global([data-mode="night"]) .glass { filter: brightness(1.15) drop-shadow(0 0 4px rgba(255, 200, 100, .7)); }
-  :global([data-mode="night"]) .sign { fill: #3a2410; }
-  figcaption { font: 400 12px/1.4 var(--font-mono); color: var(--muted); margin-top: 10px; }
-  .dir { display: flex; gap: 10px; align-items: center; margin: 24px 0 0; font-weight: 500; }
-  .dir svg { width: 22px; height: 22px; color: var(--accent); flex-shrink: 0; }
+  .grid { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: clamp(40px, 7vw, 120px); align-items: center; }
+  .dir { margin: 28px 0 0; padding-top: 20px; border-top: 1px solid var(--line); font-size: 15px; color: var(--muted); max-width: 44ch; }
+  .front { margin: 0; color: var(--fg); }
+  .front svg { width: 100%; height: auto; display: block; overflow: visible; }
+  .front svg :global(*) { vector-effect: non-scaling-stroke; }
+  .glass rect { stroke-opacity: .7; }
+  .glass .m { fill: var(--glass-mustard); fill-opacity: .75; }
+  .glass .t { fill: var(--glass-teal); fill-opacity: .75; }
+  .glass .s { fill: var(--glass-sky); fill-opacity: .75; }
+  .door { fill: var(--accent); fill-opacity: .9; }
+  .win { fill: var(--warm-window); fill-opacity: 0; transition: fill-opacity 1.2s var(--ease); }
+  .bulb { fill: var(--warm-window); fill-opacity: 0; transition: fill-opacity 1.2s var(--ease); }
+  .sill, .dim { stroke-opacity: .5; }
+  .sign { font-family: var(--font-display); font-weight: 400; font-size: 44px; fill: currentColor; stroke: none; letter-spacing: -0.02em; }
+  .note { font: 400 11px var(--font-mono); letter-spacing: .2em; fill: var(--muted); stroke: none; }
+  :global([data-mode="night"]) .win { fill-opacity: .16; }
+  :global([data-mode="night"]) .bulb { fill-opacity: 1; filter: drop-shadow(0 0 8px rgba(233, 184, 106, .8)); }
+  @media (max-width: 960px) { .grid { grid-template-columns: 1fr; } }
 </style>
