@@ -30,3 +30,5 @@ out/
 
 # Playwright CLI sessions
 .playwright-cli/
+
+dist-preview
