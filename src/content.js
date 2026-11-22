@@ -6,6 +6,7 @@ export const MAILTO = `mailto:${EMAIL}?subject=Project%20enquiry`
 export const SERVICES = [
   {
     id: 'brand',
+    example: { href: '#work-design', label: 'See logo examples' },
     title: 'Brand identity',
     short: 'Branding',
     body: 'A logo, colours and type that people remember, with simple guidelines so everything you make looks like you.',
@@ -13,6 +14,7 @@ export const SERVICES = [
   },
   {
     id: 'graphic',
+    example: { href: '#work-design', label: 'See menus and graphics' },
     title: 'Graphic design',
     short: 'Graphic design',
     body: 'Menus, print and social graphics that feel considered, readable and unmistakably yours.',
@@ -20,6 +22,7 @@ export const SERVICES = [
   },
   {
     id: 'web',
+    example: { href: '#work-web', label: 'See website examples' },
     title: 'Web design',
     short: 'Web design',
     body: 'Fast, beautiful websites that are easy to use on any screen and built to turn visitors into customers.',
@@ -27,6 +30,7 @@ export const SERVICES = [
   },
   {
     id: 'photo',
+    example: { href: '#work-photo', label: 'See photography' },
     title: 'Photography',
     short: 'Photography',
     body: 'Headshots, food, products and the everyday images your website needs, shot and edited to match your brand.',
@@ -34,6 +38,7 @@ export const SERVICES = [
   },
   {
     id: 'motion',
+    example: { href: '#work-motion', label: 'See animations' },
     title: 'Motion & animation',
     short: 'Motion',
     body: 'Product animations, store walk-throughs and moving graphics that stop the scroll and show what you do.',

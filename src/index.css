@@ -819,7 +819,34 @@ img {
   }
 
   .service:hover .service-name,
-  .service:hover .service-body {
+  .service:hover .service-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 44px;
+  color: var(--fg);
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 1px;
+}
+
+.service-link svg {
+  transition: translate 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.service-link:hover svg {
+  translate: 3px 0;
+}
+
+@media (hover: hover) {
+  .service:hover .service-link {
+    color: var(--ink);
+    text-decoration-color: var(--ink);
+  }
+}
+
+.service-body {
     color: var(--ink);
   }
 
@@ -831,6 +858,7 @@ img {
 
 .service-name,
 .service-body,
+.service-link,
 .service-includes li {
   transition:
     color 0.3s 0.1s,
@@ -1193,6 +1221,56 @@ details[open] .faq-icon::after {
 
 .legal p + p {
   margin-top: 0.9rem;
+}
+
+.breadcrumb ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0 0 2rem;
+  padding: 0;
+  list-style: none;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.breadcrumb li + li::before {
+  content: '/';
+  margin-right: 0.5rem;
+  color: rgba(243, 237, 227, 0.3);
+}
+
+.breadcrumb a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-block: -12px; /* keep the 44px target without pushing the row apart */
+  color: var(--soft);
+}
+
+.breadcrumb [aria-current] {
+  color: var(--fg);
+}
+
+.notfound-lead {
+  max-width: 52ch;
+  margin: 1rem 0 1.5rem;
+}
+
+.notfound-links {
+  display: grid;
+  justify-items: start;
+  margin: 0 0 2.25rem;
+  padding: 0;
+  list-style: none;
+}
+
+.notfound-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font: 400 1.5rem/1.2 var(--serif);
+  text-decoration-color: var(--accent);
 }
 
 /* ---------- Magic UI: scroll progress and dock ---------- */

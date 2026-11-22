@@ -60,7 +60,7 @@ With `prefers-reduced-motion: reduce`: no intro, no WebGL (an SVG star instead),
 
 ## Pages
 
-`index.html` (the site), `privacy.html` and `terms.html` (content in `src/legal.js`, rendered by `src/components/LegalPage.jsx`). All three share `src/components/SiteFooter.jsx`.
+`index.html` (the site), `privacy.html` and `terms.html` (content in `src/legal.js`), and `404.html` (served by Netlify, Vercel and Cloudflare Pages for any unknown address, and kept out of search with `noindex`). The three inner pages share `src/components/PageShell.jsx` (header, breadcrumb, footer); every page uses `src/components/SiteFooter.jsx`. `public/robots.txt` lets search engines crawl everything.
 
 ## Concept work
 

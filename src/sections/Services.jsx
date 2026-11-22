@@ -13,7 +13,17 @@ export default function Services() {
           {SERVICES.map((s) => (
             <li className="service" key={s.id}>
               <h3 className="service-name">{s.title}</h3>
-              <p className="service-body">{s.body}</p>
+              <div className="service-text">
+                <p className="service-body">{s.body}</p>
+                {s.example && (
+                  <a className="service-link" href={s.example.href}>
+                    {s.example.label}
+                    <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" focusable="false">
+                      <path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </a>
+                )}
+              </div>
               <ul className="service-includes" aria-label={`${s.title} includes`}>
                 {s.includes.map((item) => (
                   <li key={item}>{item}</li>

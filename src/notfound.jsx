@@ -1,0 +1,14 @@
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import '@fontsource/hanken-grotesk/400.css'
+import '@fontsource/hanken-grotesk/500.css'
+import '@fontsource/hanken-grotesk/600.css'
+import '@fontsource/instrument-serif/400.css'
+import './index.css'
+import NotFound from '@/components/NotFound'
+
+createRoot(document.getElementById('root')).render(
+  <StrictMode>
+    <NotFound />
+  </StrictMode>,
+)
