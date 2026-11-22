@@ -16,9 +16,9 @@
   --soft: #cfc6b8;
   --muted: #a39a8d;
   --line: rgba(243, 237, 227, 0.12);
-  --accent: #d2642c; /* rich orange */
-  --accent-hover: #e07a45;
-  --accent-soft: rgba(210, 100, 44, 0.14);
+  --accent: #ff6e00; /* Pantone 16-1355 Orange Slices (sampled) */
+  --accent-hover: #ff8a33;
+  --accent-soft: rgba(255, 110, 0, 0.14);
   --ink: #15110e;
   --gutter: clamp(1.25rem, 4vw, 3.5rem);
   --radius-control: 6px; /* buttons, tabs, tags: never pills */
@@ -302,11 +302,14 @@ img {
   min-height: 44px;
   text-decoration: none;
   opacity: 0.75;
-  transition: opacity 0.2s;
+  transition:
+    opacity 0.2s,
+    color 0.2s;
 }
 
 .nav ul a:hover {
   opacity: 1;
+  color: var(--accent);
 }
 
 .nav .nav-cta {
@@ -422,14 +425,14 @@ img {
   min-height: 100svh;
   overflow: hidden;
   background:
-    radial-gradient(ellipse 55% 55% at 74% 46%, rgba(210, 100, 44, 0.2), transparent 70%),
+    radial-gradient(ellipse 55% 55% at 74% 46%, rgba(255, 110, 0, 0.18), transparent 70%),
     var(--bg);
 }
 
 @media (max-width: 879px) {
   .hero {
     background:
-      radial-gradient(ellipse 85% 35% at 50% 28%, rgba(210, 100, 44, 0.22), transparent 70%),
+      radial-gradient(ellipse 85% 35% at 50% 28%, rgba(255, 110, 0, 0.2), transparent 70%),
       var(--bg);
   }
 }
@@ -440,31 +443,34 @@ img {
   z-index: -1;
 }
 
-.particle-spark {
-  position: absolute;
-  inset: 0;
-}
-
-/* The component's own copy block stays empty (the hero has its own); it only sets
-   the layout band, so it is kept but hidden. */
-.particle-spark .sh-content,
-.particle-spark .sh-hint {
-  visibility: hidden;
+.logo-scene,
+.logo-scene canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 .hero-fallback {
   position: absolute;
-  top: 46%;
+  top: 40%;
   right: 6vw;
-  width: min(40vw, 500px);
+  width: min(42vw, 560px);
   translate: 0 -50%;
+  rotate: -4deg;
+  filter: drop-shadow(0 24px 40px rgba(0, 0, 0, 0.5));
+}
+
+.hero-fallback img {
+  display: block;
+  width: 100%;
+  height: auto;
 }
 
 @media (max-width: 879px) {
   .hero-fallback {
-    top: 30%;
+    top: 31%;
     right: 50%;
-    width: min(66vw, 320px);
+    width: min(78vw, 340px);
     translate: 50% -50%;
   }
 }
@@ -917,7 +923,7 @@ img {
 
 .track-fill {
   height: 100%;
-  background: linear-gradient(90deg, #8f3a14, var(--accent), #f3b48a);
+  background: linear-gradient(90deg, #a34400, var(--accent), #ffc48f);
   transform-origin: left center;
 }
 
@@ -971,7 +977,7 @@ img {
 }
 
 .step.is-active {
-  border-color: rgba(210, 100, 44, 0.55);
+  border-color: rgba(255, 110, 0, 0.55);
 }
 
 .step.is-active .step-num {
@@ -1156,7 +1162,7 @@ details[open] .faq-icon::after {
 
 .site-footer nav a:hover,
 .footer-mail:hover {
-  color: var(--fg);
+  color: var(--accent);
 }
 
 .footer-mail {
@@ -1283,7 +1289,7 @@ details[open] .faq-icon::after {
 .scroll-progress {
   z-index: 45;
   height: 2px;
-  background: linear-gradient(90deg, #8f3a14, var(--accent), #f3b48a);
+  background: linear-gradient(90deg, #a34400, var(--accent), #ffc48f);
 }
 
 .site-dock {
@@ -1423,4 +1429,15 @@ details[open] .faq-icon::after {
       transform: translateZ(0) rotate(360deg);
     }
   }
+}
+
+/* ---------- Accent words ----------
+   One word per headline carries the brand orange, so the accent runs through the page
+   instead of living only in buttons. The contact block is orange already, so it stays ink. */
+.accent-word {
+  color: var(--accent);
+}
+
+.display .accent-word {
+  font-style: italic;
 }

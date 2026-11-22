@@ -37,6 +37,8 @@ export default function App() {
   // The intro plays over the page once per visit; scrolling is locked until it hands off.
   // phase: 'intro' (playing, scroll locked) -> 'reveal' (fading into the hero) -> 'done'
   const [phase, setPhase] = useState(() => (introWanted() ? 'intro' : 'done'))
+  // Set by the hero once its 3D scene is built; the intro waits for it before starting.
+  const [heroReady, setHeroReady] = useState(false)
   const showIntro = !reducedMotion && phase !== 'done'
   useSmoothScroll(reducedMotion, !reducedMotion && phase === 'intro')
 
@@ -45,6 +47,7 @@ export default function App() {
       <a className="skip-link" href="#main">Skip to content</a>
       {showIntro && (
         <Intro
+          heroReady={heroReady}
           onReveal={() => setPhase('reveal')}
           onDone={() => {
             markIntroSeen()
@@ -55,6 +58,7 @@ export default function App() {
       <Hero
         reducedMotion={reducedMotion}
         ready={reducedMotion || phase !== 'intro'}
+        onSceneReady={() => setHeroReady(true)}
       />
       <main id="main" tabIndex={-1}>
         <Velocity reducedMotion={reducedMotion} />

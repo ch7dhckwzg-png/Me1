@@ -27,7 +27,7 @@ export default function Process({ reducedMotion }) {
     <section className="section process" id="process" ref={scope}>
       <div className="wrap">
         <header className="section-head">
-          <h2 className="display">Simple, from first chat to launch</h2>
+          <h2 className="display">Simple, from first chat to <span className="accent-word">launch</span></h2>
         </header>
         <div className="track" aria-hidden="true">
           <div className="track-fill" />

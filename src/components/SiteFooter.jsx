@@ -10,7 +10,7 @@ export default function SiteFooter({ base = '' }) {
       <div className="wrap footer-grid">
         <div>
           <a href={base || '#home'} className="footer-home" aria-label="Catalyze home">
-            <img src={logo} width="1275" height="477" alt="" className="footer-logo" />
+            <img src={logo} width="1286" height="488" alt="" className="footer-logo" />
           </a>
           <p>A creative studio for brands that want to be noticed.</p>
         </div>

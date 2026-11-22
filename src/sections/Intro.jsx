@@ -18,7 +18,7 @@ import { gsap } from 'gsap'
 const KEYS = new Set(['ArrowDown', 'PageDown', ' ', 'Enter', 'Spacebar'])
 const IDLE_MS = 5000
 
-export default function Intro({ onReveal, onDone }) {
+export default function Intro({ onReveal, onDone, heroReady = false }) {
   const root = useRef(null)
   const host = useRef(null)
   const callbacks = useRef({ onReveal, onDone })
@@ -53,14 +53,19 @@ export default function Intro({ onReveal, onDone }) {
     }
   }, [])
 
-  // Start as soon as the laptop scene is built. (The hero's particle spark is set up
-  // later, once the hero's text has finished animating in.)
+  // Start once both this scene and the hero's are ready (or after 2.5 s regardless).
   useEffect(() => {
-    if (!sceneReady || startedRef.current) return
-    startedRef.current = true
-    run()
+    if (!sceneReady || startedRef.current) return undefined
+    const start = () => {
+      if (startedRef.current) return
+      startedRef.current = true
+      run()
+    }
+    if (heroReady) start()
+    const t = window.setTimeout(start, 2500)
+    return () => window.clearTimeout(t)
     // `run` only reads refs, so leaving it out of the list is safe.
-  }, [sceneReady]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [sceneReady, heroReady]) // eslint-disable-line react-hooks/exhaustive-deps
 
   function run() {
     const s = sceneRef.current

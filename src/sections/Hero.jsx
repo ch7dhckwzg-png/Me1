@@ -1,35 +1,38 @@
-import { lazy, Suspense, useEffect, useRef, useState } from 'react'
+import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { SplitText } from 'gsap/SplitText'
 import { useGSAP } from '@gsap/react'
-import HeroStar from '@/components/HeroStar'
-import sparkUrl from '@/assets/hero/spark.webp'
 import { ShimmerButton } from '@/components/ui/shimmer-button'
 import RotatingBadge from '@/components/kinetic/RotatingBadge'
 import { MAILTO } from '@/content'
 import logo from '@/assets/logo.svg'
 
+// three.js lives in its own chunk so the page opens fast. It is fetched while the intro
+// idles, and the scene is created at the reveal, under the full-screen flash, where its
+// one-off setup cost cannot be seen.
 gsap.registerPlugin(SplitText)
 
-// The particle spark is its own chunk, fetched (with its image) while the intro plays.
-// It mounts once the hero's text has finished animating in, so its one-off setup work
-// (sampling the image into ~100k particles) never interrupts another animation; then it
-// assembles once, on an otherwise still screen.
-const loadSpark = () => import('@/components/ParticleSpark')
-const ParticleSpark = lazy(loadSpark)
+const loadLogoScene = () => import('@/components/LogoScene')
+const LogoScene = lazy(loadLogoScene)
 
-export default function Hero({ reducedMotion, prepare = true, ready = true }) {
+export default function Hero({ reducedMotion, prepare = true, ready = true, onSceneReady }) {
   const scope = useRef(null)
   const entrance = useRef(null)
-  const use3d = !reducedMotion
-  const [entered, setEntered] = useState(false)
+  const [webgl, setWebgl] = useState(true)
+  const onFail = useCallback(() => setWebgl(false), [])
+  const use3d = webgl && !reducedMotion
+  const readyCb = useRef(onSceneReady)
+  useEffect(() => {
+    readyCb.current = onSceneReady
+  })
+  const onReady = useCallback(() => readyCb.current?.(), [])
 
   // Built straight away so the start states hide everything, then held until `ready`.
   useGSAP(
     () => {
       if (reducedMotion) return
       entrance.current = gsap
-        .timeline({ paused: true, onComplete: () => setEntered(true) })
+        .timeline({ paused: true })
         // The lead-in rises in calmly; "MADE TO BE NOTICED." kicks up letter by letter.
         .from('.hero-title .line-serif > span', { yPercent: 105, duration: 1.2, ease: 'expo.out' }, 0.2)
         .from(
@@ -51,32 +54,34 @@ export default function Hero({ reducedMotion, prepare = true, ready = true }) {
   }, [ready, reducedMotion])
 
   useEffect(() => {
-    if (!prepare || !use3d) return
-    loadSpark()
-    const img = new Image()
-    img.src = sparkUrl
+    if (prepare && use3d) loadLogoScene()
   }, [prepare, use3d])
+
+  // Without the 3D scene there is nothing to wait for.
+  useEffect(() => {
+    if (ready && !use3d) readyCb.current?.()
+  }, [ready, use3d])
 
   return (
     <header className="hero" id="home" ref={scope}>
       <div className="hero-stage">
         {use3d ? (
-          ready &&
-          entered && (
+          prepare && (
             <Suspense fallback={null}>
-              <ParticleSpark />
+              <LogoScene go={ready} onFail={onFail} onReady={onReady} />
             </Suspense>
           )
         ) : (
           <div className="hero-fallback">
-            <HeroStar />
+            {/* Without WebGL, or with reduced motion: the flat logo, tilted like the badge. */}
+            <img src={logo} width="1286" height="488" alt="" />
           </div>
         )}
       </div>
 
       <nav className="nav" aria-label="Main">
         <a className="logo" href="#home">
-          <img src={logo} width="1275" height="477" alt="Catalyze, back to top" />
+          <img src={logo} width="1286" height="488" alt="Catalyze, back to top" />
         </a>
         <ul>
           <li><a href="#services">Services</a></li>
@@ -102,8 +107,8 @@ export default function Hero({ reducedMotion, prepare = true, ready = true }) {
               as="a"
               href={MAILTO}
               className="btn-shimmer"
-              background="#D2642C"
-              shimmerColor="#FFE3CC"
+              background="#FF6E00"
+              shimmerColor="#FFF1E3"
               shimmerDuration="3.5s"
               shimmerSize="0.1em"
               borderRadius="6px"
@@ -115,7 +120,7 @@ export default function Hero({ reducedMotion, prepare = true, ready = true }) {
         </div>
         <h1 className="hero-title">
           <span className="line line-serif"><span>Branding, websites, photography and motion,</span></span>{' '}
-          <span className="line line-bold"><span>made to be noticed.</span></span>
+          <span className="line line-bold"><span>made to be <span className="accent-word">noticed.</span></span></span>
         </h1>
       </div>
     </header>

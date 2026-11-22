@@ -141,7 +141,7 @@ function glowTexture() {
     const gr = g.createRadialGradient(128, 128, 0, 128, 128, 128)
     gr.addColorStop(0, 'rgba(255, 246, 232, 1)')
     gr.addColorStop(0.25, 'rgba(246, 170, 110, 0.6)')
-    gr.addColorStop(1, 'rgba(210, 100, 44, 0)')
+    gr.addColorStop(1, 'rgba(255, 110, 0, 0)')
     g.fillStyle = gr
     g.fillRect(0, 0, 256, 256)
   })
@@ -179,13 +179,13 @@ function screenTexture() {
     g.fillStyle = bg
     g.fillRect(0, 0, 1600, 1000)
     const glow = g.createRadialGradient(800, 470, 0, 800, 470, 420)
-    glow.addColorStop(0, 'rgba(226, 110, 52, 0.35)')
-    glow.addColorStop(1, 'rgba(226, 110, 52, 0)')
+    glow.addColorStop(0, 'rgba(255, 110, 0, 0.32)')
+    glow.addColorStop(1, 'rgba(255, 110, 0, 0)')
     g.fillStyle = glow
     g.fillRect(0, 0, 1600, 1000)
     if (img) {
       const lw = 760
-      const lh = (lw * 477) / 1275
+      const lh = (lw * 976) / 2572
       g.drawImage(img, 800 - lw / 2, 470 - lh / 2, lw, lh)
     }
     t.needsUpdate = true
