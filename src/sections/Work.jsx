@@ -1,15 +1,14 @@
 import { useRef, useState } from 'react'
 import Tabs from '@/components/Tabs'
 import Lightbox from '@/components/Lightbox'
+import GiantWord from '@/components/kinetic/GiantWord'
+import Spark from '@/components/kinetic/Spark'
 import ProductAnim from '@/components/motion/ProductAnim'
 import StoreWalk from '@/components/motion/StoreWalk'
 import LogoAnim from '@/components/motion/LogoAnim'
 import useAutoplay from '@/components/motion/useAutoplay'
 import { PHOTOGRAPHY, WEBSITES } from '@/content'
 import '@/styles/work.css'
-// The concept brands' own typeface, used inside their animations (not the site's).
-import '@fontsource/instrument-serif/400.css'
-import '@fontsource/instrument-serif/400-italic.css'
 
 // Rendered from design/work/*.html by scripts/render-work.cjs.
 const IMG = Object.fromEntries(
@@ -65,18 +64,8 @@ function Websites() {
         <p className="lead">Fast, easy to use and designed around what your customers came to do.</p>
       </header>
       <div className="sites">
-        {WEBSITES.map((site) => (
-          <article className="site" key={site.id}>
-            <div className="site-copy">
-              <p className="site-kind">{site.kind}</p>
-              <h4 className="display-sm">{site.name}</h4>
-              <p>{site.body}</p>
-              <ul className="tags">
-                {site.tags.map((t) => (
-                  <li key={t}>{t}</li>
-                ))}
-              </ul>
-            </div>
+        {WEBSITES.map((site, i) => (
+          <article className={`site${i % 2 ? ' is-flipped' : ''}`} key={site.id}>
             <div className="site-devices">
               <div className="browser">
                 <div className="browser-bar" aria-hidden="true">
@@ -102,6 +91,16 @@ function Websites() {
                   alt={`${site.name} website on a phone`}
                 />
               </div>
+            </div>
+            <div className="site-copy">
+              <p className="site-kind">{site.kind}</p>
+              <h4 className="display-sm">{site.name}</h4>
+              <p>{site.body}</p>
+              <ul className="tags">
+                {site.tags.map((t) => (
+                  <li key={t}>{t}</li>
+                ))}
+              </ul>
             </div>
           </article>
         ))}
@@ -257,9 +256,12 @@ export default function Work({ reducedMotion }) {
   const [open, setOpen] = useState(null)
   return (
     <section className="section work" id="work">
+      <GiantWord>
+        The work <Spark className="giant-spark" outline /> The work
+      </GiantWord>
       <div className="wrap">
-        <header className="section-head centered">
-          <h2 className="display">A taste of what we make.</h2>
+        <header className="section-head">
+          <h2 className="display">A taste of what we make</h2>
           <p className="lead">
             The brands below are concept projects, created by Catalyze to show our range. Yours could be next.
           </p>

@@ -40,19 +40,24 @@ Node 22 (see `.nvmrc`).
 
 ## Look and feel
 
-Apple-inspired, in Catalyze's colours: warm near-black, ivory and one rich orange (`--accent: #d2642c`, `--accent-text` for links). One clean typeface, Apple's system font on Apple devices and Inter (self-hosted) elsewhere, with tight, confident headlines. Centred section heads, big rounded tiles (`--radius-tile`, 24px) that show real work, lots of space and very little decoration. Controls use the small `--radius-control` (6px), never pills. A thin frosted sticky nav carries "Start a project" on every page, so it is also the sticky call to action on phones.
+Chic meets sporty: warm near-black, ivory and one rich orange (`--accent: #d2642c`). Instrument Serif and Hanken Grotesk carry the elegant side; Anton (condensed capitals) carries the Nike Run Club-style energy in a few graphics: the hero's *MADE TO BE NOTICED.*, crossing bands, activity rings, a progress track, a rotating sticker and giant outlined words. Controls share one small radius (`--radius-control`, 6px), never pills; cards use 16px.
 
 ## Motion
 
 Motion plays once on load or on arrival, or answers a click. Nothing follows the cursor and nothing moves with scroll, apart from the two things the owner asked for: the opening laptop intro and the scroll progress bar.
 
 - **Opening animation (three.js):** a brushed-aluminium laptop (`src/components/laptopScene.js`, choreographed in `src/sections/Intro.jsx`). It opens head on and lights up, then turns to the side. One scroll, swipe, key press or click (or 5 s of waiting) plays the rest: the lid folds flat 180°, a beam of light shoots out and drives the laptop down, and the intro fades into the site. "Skip intro" speeds it up. It plays once per browser session; `?intro=0` skips it.
-- **Hero:** *Made to be noticed.*, one line on what Catalyze does and two actions fade up. Then the Catalyze spark assembles once from ~100k GPU particles below them, like a product shot, and rests as a crisp still image (the 21st.dev liquid sculpture hero, with cursor interaction, its own copy, fonts and credit switched off).
+  - The 3D code and both scenes are set up before anything moves, so nothing stutters part-way through.
+- **Hero:** the lead-in *Branding, websites, photography and motion,* rises in; *MADE TO BE NOTICED.* kicks up letter by letter (GSAP SplitText, split by words so nothing breaks mid-word). Once the text has landed, the Catalyze spark assembles once from ~100k GPU particles and settles into a crisp, still image (the 21st.dev liquid sculpture hero, with cursor interaction, its own copy, fonts and credit all switched off). A rotating "Start a project" sticker links to email.
+- **Crossing bands:** two Magic UI `ScrollVelocity` rows on orange and ivory bands, drifting at a steady pace in opposite directions.
+- **Why one studio:** the statement, with activity rings that close once as they come into view (GSAP DrawSVG).
+- **Services:** an orange block sweeps across a row on hover.
 - **Work, Motion:** three CSS animations (product, store walk-through, animated logo) that play only on screen, each with play/pause.
-- **Process:** when the steps come into view, a thin orange line fills once and lights each step number in turn.
-- Tabs fade between panels; text links nudge their chevron on hover.
+- **Process:** when the steps come into view, a track fills once and lights each step in turn.
+- **Giant words:** outlined *THE WORK* and *LET'S GO*, still, behind their sections.
+- **Magic UI for getting around:** a `ScrollProgress` bar, a `Dock` of quick links after the hero (no magnification), and a `ShimmerButton` on the main call to action.
 
-With `prefers-reduced-motion: reduce`: no intro, no particles or WebGL (a still SVG star instead), and the Motion cards start paused.
+With `prefers-reduced-motion: reduce`: no intro, no particles or WebGL (an SVG star instead), the bands stand still, rings and steps show finished, and the Motion cards start paused.
 
 ## Pages
 
@@ -89,7 +94,7 @@ Use portrait images (4:5), about 1600 px tall, saved as WebP or JPEG.
 npx shadcn@latest add @magicui/marquee
 ```
 
-They land in `src/components/ui/`, converted to JavaScript. In use: `scroll-progress`, plus the 21st.dev `liquid-sculpture-hero.tsx` (TypeScript, with small local changes listed at the top of the file). The scroll-velocity bands, dock and shimmer button were removed in the Apple-style redesign; any of them can be re-added with the CLI. Magic UI is built on Tailwind CSS, so Tailwind v4 is set up through `@tailwindcss/vite` with only its theme and utility layers (no Preflight reset, so the hand-written CSS is unaffected), plus the `cn` helper in `src/lib/utils.js`. The CLI adds any packages a component needs (usually `motion`) and its keyframes to `src/index.css`.
+They land in `src/components/ui/`, converted to JavaScript. In use: `scroll-based-velocity`, `scroll-progress`, `dock` and `shimmer-button` (with one local change: an `as` prop, so it can render as a link). Re-adding `shimmer-button` with the CLI would undo that change. Magic UI is built on Tailwind CSS, so Tailwind v4 is set up through `@tailwindcss/vite` with only its theme and utility layers (no Preflight reset, so the hand-written CSS is unaffected), plus the `cn` helper in `src/lib/utils.js`. The CLI adds any packages a component needs (usually `motion`) and its keyframes to `src/index.css`.
 
 ### React Bits
 

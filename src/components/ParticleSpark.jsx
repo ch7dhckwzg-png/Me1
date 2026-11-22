@@ -11,11 +11,11 @@ import spark from '@/assets/hero/spark.webp'
  * Without WebGL2 the component shows the static spark image instead.
  */
 
-// Where the spark sits: centred under the hero copy, like a product shot.
+// Where the spark sits, matching the hero's layout at each width.
 function placement(w) {
-  if (w >= 1024) return { scale: 0.56, mobileScale: 1, x: 0, y: 22 }
-  if (w >= 640) return { scale: 0.4, mobileScale: 1, x: 0, y: 22 }
-  return { scale: 1, mobileScale: 0.74, x: 0, y: 26 } // phones
+  if (w >= 880) return { scale: 0.64, mobileScale: 1, x: 19, y: -7 } // right of the copy, clear of the sticker
+  if (w >= 640) return { scale: 0.42, mobileScale: 1, x: -6, y: -19 } // above the copy
+  return { scale: 1, mobileScale: 0.74, x: -7, y: -22 } // phones: above the copy
 }
 
 export default function ParticleSpark() {

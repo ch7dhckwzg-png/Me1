@@ -1,114 +1,97 @@
 /* ---------- Work: shared ---------- */
 
-.work {
-  border-top: 1px solid var(--line);
-}
-
-/* Jump links to each kind of work. */
 .work-nav {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.25rem 1.5rem;
-  margin-top: 1.25rem;
+  gap: 0.6rem;
+  margin-top: 2rem;
 }
 
 .work-nav a {
   display: inline-flex;
   align-items: center;
   min-height: 44px;
-  color: var(--accent-text);
-  font-size: 1rem;
+  padding: 0.5rem 1.1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-control);
+  color: var(--soft);
+  font-size: 0.92rem;
   text-decoration: none;
+  transition:
+    border-color 0.2s,
+    color 0.2s;
 }
 
 .work-nav a:hover {
-  text-decoration: underline;
+  border-color: var(--accent);
+  color: var(--fg);
 }
 
 .work-block {
-  padding-top: clamp(4.5rem, 9vw, 7rem);
-  scroll-margin-top: calc(var(--nav-h) + 12px);
+  padding-top: clamp(4rem, 9vw, 7rem);
+  scroll-margin-top: 1rem;
 }
 
 .block-head {
   display: grid;
-  justify-items: center;
-  gap: 0.6rem;
-  margin-bottom: clamp(2.25rem, 4vw, 3.25rem);
-  text-align: center;
+  gap: 0.75rem 3rem;
+  margin-bottom: clamp(2rem, 4vw, 3rem);
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--line);
+}
+
+@media (min-width: 900px) {
+  .block-head {
+    grid-template-columns: 1fr 1fr;
+    align-items: end;
+  }
+}
+
+.block-head .lead {
+  font-size: 1.05rem;
 }
 
 /* ---------- Websites ---------- */
 
 .sites {
   display: grid;
-  gap: 1rem;
+  gap: clamp(4rem, 8vw, 6.5rem);
 }
 
-/* Each site is a tile: words above, the website itself below. */
 .site {
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  border-radius: var(--radius-tile);
-  background: var(--surface);
-}
-
-.site-copy {
   display: grid;
-  justify-items: center;
-  padding: clamp(2rem, 4vw, 3rem) var(--gutter) 0;
-  text-align: center;
+  gap: 2.25rem 4rem;
+  align-items: center;
 }
 
-.site-kind {
-  color: var(--muted);
-  font-size: 0.95rem;
-}
+@media (min-width: 960px) {
+  .site {
+    grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+  }
 
-.site-copy h4 {
-  margin: 0.2rem 0 0.6rem;
-}
-
-.site-copy > p:not(.site-kind) {
-  max-width: 48ch;
-  color: var(--soft);
-}
-
-.tags {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.4rem 1rem;
-  margin: 0.9rem 0 0;
-  padding: 0;
-  list-style: none;
-  color: var(--muted);
-  font-size: 0.88rem;
+  .site.is-flipped .site-devices {
+    order: 2;
+  }
 }
 
 .site-devices {
   position: relative;
-  width: min(100%, 860px);
-  margin: clamp(2rem, 4vw, 2.75rem) auto 0;
-  padding: 0 clamp(1.25rem, 5vw, 4rem);
+  padding: 0 7% 10% 0;
 }
 
 .browser {
   overflow: hidden;
-  border: 1px solid rgba(243, 237, 227, 0.12);
-  border-bottom: 0;
-  border-radius: 12px 12px 0 0;
+  border: 1px solid rgba(243, 237, 227, 0.14);
+  border-radius: 14px;
   background: #0d0c0b;
-  box-shadow: 0 -10px 50px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 40px 80px -30px rgba(0, 0, 0, 0.75);
 }
 
 .browser-bar {
   display: flex;
   align-items: center;
   gap: 7px;
-  padding: 9px 14px;
+  padding: 10px 14px;
   border-bottom: 1px solid rgba(243, 237, 227, 0.08);
   background: #1b1916;
 }
@@ -140,77 +123,91 @@
 
 .phone {
   position: absolute;
-  right: clamp(0.5rem, 3vw, 2.5rem);
+  right: 0;
   bottom: 0;
-  width: 21%;
+  width: 24%;
   overflow: hidden;
   border: 5px solid #0b0a09;
-  border-bottom: 0;
-  border-radius: 24px 24px 0 0;
+  border-radius: 26px;
   outline: 1px solid rgba(243, 237, 227, 0.16);
-  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.8);
 }
 
-.phone img {
-  aspect-ratio: 390 / 600;
-  object-fit: cover;
-  object-position: top;
+.site-kind {
+  margin-bottom: 0.4rem;
+  color: var(--accent);
+  font-size: 0.92rem;
+  font-weight: 500;
 }
 
-/* ---------- Tabs: a segmented control ---------- */
+.site-copy h4 {
+  margin-bottom: 1rem;
+}
+
+.site-copy > p:not(.site-kind) {
+  max-width: 42ch;
+  margin-bottom: 1.4rem;
+  color: var(--soft);
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  list-style: none;
+  padding: 0;
+}
+
+/* ---------- Tabs ---------- */
 
 .tab-list {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  gap: 2px;
-  width: fit-content;
-  max-width: 100%;
-  margin: 0 auto 1.5rem;
-  padding: 3px;
-  border-radius: 9px;
-  background: var(--surface);
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
 }
 
 .tab {
-  min-height: 40px;
-  padding: 0.5rem 1.1rem;
-  border: 0;
+  min-height: 44px;
+  padding: 0.6rem 1.15rem;
+  border: 1px solid var(--line);
   border-radius: var(--radius-control);
   background: none;
   color: var(--soft);
-  font: 500 0.92rem var(--sans);
+  font: 500 0.95rem var(--sans);
   cursor: pointer;
   transition:
-    background-color 0.2s,
-    color 0.2s;
+    background-color 0.25s,
+    border-color 0.25s,
+    color 0.25s;
 }
 
 .tab:hover {
+  border-color: rgba(243, 237, 227, 0.35);
   color: var(--fg);
 }
 
 .tab[aria-selected='true'] {
-  background: var(--surface-2);
-  color: var(--fg);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--ink);
 }
 
 .tab-panel {
-  animation: panel-in 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  animation: panel-in 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 @keyframes panel-in {
   from {
     opacity: 0;
+    translate: 0 12px;
   }
 }
 
 .tab-lead {
-  max-width: 52ch;
-  margin: 0 auto 1.75rem;
-  color: var(--muted);
-  text-align: center;
+  max-width: 56ch;
+  margin-bottom: 1.75rem;
+  color: var(--soft);
 }
 
 /* ---------- Photography ---------- */
@@ -234,7 +231,7 @@
   width: 100%;
   aspect-ratio: 4 / 5;
   object-fit: cover;
-  border-radius: var(--radius-tile);
+  border-radius: 16px;
 }
 
 .photo-slot {
@@ -288,8 +285,7 @@
 }
 
 .photo-cap b {
-  font: 600 1.15rem/1.2 var(--display);
-  letter-spacing: -0.015em;
+  font: 400 1.4rem/1.1 var(--serif);
 }
 
 .photo-cap span {
@@ -453,8 +449,7 @@
 
 .motion-cap b {
   display: block;
-  font: 600 1.15rem/1.2 var(--display);
-  letter-spacing: -0.015em;
+  font: 400 1.4rem/1.1 var(--serif);
 }
 
 .motion-cap span {

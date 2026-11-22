@@ -4,9 +4,9 @@ import { FAQ } from '@/content'
 export default function Faq() {
   return (
     <section className="section faq" id="faq">
-      <div className="wrap faq-wrap">
-        <header className="section-head centered">
-          <h2 className="display">Good to know.</h2>
+      <div className="wrap faq-grid">
+        <header className="section-head">
+          <h2 className="display">Good to know</h2>
           <p className="lead">Anything else, just ask. We’re happy to talk it through.</p>
         </header>
         <div className="faq-list">

@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import SiteFooter from '@/components/SiteFooter'
-import SiteNav from '@/components/SiteNav'
+import { MAILTO } from '@/content'
+import logo from '@/assets/logo.svg'
 
 /**
  * Header, main and footer for every page except the home page.
@@ -14,7 +15,15 @@ export default function PageShell({ title, crumb, className = '', children }) {
   return (
     <>
       <a className="skip-link" href="#main">Skip to content</a>
-      <SiteNav base="/" />
+      <header className="legal-header">
+        <nav className="nav" aria-label="Main">
+          <a className="logo" href="/">
+            <img src={logo} width="1275" height="477" alt="Catalyze, home" />
+          </a>
+          <a className="btn btn-ghost nav-back" href="/">Back to the site</a>
+          <a className="btn btn-primary nav-cta" href={MAILTO}>Start a project</a>
+        </nav>
+      </header>
       <main id="main" tabIndex={-1} className={`legal ${className}`}>
         <div className="wrap legal-wrap">
           {crumb && (
