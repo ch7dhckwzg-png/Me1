@@ -1,11 +1,11 @@
 # PROJECT STATE
 
-Read this first when resuming. Last updated: 23 November 2026.
+Read this first when resuming. Last updated: 23 November 2026 (Episode 01 site built).
 
 ## Current position
 
-- **Phase:** Section 05 complete. **Waiting at FIRST APPROVAL CHECKPOINT** (owner picks 5 of the 10 and orders them).
-- **Current episode:** none yet (Episode 01 starts once the five are chosen).
+- **Phase:** Section 06, **SECOND APPROVAL CHECKPOINT** for Episode 01 (website built, awaiting owner feedback).
+- **Current episode:** 01, Social 114 (New Brighton). Owner picked it directly; episodes 02 to 05 not chosen yet.
 
 ## Done
 
@@ -15,7 +15,7 @@ Read this first when resuming. Last updated: 23 November 2026.
 
 ## Selected businesses and episode order
 
-Not chosen yet.
+01. Social 114, 114 Victoria Road, New Brighton CH45 2JF. 02 to 05 to be chosen.
 
 ## Verified social handles
 
@@ -25,11 +25,12 @@ Only handles the business links itself (Fresha partner pages) are verified:
 | --- | --- | --- | --- |
 | Mode Beauty and Hair | @modebeautyandhairwirral | not sourced | page exists, URL not captured |
 | HARE Colour & Extensions | @hare.colourandextensions | not sourced | not sourced |
+| Social 114 | @social114_ (per La Vida 2022, unconfirmed) | not sourced | /GetSocial114 (per La Vida 2022, unconfirmed) |
 | All other shortlisted | owner to confirm on phone | | |
 
-## Approved websites and preview links
+## Websites and preview links
 
-None yet.
+- Episode 01 Social 114: built in `WEBSITES/EPISODE_01/` (Astro + Tailwind). Private preview page: https://claude.ai/artifact/ELnnFbmVpNc2wrU3wMGpDo . **Not yet approved.** No public deploy.
 
 ## Narrator
 

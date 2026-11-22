@@ -1,0 +1,82 @@
+---
+import site from '../content/site.json';
+const { street } = site;
+// Their shopfront, drawn: black frame, two big windows, the orange door,
+// a row of leaded glass above. Panes are seeded to match the hero.
+let seed = 7;
+const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+const tones = ['#efe9db', '#efe9db', '#efe9db', '#e8b631', '#3f8c86', '#79a9c8', '#efe9db'];
+const transom = (x0: number, w: number, cols: number) =>
+  Array.from({ length: cols * 2 }, (_, i) => ({
+    x: x0 + (i % cols) * (w / cols) + 2,
+    y: 22 + Math.floor(i / cols) * 22 + 2,
+    w: w / cols - 4,
+    fill: tones[Math.floor(rnd() * tones.length)],
+  }));
+const left = transom(30, 300, 10), door = transom(350, 120, 4), right = transom(490, 300, 10);
+---
+<section class="street">
+  <div class="wrap">
+    <div class="head reveal">
+      <p class="kicker">{street.kicker}</p>
+      <h2 class="h-section">{street.headline}</h2>
+      <p class="lead">{street.body}</p>
+    </div>
+
+    <figure class="front reveal" aria-label="Drawing of the Social 114 shopfront on Victoria Road">
+      <svg viewBox="0 0 820 420" role="img" aria-label="Illustration of the Social 114 shopfront">
+        <rect x="0" y="0" width="820" height="420" rx="6" class="facade"/>
+        {[...left, ...door, ...right].map((p) => <rect x={p.x} y={p.y} width={p.w} height="18" fill={p.fill} class="glass"/>)}
+        <g class="win">
+          <rect x="30" y="74" width="300" height="270" />
+          <rect x="490" y="74" width="300" height="270" />
+        </g>
+        <g class="inside">
+          <rect x="60" y="250" width="120" height="8" rx="2" />
+          <rect x="70" y="258" width="4" height="60" /><rect x="166" y="258" width="4" height="60" />
+          <path d="M226 300 q10 -60 0 -110 q20 30 14 110z M240 300 q-14 -40 -30 -70 q30 18 38 70z" class="plant"/>
+          <rect x="520" y="250" width="240" height="8" rx="2" />
+          <circle cx="600" cy="140" r="9" class="bulb"/><circle cx="700" cy="140" r="9" class="bulb"/>
+          <path d="M600 74v57M700 74v57" class="cord"/>
+        </g>
+        <text x="180" y="200" text-anchor="middle" class="sign">Social 114.</text>
+        <rect x="350" y="74" width="120" height="296" class="door"/>
+        <rect x="368" y="96" width="84" height="120" class="doorglass"/>
+        <circle cx="452" cy="250" r="5" fill="#15171c"/>
+        <rect x="0" y="370" width="820" height="50" class="pave"/>
+        <text x="410" y="402" text-anchor="middle" class="num">114</text>
+      </svg>
+      <figcaption>Drawn from the street. Real photography would replace this in a finished build.</figcaption>
+    </figure>
+
+    <p class="dir reveal">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5a7 7 0 0 0-7 7c0 5.2 7 12 7 12s7-6.8 7-12a7 7 0 0 0-7-7Zm0 9.6a2.6 2.6 0 1 1 0-5.2 2.6 2.6 0 0 1 0 5.2Z" fill="currentColor"/></svg>
+      {street.directions}
+    </p>
+  </div>
+</section>
+
+<style>
+  .street { background: var(--bg-2); transition: background-color var(--t); }
+  .head { max-width: 760px; }
+  .front { margin: clamp(28px, 4vw, 48px) 0 0; }
+  .front svg { width: 100%; height: auto; display: block; }
+  .facade { fill: #15171c; }
+  .win rect { fill: #cfe1ea; transition: fill var(--t); }
+  .inside rect, .inside .cord { fill: #8b6a43; stroke: #8b6a43; stroke-width: 2; transition: fill var(--t), stroke var(--t); }
+  .inside .plant { fill: #3c6b4a; }
+  .bulb { fill: #f4efe6; transition: fill var(--t), filter var(--t); }
+  .sign { font-family: var(--font-display); font-weight: 800; font-size: 46px; fill: #15171c; transition: fill var(--t); }
+  .door { fill: var(--door); }
+  .doorglass { fill: #cfe1ea; transition: fill var(--t); }
+  .pave { fill: #2a2d35; }
+  .num { font: 500 14px var(--font-mono); fill: #8d929c; letter-spacing: .2em; }
+  .glass { transition: filter var(--t); }
+  :global([data-mode="night"]) .win rect, :global([data-mode="night"]) .doorglass { fill: #ffcf7a; }
+  :global([data-mode="night"]) .bulb { fill: #fff3c9; filter: drop-shadow(0 0 10px #ffd27a); }
+  :global([data-mode="night"]) .glass { filter: brightness(1.15) drop-shadow(0 0 4px rgba(255, 200, 100, .7)); }
+  :global([data-mode="night"]) .sign { fill: #3a2410; }
+  figcaption { font: 400 12px/1.4 var(--font-mono); color: var(--muted); margin-top: 10px; }
+  .dir { display: flex; gap: 10px; align-items: center; margin: 24px 0 0; font-weight: 500; }
+  .dir svg { width: 22px; height: 22px; color: var(--accent); flex-shrink: 0; }
+</style>

@@ -1,0 +1,127 @@
+{
+  "_note": "ALL copy, hours, menu and links for the site. Anything marked _placeholder: true is unverified and must be confirmed with Social 114 before this concept is shown as accurate.",
+  "concept": {
+    "label": "Unofficial concept by CATALYZE",
+    "detail": "Social 114 did not commission this site. Hours, dishes and event dates are taken from public sources and may be out of date.",
+    "catalyze": "@catalyze.uk"
+  },
+  "business": {
+    "name": "Social 114",
+    "wordmark": "Social 114.",
+    "tagline": "Coffee and brunch by day. Wood-fired pizza and wine by night.",
+    "address": ["114 Victoria Road", "New Brighton", "Wirral", "CH45 2JF"],
+    "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Social+114+114+Victoria+Road+New+Brighton+CH45+2JF",
+    "instagram": { "handle": "@social114_", "url": "https://www.instagram.com/social114_/", "_source": "Linked by La Vida Liverpool, Oct 2022. Confirm still current." },
+    "facebook": { "url": "https://www.facebook.com/GetSocial114", "_source": "Linked by La Vida Liverpool, Oct 2022. Confirm still current." }
+  },
+  "nav": [
+    { "label": "Menu", "href": "#menu" },
+    { "label": "The oven", "href": "#oven" },
+    { "label": "Nights", "href": "#nights" },
+    { "label": "Visit", "href": "#visit" }
+  ],
+  "modes": {
+    "day": {
+      "label": "Day",
+      "kicker": "By day",
+      "headline": "Coffee, brunch and a slow morning on Victoria Road.",
+      "body": "Good coffee, matcha, loose leaf tea, bakes and brunch on sourdough. A bright room with a chilled playlist, and dogs welcome."
+    },
+    "night": {
+      "label": "Night",
+      "kicker": "By night",
+      "headline": "The oven's lit. Pizza, wine and records.",
+      "body": "Neapolitan-style pizza from the wood-fired oven, wines picked by a sommelier, good beer and the odd vinyl night."
+    }
+  },
+  "hours": {
+    "_placeholder": true,
+    "_source": "La Vida Liverpool (Oct 2022) and listings. Confirm current hours.",
+    "timezone": "Europe/London",
+    "brunch": { "from": "09:30", "to": "15:00" },
+    "pizzaFrom": "18:00",
+    "nightStarts": "17:00",
+    "week": [
+      { "day": "Monday", "open": "08:00", "close": "16:00" },
+      { "day": "Tuesday", "open": "08:00", "close": "16:00" },
+      { "day": "Wednesday", "closed": true },
+      { "day": "Thursday", "open": "08:00", "close": "late" },
+      { "day": "Friday", "open": "08:00", "close": "late" },
+      { "day": "Saturday", "open": "08:00", "close": "late" },
+      { "day": "Sunday", "open": "08:00", "close": "late" }
+    ]
+  },
+  "menu": {
+    "_placeholder": true,
+    "_source": "Dishes named in La Vida Liverpool (2022), Wanderlog reviews and a third-party menu page. Prices deliberately left off until confirmed.",
+    "note": "A short menu that changes. Ask what's on today.",
+    "brunch": {
+      "label": "Brunch",
+      "when": "9:30am to 3pm",
+      "items": [
+        { "name": "Chorizo hash", "desc": "Fried egg, hot honey" },
+        { "name": "Smoked salmon and scrambled egg", "desc": "On sourdough" },
+        { "name": "Smashed avocado", "desc": "Poached eggs, sourdough" },
+        { "name": "Creamy mushrooms", "desc": "On sourdough" },
+        { "name": "Bacon focaccia", "desc": "Sea salt and rosemary focaccia" },
+        { "name": "Peanut butter and banana", "desc": "On toast" },
+        { "name": "Beans on toast", "desc": "On sourdough" }
+      ]
+    },
+    "pizza": {
+      "label": "Pizza",
+      "when": "From 6pm",
+      "intro": "Neapolitan style. Light, thin bases, straight from the wood-fired oven.",
+      "items": [
+        { "id": "pepperoni", "name": "Pepperoni, jalapeño and honey", "desc": "Heat, then sweet." },
+        { "id": "sweetpotato", "name": "Sweet potato and stilton", "desc": "Soft, sharp and a bit rich." },
+        { "id": "sage", "name": "Parmesan, sage and truffle oil", "desc": "The quiet one." }
+      ]
+    },
+    "drinks": {
+      "label": "Drinks",
+      "when": "All day",
+      "items": [
+        { "name": "Coffee", "desc": "Espresso, flat white, iced" },
+        { "name": "Matcha", "desc": "Hot or iced" },
+        { "name": "Loose leaf tea", "desc": "Including rooibos" },
+        { "name": "Wine", "desc": "Picked by a sommelier" },
+        { "name": "Beer", "desc": "Vedett, Krombacher and more" },
+        { "name": "Bakes", "desc": "Cakes and pastries on the counter" }
+      ]
+    }
+  },
+  "oven": {
+    "kicker": "The oven",
+    "headline": "At six, the fire goes in.",
+    "body": "The kitchen switches over after brunch: the wood-fired oven comes up to heat and the evening menu starts. Neapolitan pizza cooks fast in a hot oven, so the bases stay light and blistered.",
+    "button": "Light the oven",
+    "buttonLit": "Oven lit"
+  },
+  "nights": {
+    "kicker": "Nights",
+    "headline": "Records on, lights down.",
+    "body": "Vinyl DJ sets and community evenings in the Victoria Quarter. Dates go up on Instagram first.",
+    "play": "Spin the record",
+    "pause": "Stop the record",
+    "events": {
+      "_placeholder": true,
+      "items": [
+        { "when": "Friday", "what": "Vinyl night", "detail": "Date to be confirmed" },
+        { "when": "Saturday", "what": "Pizza and records", "detail": "Date to be confirmed" }
+      ]
+    }
+  },
+  "street": {
+    "kicker": "The street",
+    "headline": "In the middle of the Victoria Quarter.",
+    "body": "Victoria Road is New Brighton's street art quarter, and Social 114 sits right in it. Co-owner Robert Jones coordinates the street art on the road; his partner Vic runs the hospitality side.",
+    "directions": "A short walk down Victoria Road from New Brighton station, towards the prom."
+  },
+  "visit": {
+    "kicker": "Visit",
+    "headline": "114 Victoria Road.",
+    "dogs": "Dogs welcome.",
+    "mapsLabel": "Open in Maps"
+  }
+}

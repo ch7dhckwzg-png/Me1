@@ -1,0 +1,3 @@
+# Unofficial speculative concept. Not for indexing.
+User-agent: *
+Disallow: /

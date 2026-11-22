@@ -1,0 +1,106 @@
+---
+import site from '../content/site.json';
+const { menu } = site;
+const tabs = [
+  { id: 'brunch', ...menu.brunch },
+  { id: 'pizza', ...menu.pizza },
+  { id: 'drinks', ...menu.drinks },
+];
+---
+<section id="menu" class="menu">
+  <div class="wrap">
+    <div class="top reveal">
+      <div>
+        <p class="kicker">The menu</p>
+        <h2 class="h-section">Short, simple, done properly.</h2>
+      </div>
+      <p class="lead">{menu.note}</p>
+    </div>
+
+    <div class="tabs reveal" role="tablist" aria-label="Menu">
+      {tabs.map((t) => (
+        <button role="tab" id={`tab-${t.id}`} aria-controls={`panel-${t.id}`} aria-selected="false" data-tab={t.id} type="button">
+          <span class="tl">{t.label}</span><span class="tw">{t.when}</span>
+        </button>
+      ))}
+    </div>
+
+    <div id="panel-brunch" role="tabpanel" aria-labelledby="tab-brunch" class="panel" data-panel="brunch" hidden>
+      <ol class="list">
+        {menu.brunch.items.map((it, i) => (
+          <li style={`--i:${i}`}><span class="n">{it.name}</span><span class="dots" aria-hidden="true"></span><span class="d">{it.desc}</span></li>
+        ))}
+      </ol>
+    </div>
+
+    <div id="panel-pizza" role="tabpanel" aria-labelledby="tab-pizza" class="panel pizza-panel" data-panel="pizza" hidden>
+      <div class="pz-copy">
+        <p class="lead">{menu.pizza.intro}</p>
+        <div class="pz-list" role="radiogroup" aria-label="Choose a pizza to see it built">
+          {menu.pizza.items.map((p, i) => (
+            <button type="button" role="radio" aria-checked={i === 0 ? 'true' : 'false'} data-pizza={p.id} class="pz-btn">
+              <span class="pz-num">{String(i + 1).padStart(2, '0')}</span>
+              <span class="pz-txt"><span class="pz-name">{p.name}</span><span class="pz-desc">{p.desc}</span></span>
+            </button>
+          ))}
+        </div>
+        <p class="pz-hint">Pick one to watch it built.</p>
+      </div>
+      <div class="pz-stage">
+        <div class="peel" aria-hidden="true"></div>
+        <svg id="pizza" viewBox="-160 -160 320 320" role="img" aria-label="Illustration of the selected pizza"></svg>
+      </div>
+    </div>
+
+    <div id="panel-drinks" role="tabpanel" aria-labelledby="tab-drinks" class="panel" data-panel="drinks" hidden>
+      <ol class="list two">
+        {menu.drinks.items.map((it, i) => (
+          <li style={`--i:${i}`}><span class="n">{it.name}</span><span class="dots" aria-hidden="true"></span><span class="d">{it.desc}</span></li>
+        ))}
+      </ol>
+    </div>
+  </div>
+</section>
+
+<style>
+  .menu { background: var(--bg-2); transition: background-color var(--t); }
+  .top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 12px 40px; }
+  .top .lead { margin: 0 0 22px; }
+  .tabs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 2px solid var(--fg); border-bottom: 1px solid var(--line); margin-top: 26px; transition: border-color var(--t); }
+  .tabs button { all: unset; cursor: pointer; padding: 20px 4px 18px; display: flex; flex-direction: column; gap: 4px; position: relative; }
+  .tabs button:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+  .tl { font-family: var(--font-display); font-weight: 700; font-size: clamp(24px, 3.2vw, 40px); line-height: 1; color: var(--muted); transition: color .3s; }
+  .tw { font: 400 13px/1 var(--font-mono); color: var(--muted); letter-spacing: .06em; }
+  .tabs button::after { content: ""; position: absolute; left: 0; right: 12px; bottom: -1px; height: 4px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform .45s cubic-bezier(.2,.8,.2,1); }
+  .tabs button[aria-selected="true"] .tl { color: var(--fg); }
+  .tabs button[aria-selected="true"]::after { transform: scaleX(1); }
+
+  .panel { padding-top: clamp(28px, 4vw, 48px); }
+  .list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; max-width: 900px; }
+  .list.two { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 48px; max-width: none; }
+  .list li { display: flex; align-items: baseline; gap: 14px; padding: 16px 0; border-bottom: 1px solid var(--line); animation: item .6s cubic-bezier(.2,.8,.2,1) both; animation-delay: calc(var(--i) * 55ms); transition: border-color var(--t); }
+  @keyframes item { from { opacity: 0; transform: translateX(-14px); } to { opacity: 1; transform: none; } }
+  .n { font-family: var(--font-display); font-weight: 600; font-size: clamp(20px, 2.2vw, 28px); line-height: 1.15; }
+  .dots { flex: 1; border-bottom: 1.5px dotted var(--line); transform: translateY(-5px); min-width: 20px; }
+  .d { color: var(--muted); font-size: 15px; text-align: right; }
+
+  .pizza-panel { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: clamp(24px, 5vw, 72px); align-items: center; }
+  .pz-copy .lead { margin-top: 0; }
+  .pz-list { display: grid; gap: 10px; margin-top: 18px; }
+  .pz-btn { all: unset; cursor: pointer; display: flex; gap: 16px; align-items: center; padding: 16px 18px; border: 1px solid var(--line); border-radius: var(--radius); transition: border-color .25s, background-color .25s, transform .2s; }
+  .pz-btn:hover { transform: translateX(4px); }
+  .pz-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .pz-btn[aria-checked="true"] { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 10%, transparent); }
+  .pz-num { font: 500 13px/1 var(--font-mono); color: var(--accent); }
+  .pz-txt { display: flex; flex-direction: column; gap: 3px; }
+  .pz-name { font-family: var(--font-display); font-weight: 650; font-size: 21px; line-height: 1.15; }
+  .pz-desc { font-size: 14px; color: var(--muted); }
+  .pz-hint { font: 400 13px/1.4 var(--font-mono); color: var(--muted); margin-top: 14px; }
+  .pz-stage { position: relative; aspect-ratio: 1; max-width: 560px; width: 100%; justify-self: center; }
+  .peel { position: absolute; inset: 4%; border-radius: 50%; background: radial-gradient(circle at 50% 45%, var(--birch), #c99a5b 72%, #b78545); box-shadow: 0 30px 60px -20px rgba(0,0,0,.35); }
+  .peel::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: repeating-linear-gradient(100deg, transparent 0 14px, rgba(120, 80, 30, .08) 14px 15px); }
+  #pizza { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+
+  @media (max-width: 860px) { .pizza-panel { grid-template-columns: 1fr; } .pz-stage { order: -1; max-width: 420px; } .list.two { grid-template-columns: 1fr; } }
+  @media (max-width: 560px) { .list li { flex-direction: column; gap: 2px; } .dots { display: none; } .d { text-align: left; } .tl { font-size: 22px; } }
+</style>
