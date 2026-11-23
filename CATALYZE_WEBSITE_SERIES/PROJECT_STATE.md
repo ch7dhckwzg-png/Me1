@@ -126,3 +126,6 @@ None yet.
   - Demo mode: sample times from opening hours, nothing sent, clearly labelled.
   - Launch path is Square Appointments via `server/square-booking.mjs` (written, not deployed or tested).
   - Fresha can't take on-site bookings: no public API, and its page can't be embedded. Going live means the salon moves its diary to Square and loses its Fresha profile. Raise this in the pitch.
+- v5 (tag ep02-salonsanctuary-v5): owner picked the backwash station (option 1 of 6) to replace the basin graphic.
+  - It builds once on arrival: cabinet, bowl tilt, chair recline, tap, drop.
+  - It has its own trigger, so it plays when visible, while the tiles still start early.

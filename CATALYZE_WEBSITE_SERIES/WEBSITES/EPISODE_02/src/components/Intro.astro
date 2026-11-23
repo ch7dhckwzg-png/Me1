@@ -2,8 +2,8 @@
 import site from '../content/site.json';
 const { hero } = site;
 // Their herringbone wall (from the photo behind the basins) is painted on a
-// canvas tile by tile when the section arrives (main.ts), then a black basin
-// settles in front of it.
+// canvas tile by tile when the section arrives (main.ts), then their wash
+// station builds in front: cabinet, bowl tips back, chair reclines, tap, one drop.
 const W = 600, H = 640;
 ---
 <section class="intro" id="start" aria-labelledby="hero-title">
@@ -26,20 +26,31 @@ const W = 600, H = 640;
     <div class="wall reveal-wall" aria-hidden="true">
       <canvas data-wall></canvas>
       <svg class="basin-art" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMid slice">
-        <g class="basin">
-          <ellipse cx="300" cy="640" rx="230" ry="22" fill="#000" opacity=".12" />
-          <path d="M 140 640 L 140 548 Q 140 506 182 504 L 418 504 Q 460 506 460 548 L 460 640 Z" fill="#17191c" />
-          <path d="M 154 640 L 154 552 Q 154 520 186 518 L 414 518 Q 446 520 446 552 L 446 640" fill="none" stroke="#a9874f" stroke-width="1.6" opacity=".85" />
-          {[205, 255, 300, 345, 395].map((x) => <line x1={x} x2={x} y1="528" y2="640" stroke="#2c3035" stroke-width="2" />)}
-          <path d="M 176 510 Q 300 498 424 510" stroke="#fff" stroke-opacity=".12" stroke-width="2" fill="none" />
-          <g transform="translate(300 430)">
-            <path d="M 20 70 L 14 92 L -14 92 L -20 70" fill="#0e0f11" />
-            <path d="M -138 0 Q -130 80 0 86 Q 130 80 138 0 Z" fill="#111215" />
-            <ellipse rx="138" ry="24" fill="#2a2e33" />
-            <ellipse rx="121" ry="16" cy="2" fill="#07080a" />
-            <path d="M -104 -11 Q -28 -24 48 -20" stroke="#fff" stroke-opacity=".32" stroke-width="3" fill="none" />
-            <path d="M -120 22 Q -60 60 10 64" stroke="#fff" stroke-opacity=".08" stroke-width="10" fill="none" />
+        <g class="wash">
+          <rect x="0" y="560" width="600" height="80" fill="#e9d6d3" />
+          <line class="floor-line" pathLength="1" x1="0" x2="600" y1="560" y2="560" stroke="#b99a94" stroke-width="1.5" />
+          <ellipse class="w-shadow" cx="300" cy="566" rx="230" ry="20" fill="#2b2e31" />
+          <g class="cabinet">
+            <rect x="86" y="420" width="170" height="146" rx="6" fill="#17191c" />
+            <rect x="86" y="420" width="170" height="6" fill="#a9874f" />
           </g>
+          <g class="chair-base">
+            <path d="M 300 472 L 540 456 Q 556 456 556 472 L 556 500 L 300 512 Z" fill="#17191c" />
+            <path d="M 318 448 L 470 440" stroke="#17191c" stroke-width="16" stroke-linecap="round" />
+            <path d="M 340 512 L 330 566 M 520 500 L 536 566 M 326 566 L 350 566 M 520 566 L 548 566" stroke="#a9874f" stroke-width="5" stroke-linecap="round" />
+          </g>
+          <g class="bowl">
+            <path d="M 70 392 L 282 368 Q 270 470 170 478 Q 92 476 70 392 Z" fill="#0f1012" />
+            <path d="M 70 392 L 282 368" stroke="#3b3f45" stroke-width="7" stroke-linecap="round" />
+            <path class="rim-light" pathLength="1" d="M 92 396 Q 160 390 250 378" stroke="#fff" stroke-opacity=".35" stroke-width="3" fill="none" />
+          </g>
+          <g class="backrest">
+            <path d="M 262 382 L 318 372 L 376 470 L 324 486 Z" fill="#17191c" />
+          </g>
+          <path class="piping" pathLength="1" d="M 270 392 L 322 470 L 316 494 L 548 482" stroke="#a9874f" stroke-width="2" fill="none" />
+          <path class="tap" pathLength="1" d="M 96 386 C 92 318 160 300 176 344" stroke="#a9874f" stroke-width="7" fill="none" stroke-linecap="round" />
+          <circle class="spout" cx="176" cy="348" r="5" fill="#a9874f" />
+          <path class="drop" d="M 176 352 C 172 360 171 364 176 367 C 181 364 180 360 176 352 Z" fill="#dcecf0" stroke="#9fb7bd" stroke-width=".8" />
         </g>
       </svg>
     </div>
@@ -61,7 +72,33 @@ const W = 600, H = 640;
   .status :global(.dot.open) { background: #4f7a56; }
   .wall { position: relative; aspect-ratio: 600 / 640; border-radius: var(--radius); overflow: hidden; box-shadow: 0 30px 60px rgba(43, 46, 49, .12); background: #efe1df; }
   .wall canvas, .wall svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
-  :global(.js) .reveal-wall .basin { opacity: 0; transform: translateY(40px); transition: opacity .6s ease-out .8s, transform .9s var(--ease-out) .8s; }
-  :global(.js) .reveal-wall.laid .basin { opacity: 1; transform: none; }
+  /* wash station: builds once when the wall is on screen (main.ts adds .laid) */
+  .w-shadow { opacity: .16; }
+  .cabinet, .bowl, .chair-base { transform-box: view-box; }
+  .bowl { transform-origin: 282px 368px; }
+  .backrest { transform-box: view-box; transform-origin: 350px 478px; }
+  :global(.js) .reveal-wall:not(.laid) .floor-line, :global(.js) .reveal-wall:not(.laid) .piping, :global(.js) .reveal-wall:not(.laid) .tap { stroke-dashoffset: 1; }
+  .floor-line, .piping, .tap { stroke-dasharray: 1; stroke-dashoffset: 0; }
+  .rim-light { stroke-dasharray: .22 1; stroke-dashoffset: .22; }
+  :global(.js) .reveal-wall:not(.laid) .w-shadow { opacity: 0; }
+  :global(.js) .reveal-wall:not(.laid) .cabinet { opacity: 0; transform: translateY(44px); }
+  :global(.js) .reveal-wall:not(.laid) .chair-base { opacity: 0; transform: translateY(18px); }
+  :global(.js) .reveal-wall:not(.laid) .bowl { opacity: 0; transform: rotate(-9deg); }
+  :global(.js) .reveal-wall:not(.laid) .backrest { opacity: 0; transform: rotate(30deg); }
+  :global(.js) .reveal-wall:not(.laid) .spout { opacity: 0; }
+  .drop { opacity: 0; }
+  :global(.js) .reveal-wall .floor-line { transition: stroke-dashoffset .4s var(--ease-out) 0s; }
+  :global(.js) .reveal-wall .w-shadow { transition: opacity .5s ease-out .15s; }
+  :global(.js) .reveal-wall .cabinet { transition: opacity .25s ease-out .1s, transform .55s var(--ease-out) .1s; }
+  :global(.js) .reveal-wall .chair-base { transition: opacity .3s ease-out .25s, transform .45s var(--ease-out) .25s; }
+  :global(.js) .reveal-wall .bowl { transition: opacity .2s ease-out .4s, transform .5s var(--ease-out) .4s; }
+  :global(.js) .reveal-wall.laid .rim-light { stroke-dashoffset: -1; transition: stroke-dashoffset .5s cubic-bezier(.45, 0, .25, 1) .85s; }
+  :global(.js) .reveal-wall .backrest { transition: opacity .15s ease-out .6s, transform .6s cubic-bezier(.45, 0, .2, 1) .6s; }
+  :global(.js) .reveal-wall .piping { transition: stroke-dashoffset .35s var(--ease-out) .95s; }
+  :global(.js) .reveal-wall .tap { transition: stroke-dashoffset .3s var(--ease-out) 1s; }
+  :global(.js) .reveal-wall .spout { transition: opacity .2s 1.2s; }
+  :global(.js) .reveal-wall.laid .drop { animation: drip .55s cubic-bezier(.55, 0, .9, .45) 1.3s both; }
+  @keyframes drip { 0% { opacity: 0; transform: translateY(0) scale(.4); } 25% { opacity: 1; transform: translateY(0) scale(1); } 90% { opacity: 1; transform: translateY(40px) scale(1); } 100% { opacity: 0; transform: translateY(46px) scale(.8); } }
+  .drop { transform-box: fill-box; transform-origin: 50% 0; }
   @media (max-width: 900px) { .hero-in { grid-template-columns: 1fr; } .title { font-size: clamp(38px, 10vw, 56px); } .wall { max-width: 460px; width: 100%; } }
 </style>

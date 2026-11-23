@@ -73,7 +73,15 @@ The "Colour, blonding and cutting on Burlington Street." section moved to second
 All motion still plays once or answers a tap. Nothing follows scroll or the cursor.
 
 - **The mirror reflects their room.** A soft reflection sits behind the glass: herringbone wall, black basin and chair, blush stools on gold legs, pendant light. It's drawn in code (`art-src/mirror-room.svg`) and rendered once to `public/art/mirror-room.webp`. Water droplets sit on the fog and clear with it.
-- **Herringbone wall.** In the second section, their tile wall is painted on a canvas tile by tile on arrival, then a black basin on a stitched leather chair with gold piping settles in front.
+- **Herringbone wall and wash station.** In the second section, their tile wall is painted on a canvas tile by tile. It starts just before it scrolls into view. Once the wall is properly on screen, their backwash station builds in front in about two seconds:
+  1. The floor line draws in.
+  2. The black cabinet rises.
+  3. The basin tips back to its angle, and light runs along the rim.
+  4. The chair reclines into the neck rest.
+  5. The gold piping and tap draw on.
+  6. One drop falls into the bowl.
+
+  It plays once. With reduced motion, the finished scene shows straight away.
 - **Find your colour** (new section):
   - Tap your shade now, then the shade you'd like. Those two locks slide out of the ring with "Now" and "Goal" labels.
   - It suggests a starting service from the real menu, with prices and booking, plus the £10 consultation.
