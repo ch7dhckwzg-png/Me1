@@ -36,7 +36,7 @@ Only handles the business links itself (Fresha partner pages) are verified:
 
 ## Narrator
 
-Not chosen. Blocked on a voice provider: ElevenLabs (preferred, word timestamps) or OpenAI TTS; neither reachable yet, no key held.
+Not chosen. ElevenLabs key saved on the environment (proxy-injected). **Blocked: account is Free**; library voices and Voice Design need a paid plan via the API (and Free has no commercial licence). Owner to upgrade to Starter. Five young northern male voices shortlisted in `VOICE/AUDITIONS/SHORTLIST.md`.
 
 ## Outstanding decisions for the owner
 
