@@ -38,7 +38,22 @@ p = Image.open(pizza_src); pa = np.asarray(p.convert('RGB'))
 sat, lum = hsv_parts(pa)
 cx, cy, r = circle_fit((sat > .28) & (lum > 60))
 d = np.hypot(xx - cx, yy - cy)
-alpha = np.clip((r - 1.5 - d) / 2.0 + 1, 0, 1)
+# matte from the photo itself (bright or saturated crust), not a geometric circle
+def _close(m, n):
+    for _ in range(n):
+        g = m.copy(); g[1:] |= m[:-1]; g[:-1] |= m[1:]; g[:, 1:] |= m[:, :-1]; g[:, :-1] |= m[:, 1:]; m = g
+    for _ in range(n):
+        g = m.copy(); g[1:] &= m[:-1]; g[:-1] &= m[1:]; g[:, 1:] &= m[:, :-1]; g[:, :-1] &= m[:, 1:]; m = g
+    return m
+crust = ((sat > .2) & (lum > 50)) | (lum > 105)
+solid = _close(crust & (d < r + 16), 6) | (d < r - 30)
+# fill enclosed holes (dark char blisters): background is only what connects to the frame edge
+bg = np.zeros_like(solid); bg[0, :] = bg[-1, :] = bg[:, 0] = bg[:, -1] = True; bg &= ~solid
+for _ in range(2000):
+    g = bg.copy(); g[1:] |= bg[:-1]; g[:-1] |= bg[1:]; g[:, 1:] |= bg[:, :-1]; g[:, :-1] |= bg[:, 1:]; g &= ~solid
+    if (g == bg).all(): break
+    bg = g
+alpha = (~bg).astype(np.float32)
 print('pizza circle', round(cx), round(cy), round(r))
 finish(p, alpha, 'public/images/hero-pizza', 1100, [(ImageEnhance.Contrast, 1.06), (ImageEnhance.Color, 1.04)])
 

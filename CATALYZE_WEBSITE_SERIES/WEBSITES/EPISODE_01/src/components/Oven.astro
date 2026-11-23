@@ -5,13 +5,11 @@ const { oven, hours } = site;
 <section id="oven" class="oven">
   <div class="wrap grid">
     <div class="clock reveal" data-oven>
-      <span class="glow" aria-hidden="true"></span>
       <p class="label">The oven lights at</p>
       <p class="big">{hours.pizzaFrom}</p>
       <p class="count" data-oven-count></p>
     </div>
     <div class="reveal">
-      <p class="label label-accent">{oven.kicker}</p>
       <h2 class="h-section">{oven.headline}</h2>
       <p class="lead">{oven.body}</p>
     </div>
@@ -22,9 +20,7 @@ const { oven, hours } = site;
   .oven { background: var(--night-bg); color: var(--night-fg); --muted: var(--night-muted); --line: var(--night-line); --accent: var(--night-accent); border-top: 0; }
   .grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: clamp(40px, 7vw, 120px); align-items: center; }
   .clock { position: relative; }
-  .glow { position: absolute; left: 10%; top: 50%; width: 70%; aspect-ratio: 1; transform: translateY(-50%); border-radius: 50%; background: radial-gradient(closest-side, rgba(215, 105, 60, .28), rgba(215, 105, 60, 0)); opacity: 0; transition: opacity 2.4s var(--ease) .3s; pointer-events: none; }
-  .clock.in .glow { opacity: 1; }
   .big { position: relative; font-family: var(--font-display); font-weight: 300; font-size: clamp(110px, 17vw, 260px); line-height: .85; letter-spacing: -0.05em; margin: 18px 0 26px; font-variant-numeric: tabular-nums; }
-  .count { position: relative; margin: 0; font-family: var(--font-display); font-style: italic; font-size: 22px; color: var(--accent); }
+  .count { position: relative; margin: 0; font-family: var(--font-display); font-size: 22px; color: var(--accent); }
   @media (max-width: 860px) { .grid { grid-template-columns: 1fr; } }
 </style>

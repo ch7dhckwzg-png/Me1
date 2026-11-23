@@ -54,7 +54,7 @@ const track = document.querySelector<HTMLElement>('[data-hero-track]')!;
 const stage = document.querySelector<HTMLElement>('[data-dish-stage]')!;
 const cupImg = document.querySelector<HTMLElement>('[data-dish="cup"]')!;
 const pizzaImg = document.querySelector<HTMLElement>('[data-dish="pizza"]')!;
-const halo = document.querySelector<HTMLElement>('[data-halo]')!;
+const rotor = document.querySelector<HTMLElement>('[data-rotor]')!;
 const HEADER = 72;
 const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
 const smooth = (a: number, b: number, v: number) => { const t = clamp01((v - a) / (b - a)); return t * t * (3 - 2 * t); };
@@ -79,16 +79,15 @@ function placeDish(p: number) {
   const x = x0 + (x1 - x0) * e;
   const rot = e * 400;
   const scale = 1 - .12 * bell;
-  stage.style.transform = `translate3d(${x.toFixed(1)}px, ${(-14 * bell).toFixed(1)}px, 0) rotate(${rot.toFixed(1)}deg) scale(${scale.toFixed(3)})`;
+  stage.style.transform = `translate3d(${x.toFixed(1)}px, ${(-14 * bell).toFixed(1)}px, 0) scale(${scale.toFixed(3)})`;
+  rotor.style.transform = `rotate(${rot.toFixed(1)}deg)`;
   const k = smooth(.36, .64, p);
-  const blur = (9 * bell * bell).toFixed(1);
-  if (!root.classList.contains('intro')) {
-    cupImg.style.opacity = String(1 - k);
-    cupImg.style.filter = `drop-shadow(0 30px 40px rgba(60,40,20,.22)) blur(${blur}px)`;
-  }
+  // a little motion blur at the fastest point; skipped on small screens where filters cost the most
+  const b = narrow ? 0 : 6 * bell * bell;
+  const blur = b > .3 ? `blur(${b.toFixed(1)}px)` : 'none';
+  if (!root.classList.contains('intro')) { cupImg.style.opacity = String(1 - k); cupImg.style.filter = blur; }
   pizzaImg.style.opacity = String(k);
-  pizzaImg.style.filter = `drop-shadow(0 34px 44px rgba(0,0,0,.5)) blur(${blur}px)`;
-  halo.style.opacity = String(smooth(.55, .9, p));
+  pizzaImg.style.filter = blur;
 }
 let ticking = false;
 function onScroll() {
