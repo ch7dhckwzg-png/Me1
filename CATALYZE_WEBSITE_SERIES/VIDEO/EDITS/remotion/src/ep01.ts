@@ -9,7 +9,7 @@ export const scenes = {
   hook: { from: 0, dur: 90 },        // 0.0 to 3.0s  hook: Street View arrival, then the cup spins into the pizza
   business: { from: 90, dur: 60 },   // 3.0 to 5.0s  the business
   build: { from: 150, dur: 150 },    // 5.0 to 10.0s the build (code, real drafts, decisions)
-  reveal: { from: 300, dur: 180 },   // 10.0 to 16.0s laptop and phone side by side, both scrolling the whole site
+  reveal: { from: 300, dur: 180 },   // 10.0 to 16.0s grand reveal: laptop and phone head-on, both scrolling the whole site
   outro: { from: 480, dur: 45 },     // 16.0 to 17.5s CATALYZE
 };
 export const TOTAL = 525; // 17.5s (brief: 19s maximum)
@@ -28,7 +28,7 @@ export const footage = {
 // The hook's two on-screen lines (the voiceover says the same words, so they aren't captioned twice).
 export const hookLines = {
   a: ["This café didn't", 'have a website.'],
-  b: ['So I built them', 'a new one.'],
+  b: ['So I built', 'them one.'],
 };
 
 export const place = {

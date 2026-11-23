@@ -25,7 +25,6 @@ const Label: React.FC<{ children: React.ReactNode; style?: React.CSSProperties }
 );
 
 /* ---------- 1. Hook: arrive at the shop on Street View, then the payoff ---------- */
-const DAY = '#f5f4f1', NAVY = '#121722', INK = '#17191e';
 const Hook: React.FC = () => {
   const f = useCurrentFrame();
   const SW = 54; // 1.8s: the zoom through the sign into the dish
@@ -36,30 +35,23 @@ const Hook: React.FC = () => {
   // Part B: the dish spins, the cup becomes the pizza, the frame turns to night.
   const bIn = lerp(f, SW - 6, SW + 4, 0, 1);
   const bScale = lerp(f, SW - 6, SW + 10, 1.25, 1);
-  const wipe = lerp(f, SW + 8, SW + 26, 0, 150, inOut);
-  const night = lerp(f, SW + 10, SW + 24, 0, 1);
-  const spin = f * 1.8 + lerp(f, SW + 4, SW + 30, 0, 200, inOut);
-  const cupO = 1 - lerp(f, SW + 10, SW + 22, 0, 1, inOut);
-  const dBlur = Math.max(0, 9 * Math.sin(Math.PI * Math.min(1, Math.max(0, (f - (SW + 4)) / 24))));
   const lineA = (i: number) => `translateY(${lerp(f, i * 3, 9 + i * 3, 70, 0)}%)`;
   const lineB = (i: number) => `translateY(${lerp(f, SW + 2 + i * 4, SW + 16 + i * 4, 115, 0)}%)`;
   return (
     <AbsoluteFill style={{ background: C.bg, overflow: 'hidden' }}>
-      {/* B underneath */}
-      <AbsoluteFill style={{ background: DAY, opacity: bIn, transform: `scale(${bScale})` }}>
-        <AbsoluteFill style={{ background: NAVY, clipPath: `circle(${wipe}% at 50% 62%)` }} />
-        <AbsoluteFill style={{ alignItems: 'center', justifyContent: 'center', top: 330 }}>
-          <div style={{ position: 'relative', width: 1280, height: 1280 }}>
-            <div style={{ position: 'absolute', inset: '14% 12% 4% 14%', borderRadius: '50%', background: `rgba(0,0,0,${0.28 + 0.3 * night})`, filter: 'blur(50px)', transform: 'translateY(5%)' }} />
-            <div style={{ position: 'absolute', inset: 0, transform: `rotate(${spin}deg)`, filter: dBlur > 0.3 ? `blur(${dBlur.toFixed(1)}px)` : undefined }}>
-              <Img src={staticFile('ep01/hero-cup.webp')} style={{ position: 'absolute', inset: 0, width: '100%', opacity: cupO }} />
-              <Img src={staticFile('ep01/hero-pizza.webp')} style={{ position: 'absolute', inset: 0, width: '100%', opacity: 1 - cupO }} />
-            </div>
-          </div>
-        </AbsoluteFill>
-        <AbsoluteFill style={{ padding: '210px 84px 0', fontFamily: serif, fontSize: 132, lineHeight: 0.98, letterSpacing: '-0.02em' }}>
+      {/* B underneath: a blurred scroll of the real site, teasing the reveal */}
+      <AbsoluteFill style={{ background: C.bg, opacity: bIn, transform: `scale(${bScale})` }}>
+        {f >= SW - 8 && (
+          <Sequence from={SW - 8} layout="none">
+            <AbsoluteFill style={{ filter: 'blur(26px) saturate(1.15)', transform: 'scale(1.18)' }}>
+              <OffthreadVideo src={staticFile('ep01/full-mobile.mp4')} muted playbackRate={1.6} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top' }} />
+            </AbsoluteFill>
+          </Sequence>
+        )}
+        <AbsoluteFill style={{ background: 'linear-gradient(180deg, rgba(10,9,8,.62) 0%, rgba(10,9,8,.30) 45%, rgba(10,9,8,.55) 100%)' }} />
+        <AbsoluteFill style={{ padding: '210px 84px 0', fontFamily: serif, fontSize: 150, lineHeight: 0.98, letterSpacing: '-0.02em' }}>
           {hookLines.b.map((l, i) => (
-            <div key={l} style={{ overflow: 'hidden', paddingBottom: 8 }}><div style={{ color: i ? C.orange : (night > 0.5 ? C.cream : INK), transform: lineB(i) }}>{l}</div></div>
+            <div key={l} style={{ overflow: 'hidden', paddingBottom: 10 }}><div style={{ color: i ? C.orange : C.cream, transform: lineB(i) }}>{l}</div></div>
           ))}
         </AbsoluteFill>
       </AbsoluteFill>
@@ -76,7 +68,7 @@ const Hook: React.FC = () => {
             ))}
             <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginTop: 34, opacity: show(f, 6, 10) }}>
               <div style={{ width: 14, height: 14, borderRadius: '50%', background: C.orange }} />
-              <div style={{ fontFamily: sans, fontWeight: 600, fontSize: 34, color: C.cream, letterSpacing: '0.01em' }}>{place.street}, New Brighton</div>
+              <div style={{ fontFamily: sans, fontWeight: 600, fontSize: 34, color: C.cream, letterSpacing: '0.01em' }}>{place.street}, {place.area}</div>
             </div>
           </AbsoluteFill>
           {footage.streetCredit && (
@@ -200,69 +192,58 @@ const Build: React.FC = () => {
   );
 };
 
-/* ---------- 4. The reveal: laptop and phone side by side, scrolling the whole site in sync ---------- */
-const LW = 1000, LH = 640, SCR_W = 948, SCR_H = 593; // lid and screen (16:10)
-const Laptop: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <div style={{ position: 'relative', width: LW, height: LH, transformStyle: 'preserve-3d' }}>
-    <div style={{ position: 'absolute', inset: 0, transformStyle: 'preserve-3d', transformOrigin: 'bottom center', transform: 'rotateX(-12deg)' }}>
-    {/* lid back + edge for thickness */}
-    <div style={{ position: 'absolute', inset: 0, borderRadius: 26, background: '#8e9096', transform: 'translateZ(-10px)' }} />
-    <div style={{ position: 'absolute', top: 14, bottom: 0, right: -5, width: 10, background: 'linear-gradient(#b5b7bc, #7d8086)', transform: 'rotateY(90deg)', transformOrigin: 'left' }} />
-    {/* lid front: bezel and screen */}
-    <div style={{ position: 'absolute', inset: 0, borderRadius: 26, background: '#0c0c0e', boxShadow: 'inset 0 0 0 2px #2b2b2f', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-      <div style={{ width: SCR_W, height: SCR_H, borderRadius: 8, overflow: 'hidden', background: '#000', position: 'relative' }}>
-        {children}
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(115deg, rgba(255,255,255,.07) 0%, rgba(255,255,255,0) 38%)' }} />
-      </div>
+/* ---------- 4. The grand reveal: laptop and phone head-on, scrolling the whole site in sync ---------- */
+const SCR_W = 904, SCR_H = 565; // 16:10, matches the desktop capture
+const FrontLaptop: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+    <div style={{ padding: 18, paddingBottom: 26, borderRadius: '26px 26px 6px 6px', background: '#0c0c0e', boxShadow: '0 0 0 2px #2e2e33, inset 0 0 0 1px #1d1d21' }}>
+      <div style={{ width: SCR_W, height: SCR_H, borderRadius: 6, overflow: 'hidden', position: 'relative', background: '#000' }}>{children}</div>
     </div>
-    </div>
-    {/* base: lies flat, toward the viewer from the hinge */}
-    <div style={{ position: 'absolute', left: -30, top: LH - 2, width: LW + 60, height: 640, transformOrigin: 'top center', transform: 'rotateX(90deg)', transformStyle: 'preserve-3d' }}>
-      <div style={{ position: 'absolute', inset: 0, borderRadius: '6px 6px 34px 34px', background: 'linear-gradient(180deg, #c4c6cb 0%, #a9abb1 100%)' }}>
-        <div style={{ position: 'absolute', left: 90, right: 90, top: 50, height: 330, borderRadius: 14, background: '#2a2b2f', display: 'grid', gridTemplateColumns: 'repeat(14, 1fr)', gap: 7, padding: 12 }}>
-          {Array.from({ length: 84 }, (_, i) => <div key={i} style={{ background: '#17181b', borderRadius: 5 }} />)}
-        </div>
-        <div style={{ position: 'absolute', left: '50%', top: 410, width: 420, height: 200, marginLeft: -210, borderRadius: 16, background: '#b6b8bd', boxShadow: 'inset 0 0 0 1.5px #9d9fa5' }} />
-      </div>
-      {/* front edge */}
-      <div style={{ position: 'absolute', left: 0, right: 0, bottom: -18, height: 18, borderRadius: '0 0 20px 20px', background: '#7f8187', transformOrigin: 'top', transform: 'rotateX(-90deg)' }} />
+    {/* the deck, seen from the front: a thin aluminium lip with a thumb notch */}
+    <div style={{ position: 'relative', width: SCR_W + 140, height: 24, borderRadius: '3px 3px 22px 22px', background: 'linear-gradient(180deg, #d9dbe0 0%, #b9bbc1 45%, #8d9096 100%)' }}>
+      <div style={{ position: 'absolute', left: '50%', top: 0, width: 150, height: 9, marginLeft: -75, borderRadius: '0 0 10px 10px', background: '#9ea1a7' }} />
     </div>
   </div>
 );
-const Phone: React.FC<{ children: React.ReactNode; width: number }> = ({ children, width }) => (
-  <div style={{ width, padding: Math.round(width * 0.03), borderRadius: width * 0.13, background: '#0b0a09', boxShadow: '0 0 0 2px #2c2925, inset 0 0 0 2px #3a3631' }}>
-    <div style={{ borderRadius: width * 0.105, overflow: 'hidden', position: 'relative' }}>{children}</div>
+const FrontPhone: React.FC<{ children: React.ReactNode; width: number }> = ({ children, width }) => (
+  <div style={{ width, padding: 11, borderRadius: 48, background: '#0b0a09', boxShadow: '0 0 0 2px #34312c, inset 0 0 0 2px #3a3631, 0 50px 90px -20px rgba(0,0,0,.85)' }}>
+    <div style={{ borderRadius: 38, overflow: 'hidden', position: 'relative' }}>{children}</div>
   </div>
 );
+const Sheen: React.FC<{ f: number; start: number }> = ({ f, start }) => {
+  const x = lerp(f, start, start + 26, -120, 220, inOut);
+  if (f < start || f > start + 28) return null;
+  return <div style={{ position: 'absolute', inset: 0, background: `linear-gradient(105deg, transparent ${x - 30}%, rgba(255,255,255,.16) ${x}%, transparent ${x + 30}%)`, pointerEvents: 'none' }} />;
+};
 const Reveal: React.FC = () => {
   const f = useCurrentFrame();
   const end = scenes.reveal.dur;
-  const t = lerp(f, 0, 30, 0, 1);                       // the pair rises in
-  const drift = lerp(f, 0, end, 0, 1, inOut);            // slow camera drift to the right
-  const night = lerp(f, 30, 60, 0, 1);
-  const PW = 280;
-  const rise = (1 - t) * 240;
+  const bloom = lerp(f, 0, 30, 0, 1);
+  const lapIn = lerp(f, 4, 30, 0, 1);
+  const phoneIn = lerp(f, 14, 38, 0, 1);
+  const push = lerp(f, 20, end, 1.02, 1.09, inOut); // slow push-in while it scrolls
+  const PW = 310;
   return (
-    <AbsoluteFill style={{ background: C.bg, opacity: fade(f, 0, 6, end - 6, end) }}>
-      <AbsoluteFill style={{ background: `radial-gradient(75% 40% at 50% 55%, rgba(255,110,0,${0.08 * night}), transparent)` }} />
-      {/* desk shadow under both */}
-      <AbsoluteFill style={{ alignItems: 'center', justifyContent: 'center', top: 360 }}>
-        <div style={{ width: 1050, height: 170, borderRadius: '50%', background: 'rgba(0,0,0,.75)', filter: 'blur(55px)' }} />
-      </AbsoluteFill>
-      <AbsoluteFill style={{ perspective: 2600, perspectiveOrigin: '50% 30%' }}>
-        {/* laptop, left */}
-        <div style={{ position: 'absolute', left: 540 - 95 - 500, top: 600, transformStyle: 'preserve-3d',
-          transform: `translateY(${rise}px) scale(${0.66 + 0.03 * drift}) rotateX(-11deg) rotateY(${-15 + 7 * drift}deg)` }}>
-          <Laptop>
-            <OffthreadVideo src={staticFile('ep01/full-desktop.mp4')} muted style={{ width: SCR_W, height: SCR_H, objectFit: 'cover', objectPosition: 'top', display: 'block' }} />
-          </Laptop>
+    <AbsoluteFill style={{ background: C.bg, opacity: fade(f, 0, 4, end - 6, end) }}>
+      {/* warm light blooms in behind the devices */}
+      <AbsoluteFill style={{ background: `radial-gradient(60% 34% at 50% 50%, rgba(255,140,60,${0.16 * bloom}), rgba(255,110,0,${0.05 * bloom}) 55%, transparent 80%)` }} />
+      <AbsoluteFill style={{ transform: `scale(${push})`, transformOrigin: '50% 48%' }}>
+        {/* soft floor glow and shadow */}
+        <div style={{ position: 'absolute', left: 90, right: 90, top: 1000, height: 90, borderRadius: '50%', background: 'rgba(0,0,0,.8)', filter: 'blur(40px)', opacity: lapIn }} />
+        <div style={{ position: 'absolute', left: 0, right: 0, top: 400, display: 'flex', justifyContent: 'center', opacity: lapIn, transform: `translateY(${(1 - lapIn) * 120}px) scale(${0.94 + 0.06 * lapIn})` }}>
+          <div style={{ position: 'relative' }}>
+            <FrontLaptop>
+              <OffthreadVideo src={staticFile('ep01/full-desktop.mp4')} muted style={{ width: SCR_W, height: SCR_H, objectFit: 'cover', objectPosition: 'top', display: 'block' }} />
+              <Sheen f={f} start={34} />
+            </FrontLaptop>
+          </div>
         </div>
-        {/* phone, right, standing on the same desk */}
-        <div style={{ position: 'absolute', left: 540 + 360 - PW / 2, top: 640, transformStyle: 'preserve-3d',
-          transform: `translateY(${rise * 1.15}px) scale(${1 + 0.03 * drift}) rotateX(-8deg) rotateY(${-16 + 7 * drift}deg)` }}>
-          <Phone width={PW}>
-            <OffthreadVideo src={staticFile('ep01/full-mobile.mp4')} muted style={{ width: PW - 2 * Math.round(PW * 0.03), display: 'block' }} />
-          </Phone>
+        {/* the phone stands in front, centred on the laptop's deck */}
+        <div style={{ position: 'absolute', left: 540 - PW / 2, top: 945, opacity: phoneIn, transform: `translateY(${(1 - phoneIn) * 160}px)` }}>
+          <FrontPhone width={PW}>
+            <OffthreadVideo src={staticFile('ep01/full-mobile.mp4')} muted style={{ width: PW - 22, display: 'block' }} />
+            <Sheen f={f} start={40} />
+          </FrontPhone>
         </div>
       </AbsoluteFill>
     </AbsoluteFill>

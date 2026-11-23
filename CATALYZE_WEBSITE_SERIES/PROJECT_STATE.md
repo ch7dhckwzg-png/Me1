@@ -74,3 +74,8 @@ None yet.
 
 - Hook line now "This café didn't have a website." Street View clip is now a slow-motion pan along the shopfront (source 0.4 to 1.65s at 60fps, played at 0.69x).
 - Reveal: laptop and phone side by side, both scrolling the whole site in sync (new captures `full-desktop` / `full-mobile` on one shared timeline).
+
+## Episode 01 edit, cut 5 (23 Nov 2026)
+
+- First clip names "114 Victoria Road, New Brighton, Wirral". Hook line 2 is "So I built them one." over a blurred scroll of the real site (tease) instead of the cup/pizza spin.
+- Ending is a head-on grand reveal: warm light bloom, laptop rises in facing camera, phone stands in front, one light sheen across both screens, slow push-in while both scroll the whole site in sync. The angled 3D laptop is gone.
