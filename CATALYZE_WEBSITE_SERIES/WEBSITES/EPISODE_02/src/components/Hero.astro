@@ -1,0 +1,148 @@
+---
+import site from '../content/site.json';
+const { hero } = site;
+
+// Hair-colour swatch ring, drawn in code: dark roots on the left, the
+// salon's rose gloss on the far right. Each lock is a shaped path with a
+// root-to-tip gradient, a soft sheen and fine strands clipped inside it.
+const shades = [
+  ['#211814', '#3d2a20'], // darkest brown
+  ['#3a2419', '#6a412a'], // chestnut
+  ['#5a2c1a', '#a15a33'], // copper
+  ['#6c482c', '#ad7f52'], // caramel
+  ['#8a6740', '#c9a26a'], // honey
+  ['#a8875a', '#dcc090'], // golden blonde
+  ['#c2a881', '#ecdcbc'], // pale blonde
+  ['#d3c6b2', '#f4ece0'], // toned, icy
+  ['#b98d86', '#ebcdc6'], // rose gloss (their pink)
+];
+let seed = 7;
+const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+const lock = 'M -14 44 C -20 150 -25 290 -20 392 C -16 428 -8 446 1 452 C 9 444 17 426 21 390 C 25 290 21 150 15 44 Z';
+const swatches = shades.map(([root, tip], i) => {
+  const strands = Array.from({ length: 30 }, (_, k) => {
+    const x0 = -14 + (k / 29) * 29 + (rnd() - .5) * 2;
+    const spread = x0 * 1.45;
+    const x1 = spread + (rnd() - .5) * 6;
+    const bow = (rnd() - .5) * 10;
+    const end = 380 + rnd() * 66 - Math.abs(x1) * 1.4;
+    return { d: `M ${x0.toFixed(1)} 44 C ${(x0 + bow).toFixed(1)} 170 ${(x1 - bow).toFixed(1)} 290 ${x1.toFixed(1)} ${end.toFixed(1)}`, light: k % 3 === 0, w: (.5 + rnd() * .7).toFixed(2) };
+  });
+  return { i, root, tip, strands };
+});
+---
+<section class="hero" aria-labelledby="hero-title">
+  <div class="track" data-hero-track>
+    <div class="stage">
+      <div class="wrap hero-in">
+        <div class="copy">
+          <h1 id="hero-title" class="title">
+            {hero.title.map((l) => <span class="line">{l}</span>)}
+          </h1>
+          <p class="lead hero-lead">{hero.lead}</p>
+          <div class="quick" role="group" aria-labelledby="quick-label">
+            <p id="quick-label" class="quick-label">{hero.quick}</p>
+            <div class="quick-row">
+              {hero.quickPicks.map((q) => (
+                <button type="button" class="btn quick-btn" data-book-cat={q.key}>{q.label}</button>
+              ))}
+            </div>
+          </div>
+          <p class="status data" data-status aria-live="polite"></p>
+        </div>
+
+        <div class="fan-wrap" aria-hidden="true">
+          <svg class="fan" viewBox="-420 -50 840 520" data-fan>
+            <defs>
+              <path id="lock" d={lock} />
+              <clipPath id="lock-clip"><use href="#lock" /></clipPath>
+              <linearGradient id="sheen" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#fff" stop-opacity="0" />
+                <stop offset=".26" stop-color="#fff" stop-opacity=".22" />
+                <stop offset=".36" stop-color="#fff" stop-opacity="0" />
+                <stop offset=".9" stop-color="#000" stop-opacity="0" />
+                <stop offset="1" stop-color="#000" stop-opacity=".12" />
+              </linearGradient>
+              <linearGradient id="side" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0" stop-color="#000" stop-opacity=".22" />
+                <stop offset=".3" stop-color="#000" stop-opacity="0" />
+                <stop offset=".7" stop-color="#fff" stop-opacity=".06" />
+                <stop offset="1" stop-color="#000" stop-opacity=".2" />
+              </linearGradient>
+              {swatches.map((s) => (
+                <linearGradient id={`g${s.i}`} x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color={s.root} />
+                  <stop offset="1" stop-color={s.tip} />
+                </linearGradient>
+              ))}
+            </defs>
+            <g class="locks">
+              {swatches.map((s) => (
+                <g class="sw" data-sw={s.i}>
+                  <g class="sw-body">
+                    <use href="#lock" fill={`url(#g${s.i})`} />
+                    <g clip-path="url(#lock-clip)">
+                      {s.strands.map((t) => <path d={t.d} fill="none" stroke={t.light ? '#fff' : '#000'} stroke-opacity={t.light ? .16 : .14} stroke-width={t.w} />)}
+                      <rect x="-30" y="40" width="60" height="420" fill="url(#side)" />
+                      <rect x="-30" y="40" width="60" height="420" fill="url(#sheen)" />
+                    </g>
+                    <rect class="clamp" x="-18" y="22" width="36" height="26" rx="3" />
+                    <rect x="-18" y="22" width="36" height="5" rx="2" fill="#fff" fill-opacity=".08" />
+                  </g>
+                </g>
+              ))}
+            </g>
+            <circle class="ring" cx="0" cy="0" r="26" />
+            <circle class="ring-in" cx="0" cy="0" r="20" />
+          </svg>
+          <div class="fan-scale data"><span>{hero.fanFrom}</span><i></i><span>{hero.fanTo}</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero { border-top: 0; padding: 0; }
+  .track { position: relative; height: 210vh; }
+  .stage { position: sticky; top: var(--hdr); height: calc(100svh - var(--hdr)); min-height: 600px; display: flex; align-items: center; overflow: hidden; }
+  .hero-in { width: 100%; display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 40px; align-items: center; }
+  .title { font-family: var(--font-display); font-weight: 500; font-size: clamp(42px, 4.6vw, 70px); line-height: 1; letter-spacing: -0.02em; margin: 0 0 26px; }
+  .title .line { display: block; }
+  .title .line:last-child { color: var(--rose); }
+  .hero-lead { margin-bottom: 34px; }
+  .quick-label { margin: 0 0 12px; font-size: 13px; letter-spacing: .14em; text-transform: uppercase; font-weight: 500; color: var(--muted); }
+  .quick-row { display: flex; flex-wrap: wrap; gap: 8px; max-width: 560px; }
+  .quick-btn { padding: 12px 16px; font-size: 15px; background: color-mix(in srgb, #fff 45%, transparent); }
+  @media (hover: hover) { .quick-btn:hover { background: var(--sign); color: var(--fascia); border-color: var(--sign); } }
+  .status { margin: 22px 0 0; font-size: 13px; color: var(--muted); display: flex; align-items: center; gap: 10px; min-height: 1.6em; }
+  .status :global(.dot) { width: 7px; height: 7px; border-radius: 50%; background: var(--gold); flex: none; }
+  .status :global(.dot.open) { background: #4f7a56; }
+
+  .fan-wrap { position: relative; display: flex; flex-direction: column; align-items: center; }
+  .fan { width: 100%; max-width: 640px; height: auto; overflow: visible; }
+  .sw { will-change: transform; }
+  .sw-body { filter: drop-shadow(0 6px 10px rgba(43, 46, 49, .16)); }
+  .clamp { fill: var(--sign); }
+  .ring { fill: none; stroke: var(--gold); stroke-width: 6; }
+  .ring-in { fill: none; stroke: #c9ab73; stroke-width: 1.2; opacity: .7; }
+  .fan-scale { display: flex; align-items: center; gap: 14px; width: min(420px, 80%); margin-top: 8px; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+  .fan-scale i { flex: 1; height: 1px; background: linear-gradient(90deg, #3d2a20, #c9a26a 60%, #ebcdc6); }
+
+  /* Reduced motion and no-JS: the fan sits open. */
+  :global(html:not(.js)) .track { height: auto; }
+
+  @media (max-width: 900px) {
+    .track { height: 180vh; }
+    .stage { align-items: flex-start; padding-top: 28px; min-height: 0; }
+    .hero-in { grid-template-columns: 1fr; gap: 4px; }
+    .fan-wrap { order: -1; }
+    .fan { max-width: 330px; }
+    .fan-scale { display: none; }
+    .title { font-size: clamp(40px, 11vw, 60px); margin-bottom: 16px; }
+    .hero-lead { margin-bottom: 20px; font-size: 16px; }
+    .quick-btn { padding: 11px 13px; font-size: 14px; }
+    .status { margin-top: 14px; }
+  }
+  @media (max-width: 900px) and (max-height: 760px) { .fan { max-width: 250px; } .title { font-size: 38px; } }
+</style>

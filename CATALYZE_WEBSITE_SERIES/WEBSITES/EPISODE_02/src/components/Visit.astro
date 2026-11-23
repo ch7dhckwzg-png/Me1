@@ -1,0 +1,56 @@
+---
+import site from '../content/site.json';
+const { business, hours, visit, concept } = site;
+---
+<section id="visit" class="visit" aria-labelledby="visit-title">
+  <div class="wrap grid">
+    <div class="reveal">
+      <h2 id="visit-title" class="h-section">{visit.title}</h2>
+      <address>
+        {business.address.map((l) => <span>{l}</span>)}
+      </address>
+      <p class="links">
+        <a href={business.phoneHref} class="data">{business.phone}</a>
+        <a href={business.instagramHref} target="_blank" rel="noopener">{business.instagram}</a>
+      </p>
+      <div class="ctas">
+        <button type="button" class="btn btn-solid" data-book>Book an appointment</button>
+        <a class="btn" href={business.maps} target="_blank" rel="noopener">Open in Maps</a>
+      </div>
+    </div>
+    <div class="reveal">
+      <table class="hours" aria-label="Opening hours">
+        <tbody>
+          {hours.week.map((d) => (
+            <tr data-day={d.day}>
+              <th scope="row">{d.day}</th>
+              <td class="data">{d.closed ? visit.closedLabel : `${d.open} to ${d.close}`}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <footer class="wrap foot">
+    <p>{concept.label}. {concept.detail}</p>
+    <p>{concept.footer}</p>
+  </footer>
+</section>
+
+<style>
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 56px 80px; }
+  address { font-style: normal; font-family: var(--font-display); font-size: clamp(26px, 2.6vw, 36px); line-height: 1.2; font-weight: 500; display: flex; flex-direction: column; }
+  .links { display: flex; flex-wrap: wrap; gap: 8px 28px; margin: 26px 0 32px; font-size: 16px; }
+  .links a { text-decoration: none; border-bottom: 1px solid var(--tile); padding-bottom: 2px; }
+  .ctas { display: flex; flex-wrap: wrap; gap: 10px; }
+  .hours { width: 100%; border-collapse: collapse; font-size: 16px; }
+  .hours th, .hours td { padding: 15px 4px; border-bottom: 1px solid var(--line); text-align: left; font-weight: 400; }
+  .hours td { text-align: right; font-size: 15px; color: var(--muted); }
+  .hours tr.today th, .hours tr.today td { color: var(--fg); }
+  .hours tr.today th { font-weight: 500; }
+  .hours tr.today th::after { content: "Today"; margin-left: 10px; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--rose); }
+  .foot { margin-top: clamp(80px, 9vw, 130px); padding-top: 26px; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 32px; font-size: 13px; color: var(--muted); }
+  .foot p { margin: 0; }
+  .visit { padding-bottom: calc(40px + env(safe-area-inset-bottom, 0px)); }
+  @media (max-width: 860px) { .grid { grid-template-columns: 1fr; } .visit { padding-bottom: 110px; } }
+</style>

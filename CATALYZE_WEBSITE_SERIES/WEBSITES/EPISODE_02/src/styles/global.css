@@ -1,0 +1,75 @@
+@import "tailwindcss";
+@import "@fontsource-variable/cormorant-garamond";
+@import "@fontsource-variable/jost";
+@import "@fontsource/dm-mono/400.css";
+
+/*
+  The Salon Sanctuary. "Book in three taps".
+  Every colour and font lives here. Colours come from the salon itself
+  (Fresha venue photos, Nov 2026): the blush fascia, the pink doors, the
+  herringbone tile behind the basins, the charcoal sign lettering and window
+  frames, the black basins, and the brushed gold chair frames.
+*/
+:root {
+  /* colours from the room */
+  --fascia: #f6e6e8;      /* blush fascia board, toward the pink doors */
+  --fascia-2: #f0dadd;
+  --door: #e7c6bf;        /* pink doors */
+  --tile: #c9a39c;        /* herringbone tile */
+  --rose: #8a4b52;        /* deepest tile shadow, used for accent text */
+  --sign: #2b2e31;        /* sign lettering, window frames */
+  --basin: #131517;       /* black basins */
+  --gold: #a9874f;        /* brushed gold chair frames */
+
+  --bg: var(--fascia);
+  --bg-2: var(--fascia-2);
+  --fg: var(--sign);
+  --muted: #6a5f5c;
+  --line: #e6cfd2;
+  --accent: var(--rose);
+
+  /* fonts: the sign is a classic roman in wide caps */
+  --font-display: "Cormorant Garamond Variable", "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  --font-body: "Jost Variable", "Jost", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "DM Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  --radius: 6px;
+  --radius-control: 6px;
+  --gutter-l: max(24px, env(safe-area-inset-left, 0px));
+  --gutter-r: max(24px, env(safe-area-inset-right, 0px));
+  --max: 1280px;
+  --hdr: 72px;
+  --ease: cubic-bezier(.2, .7, .1, 1);
+  --ease-out: cubic-bezier(.23, 1, .32, 1);
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: calc(var(--hdr) + 8px); }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: 1ms !important; animation-iteration-count: 1 !important; transition-duration: 1ms !important; }
+}
+body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--font-body); font-size: 17px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+img, svg { max-width: 100%; }
+a { color: inherit; }
+:focus-visible { outline: 1.5px solid var(--accent); outline-offset: 4px; }
+::selection { background: var(--rose); color: #fff; }
+p { text-wrap: pretty; }
+
+.wrap { max-width: var(--max); margin: 0 auto; padding-left: var(--gutter-l); padding-right: var(--gutter-r); }
+.data { font-family: var(--font-mono); font-weight: 400; letter-spacing: .02em; font-variant-numeric: tabular-nums; }
+.h-section { font-family: var(--font-display); font-weight: 500; font-size: clamp(40px, 5.2vw, 78px); line-height: 1; letter-spacing: -0.015em; margin: 0 0 22px; text-wrap: balance; }
+.lead { font-size: clamp(17px, 1.4vw, 19px); color: var(--muted); max-width: 52ch; margin: 0; text-wrap: pretty; }
+section { padding-block: clamp(88px, 10vw, 152px); border-top: 1px solid var(--line); }
+
+/* buttons: small radius, never pills */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 12px; font: 500 15px/1 var(--font-body); letter-spacing: .02em; padding: 15px 20px; border-radius: var(--radius-control); border: 1px solid color-mix(in srgb, var(--fg) 22%, transparent); background: transparent; color: var(--fg); cursor: pointer; text-decoration: none; transition: background-color .25s, color .25s, border-color .25s, transform .16s var(--ease-out); -webkit-tap-highlight-color: transparent; }
+.btn:active { transform: scale(.97); }
+.btn-solid { background: var(--sign); border-color: var(--sign); color: var(--fascia); }
+@media (hover: hover) { .btn:hover { border-color: var(--fg); } .btn-solid:hover { background: var(--rose); border-color: var(--rose); color: #fff; } }
+.btn svg { width: 16px; height: 16px; flex: none; }
+
+/* arrive once */
+.js .reveal { transition: opacity 1s var(--ease), transform 1s var(--ease); }
+.js .reveal:not(.in) { opacity: 0; transform: translateY(16px); }

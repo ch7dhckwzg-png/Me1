@@ -1,0 +1,37 @@
+---
+import site from '../content/site.json';
+const { consult, booking } = site;
+---
+<section id="consult" class="consult" aria-labelledby="consult-title">
+  <div class="wrap grid">
+    <p class="big reveal" aria-hidden="true"><span class="num">{consult.number}</span><span class="unit">{consult.unit}</span></p>
+    <div class="copy reveal">
+      <h2 id="consult-title" class="h-section">{consult.title}</h2>
+      <p class="lead">{consult.lead}</p>
+      <ol class="list">
+        {consult.list.map((l, i) => <li><span class="data">{String(i + 1).padStart(2, '0')}</span>{l}</li>)}
+      </ol>
+      <button type="button" class="btn btn-light" data-book-id={booking.consultId}>
+        {consult.cta}
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9M8.5 4.5 12 8l-3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.4" /></svg>
+      </button>
+      <p class="meta data">{consult.ctaMeta}</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .consult { background: var(--basin); color: var(--fascia); border-top: 0; }
+  .grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px 80px; align-items: start; }
+  .big { margin: 0; font-family: var(--font-display); font-weight: 500; line-height: .8; color: var(--door); display: flex; flex-direction: column; }
+  .num { font-size: clamp(180px, 24vw, 360px); letter-spacing: -0.04em; }
+  .unit { font-family: var(--font-body); font-size: 15px; letter-spacing: .3em; text-transform: uppercase; color: #b9adaa; margin-top: 52px; padding-left: 10px; }
+  .consult .lead { color: #c4b8b4; }
+  .list { list-style: none; margin: 36px 0 36px; padding: 0; border-top: 1px solid #2e3032; }
+  .list li { display: grid; grid-template-columns: 44px 1fr; padding: 14px 0; border-bottom: 1px solid #2e3032; font-size: 17px; }
+  .list .data { color: var(--tile); font-size: 13px; padding-top: 3px; }
+  .btn-light { background: var(--fascia); border-color: var(--fascia); color: var(--sign); }
+  @media (hover: hover) { .btn-light:hover { background: var(--door); border-color: var(--door); } }
+  .meta { margin: 14px 0 0; font-size: 13px; color: #a89c98; }
+  @media (max-width: 860px) { .grid { grid-template-columns: 1fr; } .num { font-size: 46vw; } }
+</style>

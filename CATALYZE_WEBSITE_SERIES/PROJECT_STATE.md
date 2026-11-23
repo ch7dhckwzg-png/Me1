@@ -88,3 +88,14 @@ None yet.
 ## Buyer ranking (23 Nov 2026)
 
 - Owner wants businesses that will actually buy. Ranked in `RESEARCH/buyer_ranking.md` using Companies House checks: 1 The Salon Sanctuary, 2 Mode Beauty and Hair, 3 Golden Afternoon Floristry, 4 Goddess Hair & Skin Clinic, 5 Oxton Boutique, 6 Helen Seaton. Stollies dropped (old company in liquidation). Note: SOCIAL 114 LTD was dissolved in Jul 2024 (they trade under another entity now).
+
+## Episode 02: The Salon Sanctuary (23 Nov 2026)
+
+- Owner picked The Salon Sanctuary (61 Burlington Street, Liverpool L3 6LG). Brief: booking integrated into the site, easy booking first.
+- Website status: the shop sign prints www.thesalonsanctuary.co.uk. RDAP: the .co.uk was registered 30 Jun 2026 on parking nameservers, and the .com was registered 8 May 2026 with GoDaddy DNS. Neither could be loaded from here (blocked by the network proxy). **Owner to open both on a phone and check the Instagram bio and link-in-bio** before the hook line is fixed. Proposed hook if true: "This salon put a website on its sign. It doesn't go anywhere."
+- Site v1 built in `WEBSITES/EPISODE_02/` (tag ep02-salonsanctuary-v1):
+  - Booking panel hands off to Fresha with the chosen service preselected.
+  - Swatch-ring signature move.
+  - Impeccable detector: 0 findings. Rule sweep clean. WCAG AA contrast checked.
+  - Playwright checks at 1440 and 390: no errors, no horizontal scroll.
+- **Not yet approved (checkpoint 2).**

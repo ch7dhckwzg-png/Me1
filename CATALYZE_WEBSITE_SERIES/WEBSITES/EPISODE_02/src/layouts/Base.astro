@@ -1,0 +1,37 @@
+---
+import '../styles/global.css';
+import site from '../content/site.json';
+const { business, concept, hours, menu } = site;
+const title = `${business.name} | Hair colour, blonding and cutting, Burlington Street, Liverpool`;
+const description = `Hair salon at ${business.address.join(', ')}. See every price and book online.`;
+---
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#f6e6e8" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <script is:inline>document.documentElement.classList.add('js');</script>
+  </head>
+  <body>
+    <a class="skip" href="#prices">Skip to prices</a>
+    <div class="concept-strip"><span>{concept.label}</span><span class="concept-detail">{concept.detail}</span></div>
+    <slot />
+    <script type="application/json" id="hours-data" set:html={JSON.stringify(hours)} />
+    <script type="application/json" id="menu-data" set:html={JSON.stringify(menu)} />
+    <script>
+      import '../scripts/main.ts';
+    </script>
+    <style is:global>
+      .skip { position: absolute; left: -9999px; }
+      .skip:focus { left: 12px; top: 12px; z-index: 100; background: var(--bg); color: var(--fg); padding: 10px 14px; border-radius: var(--radius); }
+      .concept-strip { display: flex; flex-wrap: wrap; gap: 4px 16px; justify-content: center; padding: 9px var(--gutter-r) 9px var(--gutter-l); font: 400 12px/1.45 var(--font-body); background: var(--basin); color: #b9adaa; text-align: center; }
+      .concept-strip span:first-child { color: var(--fascia); text-transform: uppercase; letter-spacing: .14em; font-weight: 500; }
+      @media (max-width: 760px) { .concept-detail { display: none; } }
+    </style>
+  </body>
+</html>

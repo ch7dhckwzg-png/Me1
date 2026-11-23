@@ -1,0 +1,58 @@
+---
+import site from '../content/site.json';
+const { street } = site;
+// Fine-line drawing of the shopfront at 61 Burlington Street, from the
+// venue photo: long blush fascia with the TSS monogram, the name in wide
+// caps between rules, then seven glazed bays with the door in bay six.
+const bayW = 107, gap = 8;
+const bays = Array.from({ length: 7 }, (_, i) => 30 + i * (bayW + gap));
+---
+<section class="street" aria-labelledby="street-title">
+  <div class="wrap">
+    <div class="head reveal">
+      <h2 id="street-title" class="h-section">{street.title}</h2>
+      <p class="lead">{street.lead}</p>
+    </div>
+    <svg class="front reveal" viewBox="0 0 860 420" role="img" aria-label="Line drawing of The Salon Sanctuary's shopfront: a long blush sign above a glass front">
+      <g class="brick">
+        {Array.from({ length: 5 }, (_, r) => <line x1="10" x2="850" y1={12 + r * 10} y2={12 + r * 10} />)}
+      </g>
+      <rect class="fascia" x="20" y="62" width="820" height="112" rx="2" />
+      <text class="mono" x="52" y="104">T</text><text class="mono" x="66" y="118">S</text><text class="mono" x="80" y="132">S</text>
+      <line class="rule" x1="350" x2="398" y1="94" y2="94" /><line class="rule" x1="462" x2="510" y1="94" y2="94" />
+      <text class="sign" x="430" y="100" text-anchor="middle" font-size="22">THE</text>
+      <text class="sign" x="430" y="140" text-anchor="middle" font-size="34" letter-spacing="3">SALON SANCTUARY</text>
+      <text class="tel" x="52" y="158">TEL : 0151 345 3463</text>
+      <rect class="frame" x="20" y="186" width="820" height="214" />
+      {bays.map((x, i) => (
+        <g>
+          <rect class={i === 5 ? 'glass door' : 'glass'} x={x} y="198" width={bayW} height="192" />
+          {i !== 5 && <line class="transom" x1={x} x2={x + bayW} y1="236" y2="236" />}
+        </g>
+      ))}
+      <line class="handle" x1={bays[5] + 14} x2={bays[5] + 14} y1="282" y2="318" />
+      <line class="kerb" x1="0" x2="860" y1="400" y2="400" />
+    </svg>
+  </div>
+</section>
+
+<style>
+  .head { display: grid; grid-template-columns: 1fr 1fr; gap: 24px 64px; align-items: end; margin-bottom: 56px; }
+  .head .h-section { margin: 0; }
+  .front { width: 100%; height: auto; display: block; }
+  .front * { vector-effect: non-scaling-stroke; }
+  .brick line { stroke: var(--tile); stroke-width: 1; opacity: .5; }
+  .fascia { fill: #fbf1f2; stroke: var(--sign); stroke-width: 1.2; }
+  .mono { font-family: var(--font-display); font-size: 20px; fill: var(--sign); }
+  .sign { font-family: var(--font-display); font-weight: 600; fill: var(--sign); }
+  .tel { font-family: var(--font-display); font-size: 12px; letter-spacing: 1px; fill: var(--sign); }
+  .rule { stroke: var(--sign); stroke-width: 1.4; }
+  .frame { fill: none; stroke: var(--sign); stroke-width: 1.6; }
+  .glass { fill: color-mix(in srgb, var(--door) 35%, transparent); stroke: var(--sign); stroke-width: 1.2; }
+  .door { fill: color-mix(in srgb, var(--door) 60%, transparent); }
+  .transom, .handle { stroke: var(--sign); stroke-width: 1.2; }
+  .kerb { stroke: var(--sign); stroke-width: 1.2; }
+  .js .front.reveal .glass { transition: fill 1.4s var(--ease) .5s; }
+  .js .front.reveal:not(.in) .glass { fill: transparent; }
+  @media (max-width: 760px) { .head { grid-template-columns: 1fr; margin-bottom: 36px; } }
+</style>
