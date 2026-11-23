@@ -103,3 +103,11 @@ section { padding-block: clamp(88px, 11vw, 168px); border-top: 1px solid var(--l
 
 /* day-only / night-only content */
 :root[data-mode="day"] .for-night, :root[data-mode="night"] .for-day { display: none !important; }
+
+/* the page fades between light and dark while the hero dish turns
+   (colours only; anything with its own transition keeps it) */
+.theme-anim body, .theme-anim * {
+  transition-property: background-color, color, border-color, fill, stroke;
+  transition-duration: 1.3s;
+  transition-timing-function: cubic-bezier(.65, 0, .25, 1);
+}

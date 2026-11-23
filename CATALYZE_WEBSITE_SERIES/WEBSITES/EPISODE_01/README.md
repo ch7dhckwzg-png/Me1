@@ -2,6 +2,8 @@
 
 **Concept (2 lines):** Social 114 is two places in one room, so the site is too. It runs on New Brighton time, and switching between brunch café and oven-lit pizza room plays a fine-line coffee cup turning into a pizza.
 
+**v3 hero:** the page opens on a code-drawn flat white beside "Coffee and brunch.", then the cup turns away, the page fades to night and the pizza (pepperoni, jalapeño and honey) turns in under "Wood-fired pizza." Drawn in `src/scripts/dishes.ts`; no photos.
+
 **v2 direction (owner feedback):** clean, sleek, mature. Muted room palette, type-led layout, hairline rules, fine-line drawings only.
 
 **Palette** from their room: navy dado walls, orange-red door and counter, birch ply, white walls, leaded transom glass (mustard, teal, sky). **Type:** Fraunces (matches their heavy serif "Social 114." wordmark), Figtree, DM Mono.

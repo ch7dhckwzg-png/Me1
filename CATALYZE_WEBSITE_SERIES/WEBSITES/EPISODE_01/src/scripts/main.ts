@@ -28,79 +28,40 @@ function londonNow() {
   return { day: get('weekday'), hm: `${hh}:${get('minute')}`, mins: +hh * 60 + +get('minute') };
 }
 
-/* ---------- Day / Night, with the coffee cup to pizza transition ---------- */
-const xf = document.querySelector<HTMLElement>('[data-xf]')!;
-const xfTo = xf.querySelector<HTMLElement>('.xf-to')!;
-const xfStage = xf.querySelector<HTMLElement>('.xf-stage')!;
-const xfWord = xf.querySelector<HTMLElement>('[data-xf-word]')!;
-const cupLines = [...xf.querySelectorAll<SVGPathElement>('.cup .ln')];
-const pizzaLines = [...xf.querySelectorAll<SVGElement>('.pizza .ln')];
-const tops = [...xf.querySelectorAll<SVGCircleElement>('.tops circle')];
+/* ---------- Day / Night ---------- */
+// Switching plays in the hero: the dish turns away and the next one turns in,
+// the headline rolls over, and the whole page fades between light and dark.
+import { renderDish } from './dishes';
 let busy = false;
-
 function paintSwitch() {
   document.querySelectorAll<HTMLButtonElement>('[data-set-mode]').forEach((b) =>
     b.setAttribute('aria-pressed', String(b.dataset.setMode === root.dataset.mode)));
 }
-function applyMode(mode: Mode) {
+function setMode(mode: Mode) {
+  if (busy || mode === root.dataset.mode) return;
+  busy = true;
+  root.classList.add('theme-anim');
   root.dataset.mode = mode;
   paintSwitch();
   selectTab(mode === 'night' ? 'pizza' : 'brunch');
-}
-const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
-const draw = (els: Element[], from: number, to: number, dur: number, stagger: number, delay = 0, easing = 'cubic-bezier(.6,0,.2,1)') =>
-  els.map((e, i) => e.animate([{ strokeDashoffset: from }, { strokeDashoffset: to }], { duration: dur, delay: delay + i * stagger, easing, fill: 'forwards' }));
-
-async function runTransition(to: Mode) {
-  busy = true;
-  const from: Mode = to === 'night' ? 'day' : 'night';
-  const css = getComputedStyle(root);
-  const v = (n: string) => css.getPropertyValue(n).trim();
-  xf.style.setProperty('--xf-from-bg', v(`--${from}-bg`));
-  xf.style.setProperty('--xf-to-bg', v(`--${to}-bg`));
-  xf.style.setProperty('--xf-from-fg', v(`--${from}-fg`));
-  // toppings only show over the night colour; with the difference blend, night-bg + accent renders as the accent
-  const hex = (h: string) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
-  const nb = hex(v('--night-bg')), na = hex(v('--night-accent'));
-  xf.style.setProperty('--xf-accent', '#' + nb.map((c, i) => Math.min(255, c + na[i]).toString(16).padStart(2, '0')).join(''));
-  [...cupLines, ...pizzaLines].forEach((l) => { l.getAnimations().forEach((a) => a.cancel()); l.style.strokeDashoffset = '1'; });
-  tops.forEach((t) => { t.getAnimations().forEach((a) => a.cancel()); t.style.opacity = '0'; });
-  xfTo.style.clipPath = 'circle(0% at 50% 50%)';
-  xfWord.textContent = from === 'day' ? 'By day' : 'By night';
-  xf.hidden = false;
-
-  const first = to === 'night' ? cupLines : pizzaLines;
-  const second = to === 'night' ? pizzaLines : cupLines;
-
-  xf.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 280, fill: 'forwards' });
-  draw(first, 1, 0, 620, 70, 120);
-  if (to === 'day') tops.forEach((t, i) => t.animate([{ opacity: 0, transform: 'scale(.4)' }, { opacity: 1, transform: 'scale(1)' }], { duration: 300, delay: 450 + i * 40, fill: 'forwards' }));
-  await wait(1000);
-
-  // the new mode spreads from the centre while the drawing changes over
-  xfTo.animate([{ clipPath: 'circle(0% at 50% 50%)' }, { clipPath: 'circle(75% at 50% 50%)' }], { duration: 1000, easing: 'cubic-bezier(.7,0,.2,1)', fill: 'forwards' });
-  draw(first, 0, -1, 460, 40, 0, 'cubic-bezier(.5,0,.75,0)');
-  if (to === 'day') tops.forEach((t) => t.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 300, fill: 'forwards' }));
-  draw(second, 1, 0, 700, 90, 380);
-  if (to === 'night') tops.forEach((t, i) => t.animate([{ opacity: 0, transform: 'scale(.4)' }, { opacity: 1, transform: 'scale(1)' }], { duration: 360, delay: 900 + i * 50, easing: 'cubic-bezier(.2,.9,.3,1.3)', fill: 'forwards' }));
-  setTimeout(() => { xfWord.textContent = to === 'day' ? 'By day' : 'By night'; }, 520);
-  await wait(1700);
-
-  applyMode(to);
-  const out = xf.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 520, easing: 'ease-out', fill: 'forwards' });
-  await out.finished;
-  xf.hidden = true;
-  xf.getAnimations({ subtree: true }).forEach((a) => a.cancel());
-  busy = false;
-}
-function setMode(mode: Mode) {
-  if (busy || mode === root.dataset.mode) return;
-  if (reduce) return applyMode(mode);
-  runTransition(mode);
+  setTimeout(() => { root.classList.remove('theme-anim'); busy = false; }, reduce ? 0 : 1700);
 }
 document.querySelectorAll<HTMLButtonElement>('[data-set-mode]').forEach((b) =>
   b.addEventListener('click', () => setMode(b.dataset.setMode as Mode)));
 paintSwitch();
+
+function renderDishes() {
+  document.querySelectorAll<HTMLCanvasElement>('[data-dish]').forEach((cv) => renderDish(cv, cv.dataset.dish as 'cup' | 'pizza'));
+}
+renderDishes();
+let rz = 0;
+addEventListener('resize', () => { clearTimeout(rz); rz = window.setTimeout(renderDishes, 300); });
+
+// Opening: the morning cup turns in, then the evening takes over (plays once).
+if (root.classList.contains('intro')) {
+  requestAnimationFrame(() => requestAnimationFrame(() => root.classList.remove('intro')));
+  setTimeout(() => setMode('night'), 2900);
+}
 
 /* ---------- Today line + live status ---------- */
 const OPEN = 8 * 60, CLOSE = 23 * 60;
