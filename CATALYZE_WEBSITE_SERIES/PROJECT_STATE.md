@@ -104,3 +104,12 @@ None yet.
   - Hero is now the sign lettering on a steamed salon mirror, fog clearing on load.
   - The colour headline and swatch ring moved to the second section; the swatch ring is arrival-driven, not scroll.
   - Detector 0, sweep clean, Playwright checks pass at 1440 and 390, reduced motion verified.
+
+## Queued next: Aaron Jones Hairdressing (owner request, 23 Nov 2026)
+
+- Owner wants an episode for Aaron Jones Hairdressing after The Salon Sanctuary.
+- **Trigger:** when the owner says "this is complete now" about The Salon Sanctuary, remind them to tell Claude to start Aaron Jones Hairdressing.
+- No research done yet. Follow `DOCUMENTATION/NEXT_EPISODE_PROMPT.md`:
+  - verify there's no website (including the Instagram bio and link-in-bio);
+  - take colours from their branding;
+  - use a new signature move.
