@@ -1,6 +1,6 @@
 # Episode options
 
-Pick one, copy its block, and paste it at the end of `NEXT_EPISODE_PROMPT.md` in a new session. Facts are from the November 2026 research (`RESEARCH/business_research.md`); the session re-verifies them before building. "Signature move idea" is a starting point for the pitch, not a decision.
+Pick one, copy its block, and paste it at the end of `NEXT_EPISODE_PROMPT.md` in a new session. Facts are from the November 2026 research (`RESEARCH/business_research.md`); the session re-verifies them before building. "Signature move idea" is a starting point for the pitch, not a decision. Many of these older ideas use the cross-and-spin mechanic from Episode 01: each episode now needs a fresh mechanic, so treat them as themes and let the session propose new moves.
 
 ---
 

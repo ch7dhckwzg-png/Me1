@@ -37,11 +37,11 @@ Learned on Episode 01 (keep them):
 ## 2. Stage 1: verify the business and research it, then CHECKPOINT 1
 
 Using the details I paste at the end:
-1. **Website status, verified fresh.** Check the obvious domains with RDAP (`rdap.nominet.uk` for .uk, `rdap.verisign.com` for .com), any website field on their booking pages (Fresha partner pages), web search, and load any live site in Chromium (Playwright). Write down exactly what's true now: no site / parked domain / broken / dated. **The hook's first line must be literally true** (see section 5).
+1. **Website status, verified fresh.** Check the obvious domains with RDAP (`rdap.nominet.uk` for .uk, `rdap.verisign.com` for .com), any website field on their booking pages (Fresha partner pages), web search, and load any live site in Chromium (Playwright). **Also ask me to check their Instagram/Facebook bio and link-in-bio (Linktree etc.) for a website**, because that's where a site often hides (Apex had one; you can't open Instagram from here). Write down exactly what's true now: no site / parked domain / broken / dated. **If they have a good working website, stop and tell me: they're not right for the series.** **The hook's first line must be literally true** (see section 5).
 2. **Handles.** Only treat a handle as verified if the business links it itself (e.g. its Fresha page) or I confirm it. Never guess.
 3. **Their real colours and type.** From reference photos (press articles, listings): sample the shopfront, signage and interior. Build a palette of 4 to 6 named colours "from the room", plus the nearest Google/Fontsource face to their signage lettering.
 4. **Content.** Services, menu, hours, story, owners, location, nearest landmark/station. Cite sources. Prices only if published by the business.
-5. Present: verified facts, palette swatches, type choice, the exact hook line you'll use, and the **written pitch** (section 3).
+5. Present: verified facts, palette swatches, type choice, the exact hook line you'll use, and the **written pitch** (section 3) with two or three signature-move options.
 
 **CHECKPOINT 1:** wait for my approval of the facts and the pitch.
 
@@ -49,7 +49,11 @@ Using the details I paste at the end:
 
 Pitch the website in plain words like Episode 01's "Day to Night":
 - **Concept in two lines.** One idea specific to this business (Social 114 was "two places in one room, so the site runs on New Brighton time").
-- **The signature move.** Every episode's hero has ONE scroll-driven transformation that tells the business's story in a single motion, like Social 114's flat white spinning across the screen and becoming the pizza while the page turns from day to night. It must come from the business's real duality or process (before/after, morning/evening, raw/finished, season/season) and use **real objects**: a cut-out photo pair (placeholder until I shoot them) or a code-drawn object. The hero holds (sticky track about 90vh) while the object crosses from the left half to the right half, spins about 400°, cross-fades between its two states with a little motion blur at the midpoint, and the page theme flips once at 50% with a short colour fade.
+- **The signature move: new every episode.** Every episode's hero has ONE signature animation that tells the business's story in a single motion, and **it must be a fresh idea each time**. Do not reuse a previous episode's mechanic. Used so far (do not repeat):
+  - Episode 01 Social 114: an object crossing left to right while spinning and changing state (flat white to pizza), page flipping day to night.
+  - Scrapped Apex demo: a weight plate rolling across (also a cross-and-spin; don't use it).
+  Pick a different mechanic that fits the business, for example: a slow reveal through a mask or doorway, a stack building up layer by layer, a before/after wipe the visitor drags, a photo developing from negative, a timeline scrubbing through a day or a year, a split screen that slides, an object assembling from parts, a colour gradient pouring through the type. It must come from the business's real story or process and use **real things**: a cut-out photo set (placeholder until I shoot them) or a code-drawn object, never stock or AI imagery. It can be scroll-driven (series exception, the animated element only, text changes once) or click/arrival-driven. Pitch two or three options and recommend one. Add the one we use to the "used so far" list in this file when the episode is approved.
+- **Colours come from the business.** Base the palette on their real branding (signage, Instagram grid, menus, interior) as I or the references show it, not on a guess. If their brand is black with a green accent, the site is black with a green accent.
 - **Sections.** Hero; the offer (menu/services, interactive where it helps); one "craft" section (Social 114's oven: a big typographic moment, e.g. a time, a year, a number that is true); one "community/story" section; "the street" with a fine-line architectural drawing of their shopfront that responds to the theme; visit (address, live "today" row in hours, maps link); footer with the concept disclosure.
 - **Tone:** clean, sleek, mature. Type-led layout, hairline rules, lots of space. No cartoons.
 
