@@ -1,6 +1,6 @@
 import React from 'react';
 import { AbsoluteFill, Easing, Img, OffthreadVideo, Sequence, interpolate, staticFile, useCurrentFrame } from 'remotion';
-import { captions, code, finderTaps, hookLines, palette, place, scenes, type Cap } from './ep02';
+import { captions, code, finderCamera, finderTaps, hookLines, palette, place, scenes, type Cap } from './ep02';
 
 // Episode 02 edit, built on the Episode 01 template (same scenes, type, colours, captions).
 // CATALYZE series look: near-black, cream, one orange accent used sparingly.
@@ -124,7 +124,7 @@ const Browser: React.FC<{ children: React.ReactNode; width: number; url?: string
 );
 
 const CodeShot: React.FC<{ f: number }> = ({ f }) => {
-  const chars = Math.floor(interpolate(f, [0, 16], [0, code.length], { extrapolateRight: 'clamp' }));
+  const chars = Math.floor(interpolate(f, [0, 11], [0, code.length], { extrapolateRight: 'clamp' }));
   const shown = code.slice(0, chars);
   const kw = /\b(function|const|return|let|if|else)\b/g;
   return (
@@ -141,10 +141,10 @@ const CodeShot: React.FC<{ f: number }> = ({ f }) => {
 const Build: React.FC = () => {
   const f = useCurrentFrame();
   const end = scenes.build.dur;
-  const DRAFT0 = 20, PER = 7; // five drafts, 7 frames each
+  const DRAFT0 = 14, PER = 6; // five drafts, 6 frames each
   const draft = Math.min(5, Math.max(1, Math.floor((f - DRAFT0) / PER) + 1));
   const inDrafts = f >= DRAFT0 && f < DRAFT0 + PER * 5;
-  const pal0 = DRAFT0 + PER * 5; // 55
+  const pal0 = DRAFT0 + PER * 5; // 44
   return (
     <AbsoluteFill style={{ background: C.bg, opacity: fade(f, 0, 4, end - 6, end) }}>
       <AbsoluteFill style={{ padding: '150px 70px 0', justifyContent: 'flex-start' }}>
@@ -189,20 +189,28 @@ const Feature: React.FC = () => {
   const PW = 620;
   const t = finderTaps;
   const inP = lerp(f, 0, 18, 0, 1);
-  // a slow push; the capture itself glides down to the suggestion
-  const zoom = lerp(f, 0, end, 1, 1.03, inOut);
-  const pulse = (at: number) => { const k = interpolate(f, [at, at + 6, at + 22], [0, 1, 0], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' }); return k; };
-  const glow = Math.max(...[45, 62, 120, 152, 165].map((at) => pulse(at - t.trim)));
+  // camera: pushes in on the dots for each tap and on the suggestion as it changes
+  const ks = finderCamera.map((k) => k[0]);
+  const cam = (i: number) => interpolate(f, ks, finderCamera.map((k) => k[i]), { extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: inOut });
+  const fy = cam(1), sc = cam(2);
+  const CY = 1088;
+  const pulse = (at: number) => interpolate(f, [at, at + 6, at + 22], [0, 1, 0], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
+  const glow = Math.max(...t.taps.map((at) => pulse(at - t.trim)));
   return (
     <AbsoluteFill style={{ background: C.bg, opacity: fade(f, 0, 4, end - 6, end) }}>
       <AbsoluteFill style={{ background: `radial-gradient(55% 40% at 50% 60%, rgba(231,198,191,${0.16 + glow * 0.1}), transparent 75%)` }} />
       <AbsoluteFill style={{ padding: '150px 96px 0' }}>
         <Label style={{ opacity: show(f, 2) }}>Find your colour</Label>
       </AbsoluteFill>
-      <div style={{ position: 'absolute', left: 540 - PW / 2, top: 430, opacity: inP, transform: `translateY(${(1 - inP) * 120}px) scale(${zoom})`, transformOrigin: '50% 100%' }}>
-        <FrontPhone width={PW}>
-          <OffthreadVideo src={staticFile('ep02/finder-mobile.mp4')} muted trimBefore={t.trim} style={{ width: PW - 22, display: 'block' }} />
-        </FrontPhone>
+      {/* the stage keeps the zoomed phone clear of the caption above */}
+      <div style={{ position: 'absolute', left: 0, right: 0, top: 400, bottom: 80, overflow: 'hidden' }}>
+        <div style={{ position: 'absolute', left: 0, top: -400, width: 1080, height: 1920, transformOrigin: '0 0', transform: `translate(${540 - 540 * sc}px, ${CY - fy * sc}px) scale(${sc})` }}>
+          <div style={{ position: 'absolute', left: 540 - PW / 2, top: 430, opacity: inP, transform: `translateY(${(1 - inP) * 120}px)` }}>
+            <FrontPhone width={PW}>
+              <OffthreadVideo src={staticFile('ep02/finder-mobile.mp4')} muted trimBefore={t.trim} style={{ width: PW - 22, display: 'block' }} />
+            </FrontPhone>
+          </div>
+        </div>
       </div>
     </AbsoluteFill>
   );

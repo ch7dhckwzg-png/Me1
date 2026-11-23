@@ -145,3 +145,6 @@ None yet.
 - Video cut 2 (owner: show different recommendations):
   - The finder beat runs three combinations, each with its own suggestion: Dark brown to Golden blonde ("All the way blonde"), goal Rose ("Rose tones"), then Golden blonde to Chestnut ("Go richer").
   - The feature is now 6.7s; build and reveal are shorter. Still 19.0s, with 0 black frames.
+- Video cut 3 (owner: slow down the hair select, add zooms):
+  - The finder beat is now 8.3s, with a camera that pushes in on the dots for each tap and on each suggestion as it changes.
+  - The mirror, build and reveal beats are tighter to stay at 19.0s. 0 black frames.
