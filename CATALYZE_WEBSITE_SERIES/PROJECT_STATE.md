@@ -63,3 +63,9 @@ None yet.
 - Voice: owner generating TTS from `VOICE/SCRIPTS/EPISODE_01.md`. No music yet (needs a licensed track).
 - Post captions: `CAPTIONS/EPISODE_01.md` (handles unconfirmed).
 - To final: replace hero photos, add storefront/street clips, add VO + licensed music, retime captions to the VO, re-render, then platform exports and PostZen drafts (Facebook not connected).
+
+## Episode 01 edit, cut 3 (owner's pick, 23 Nov 2026)
+
+- Owner preferred cut 1 (17.5s) over cut 2; cut 3 = cut 1 with a new hook and "Liverpool × Wirral" removed from the outro. Cut 2's source kept in git history (commit 530a7f9).
+- Hook: owner-supplied **Google Street View screen recording** of Victoria Road (UI cropped out, on-screen credit "Google Street View · Jul 2024"), punching in on the sign, then zooming through into the cup spinning into the pizza. **Before publishing:** confirm Google's Street View terms allow this promotional use, or replace with the owner's own street clip (`footage.street` in `src/ep01.ts`).
+- VO script updated for cut 3 (`VOICE/SCRIPTS/EPISODE_01.md`).
