@@ -16,6 +16,6 @@ s = re.sub(r'src="(/images/[^"]+\.webp)"', lambda m: f'src="{b64(m.group(1), "im
 for t in [r'<!DOCTYPE html>', r'<!doctype html>', r'</?head>', r'</?body>', r'</html>']: s = re.sub(t, '', s, flags=re.I)
 s = re.sub(r'<html[^>]*>', '', s)
 
-title = re.search(r'<title>.*?</title>', s).group(0); s = title + s.replace(title, '', 1)
+title = "<title>Salon Sanctuary concept</title>"; s = re.sub(r"<title>.*?</title>", "", s, count=1); s = title + s
 out = pathlib.Path('preview/salon-sanctuary-preview.html'); out.parent.mkdir(exist_ok=True); out.write_text(s)
 print(out, len(s) // 1024, 'KB')
