@@ -1,3 +1,4 @@
+import { demoProvider, squareProvider, londonToday, londonToUtc, weekday, type Provider, type Customer } from './booking-provider';
 // The Salon Sanctuary concept: client behaviour.
 // Motion rules: things animate once on arrival or in answer to a tap.
 // Nothing is tied to scroll position.
@@ -10,7 +11,7 @@ const root = document.documentElement;
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const hours: { timezone: string; week: Day[] } = JSON.parse(document.getElementById('hours-data')!.textContent!);
 const menu: Cat[] = JSON.parse(document.getElementById('menu-data')!.textContent!);
-const booking: { base: string; handoff: string; consultId: string } = JSON.parse(document.getElementById('booking-data')!.textContent!);
+const booking: { provider: string; endpoint: string; team: string[]; consultId: string } = JSON.parse(document.getElementById('booking-data')!.textContent!);
 const params = new URLSearchParams(location.search);
 
 const money = (n: number) => (Number.isInteger(n) ? `£${n}` : `£${n.toFixed(2)}`);
@@ -246,26 +247,48 @@ tabs.forEach((t, i) => {
   });
 });
 
-/* ---------- Booking panel ---------- */
-// Three steps on the site (category, service, check), then Fresha opens with
-// that exact service already in the basket for the time, confirmation and payment.
+/* ---------- Booking panel: the whole booking happens on the site ---------- */
+// 1 Service (category, service, check)  2 Time (stylist, day, time)
+// 3 Details  4 Done. Times and the booking itself come from the provider in
+// booking-provider.ts: "demo" for the concept, "square" at launch.
 const sheet = document.querySelector<HTMLDialogElement>('[data-sheet]')!;
 const body = sheet.querySelector<HTMLElement>('[data-sheet-body]')!;
 const foot = sheet.querySelector<HTMLElement>('[data-sheet-foot]')!;
 const back = sheet.querySelector<HTMLButtonElement>('[data-sheet-back]')!;
-const go = sheet.querySelector<HTMLAnchorElement>('[data-go]')!;
+const go = sheet.querySelector<HTMLButtonElement>('[data-go]')!;
+const goLabel = go.querySelector<HTMLElement>('[data-go-label]')!;
+const footNote = sheet.querySelector<HTMLElement>('[data-foot-note]')!;
 const steps = [...sheet.querySelectorAll<HTMLElement>('[data-step]')];
 const byId = new Map<string, { item: Item; cat: Cat }>();
 menu.forEach((c) => c.items.forEach((item) => byId.set(item.id, { item, cat: c })));
+const provider: Provider = booking.provider === 'square' && booking.endpoint ? squareProvider(booking.endpoint) : demoProvider(hours.week, hours.timezone);
+const team: string[] = booking.team;
 let history: (() => void)[] = [];
+let goAction: (() => void) | null = null;
+const sel: { id: string; staff: string | null; date: string; time: string; customer?: Customer; ref?: string } = { id: '', staff: null, date: '', time: '' };
 
-function setStep(n: number) { steps.forEach((s) => s.classList.toggle('on', +s.dataset.step! <= n)); }
-function show(html: string, step: number, _render: () => void) {
-  body.innerHTML = html;
-  body.scrollTop = 0;
-  setStep(step);
+function setStep(n: number) { steps.forEach((s) => { s.classList.toggle('on', +s.dataset.step! <= n); s.toggleAttribute('aria-current', +s.dataset.step! === n); }); }
+function setGo(label: string | null, action?: () => void, note = '', enabled = true) {
+  foot.hidden = !label;
+  if (!label) return;
+  goLabel.textContent = label; goAction = action || null; go.disabled = !enabled; footNote.textContent = note; footNote.hidden = !note;
+}
+function show(html: string, step: number) {
+  body.innerHTML = html; body.scrollTop = 0; setStep(step);
   back.hidden = history.length === 0;
-  foot.hidden = step < 2;
+}
+go.addEventListener('click', () => { if (!go.disabled && goAction) goAction(); });
+const remember = (fn: () => void) => history.push(fn);
+const longDate = (d: string) => new Date(`${d}T12:00:00Z`).toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'UTC' });
+const addDays = (d: string, n: number) => new Date(Date.parse(`${d}T12:00:00Z`) + n * 864e5).toISOString().slice(0, 10);
+const endTime = (t: string, m: number) => { const x = toMin(t) + m; return `${String(Math.floor(x / 60)).padStart(2, '0')}:${String(x % 60).padStart(2, '0')}`; };
+const demoNote = provider.demo ? 'Concept demo: sample times from the opening hours. No appointment is made.' : '';
+
+function ticket(item: Item, cat: Cat, extra = '') {
+  return `<div class="ticket"><div class="t-top"><span class="t-mono">TSS</span><span class="t-label">Your appointment</span></div>
+    <p class="pick-cat">${esc(cat.label)}</p><h2 class="pick-name">${esc(item.name)}</h2>
+    <div class="t-cut" aria-hidden="true"></div>
+    <dl class="t-rows">${extra || `<div><dt>Price</dt><dd class="data">${item.from ? 'from ' : ''}${money(item.price)}</dd></div>${item.mins ? `<div><dt>Time</dt><dd class="data">${dur(item.mins)}</dd></div>` : ''}<div><dt>Where</dt><dd>61 Burlington Street</dd></div>`}</dl></div>`;
 }
 
 function viewCats() {
@@ -273,37 +296,137 @@ function viewCats() {
     const low = Math.min(...c.items.map((i) => i.price));
     return `<button type="button" class="opt" data-cat="${c.key}"><span class="opt-name">${esc(c.label)}</span><span class="opt-price data"><small>from </small>${money(low)}</span>${arrow}<span class="opt-sub">${esc(c.blurb)}</span></button>`;
   }).join('');
-  show(html, 1, viewCats);
-  body.querySelectorAll<HTMLButtonElement>('[data-cat]').forEach((b) => b.addEventListener('click', () => { history.push(viewCats); viewItems(b.dataset.cat!); }));
+  show(html, 1); setGo(null);
+  body.querySelectorAll<HTMLButtonElement>('[data-cat]').forEach((b) => b.addEventListener('click', () => { remember(viewCats); viewItems(b.dataset.cat!); }));
 }
 function viewItems(key: string) {
   const c = menu.find((m) => m.key === key)!;
   const html = `<h2 class="cat-title">${esc(c.label)}</h2>${c.note ? `<p class="note">${esc(c.note)}</p>` : ''}` + c.items.map((i) =>
-    `<button type="button" class="opt" data-id="${i.id}"><span class="opt-name">${esc(i.name)}</span><span class="opt-price data">${i.from ? '<small>from </small>' : ''}${money(i.price)}</span>${arrow}<span class="opt-sub">${[dur(i.mins), i.note].filter(Boolean).map((s) => esc(s!)).join('. ')}</span></button>`).join('');
-  show(html, 1, () => viewItems(key));
-  body.querySelectorAll<HTMLButtonElement>('[data-id]').forEach((b) => b.addEventListener('click', () => { history.push(() => viewItems(key)); viewPick(b.dataset.id!); }));
+    `<button type="button" class="opt" data-id="${i.id}"><span class="opt-name">${esc(i.name)}</span><span class="opt-price data">${i.from ? '<small>from </small>' : ''}${money(i.price)}</span>${arrow}<span class="opt-sub">${[dur(i.mins), i.note].filter(Boolean).map((x) => esc(x!)).join('. ')}</span></button>`).join('');
+  show(html, 1); setGo(null);
+  body.querySelectorAll<HTMLButtonElement>('[data-id]').forEach((b) => b.addEventListener('click', () => { remember(() => viewItems(key)); viewPick(b.dataset.id!); }));
 }
 function viewPick(id: string) {
   const { item, cat } = byId.get(id)!;
+  sel.id = id; sel.time = '';
   const notes: string[] = [];
   if (cat.note) notes.push(cat.note);
   if (item.note) notes.push(item.note);
-  notes.push('Fresha confirms your booking straight away. You can pay by card, Apple Pay or Google Pay, or cash in the salon.');
+  notes.push('Pay in the salon by card, Apple Pay, Google Pay or cash.');
   let swap = '';
   const swapTo = cat.key === 'colour' ? booking.consultId : cat.key === 'ext' ? 's:19928300' : '';
   if (swapTo && byId.has(swapTo)) {
-    const s = byId.get(swapTo)!.item;
-    swap = `<button type="button" class="btn swap" data-swap="${s.id}"><span>Book the ${esc(s.name.toLowerCase())} first<small>${money(s.price)}, ${dur(s.mins)}, not on Saturdays</small></span>${arrow}</button>`;
+    const sw = byId.get(swapTo)!.item;
+    swap = `<button type="button" class="btn swap" data-swap="${sw.id}"><span>Book the ${esc(sw.name.toLowerCase())} first<small>${money(sw.price)}, ${dur(sw.mins)}, not on Saturdays</small></span>${arrow}</button>`;
   }
-  const html = `<div class="ticket"><div class="t-top"><span class="t-mono">TSS</span><span class="t-label">Your appointment</span></div>
-    <p class="pick-cat">${esc(cat.label)}</p><h2 class="pick-name">${esc(item.name)}</h2>
-    <div class="t-cut" aria-hidden="true"></div>
-    <dl class="t-rows"><div><dt>Price</dt><dd class="data">${item.from ? 'from ' : ''}${money(item.price)}</dd></div>${item.mins ? `<div><dt>Time</dt><dd class="data">${dur(item.mins)}</dd></div>` : ''}<div><dt>Where</dt><dd>61 Burlington Street</dd></div></dl></div>
-    <div class="before"><h3>Before you book</h3><ul>${notes.map((n) => `<li>${dotIcon}<span>${esc(n)}</span></li>`).join('')}</ul></div>${swap}`;
-  show(html, 2, () => viewPick(id));
-  go.href = item.book;
-  go.setAttribute('aria-label', `Choose a time for ${item.name} on Fresha (opens in a new tab)`);
-  body.querySelector<HTMLButtonElement>('[data-swap]')?.addEventListener('click', (e) => { history.push(() => viewPick(id)); viewPick((e.currentTarget as HTMLElement).dataset.swap!); });
+  show(ticket(item, cat) + `<div class="before"><h3>Before you book</h3><ul>${notes.map((n) => `<li>${dotIcon}<span>${esc(n)}</span></li>`).join('')}</ul></div>${swap}`, 1);
+  setGo('Choose a time', () => { remember(() => viewPick(id)); viewTime(); });
+  body.querySelector<HTMLButtonElement>('[data-swap]')?.addEventListener('click', (e) => { remember(() => viewPick(id)); viewPick((e.currentTarget as HTMLElement).dataset.swap!); });
+}
+
+async function viewTime() {
+  const { item, cat } = byId.get(sel.id)!;
+  const today = londonToday(hours.timezone).date;
+  const noSat = cat.key === 'consult';
+  const days = Array.from({ length: 21 }, (_, i) => addDays(today, i)).map((d) => {
+    const w = hours.week.find((x) => x.day === weekday(d))!;
+    return { d, off: !!w.closed || (noSat && w.day === 'Saturday') };
+  });
+  if (!sel.date || days.find((x) => x.d === sel.date)?.off !== false) sel.date = days.find((x) => !x.off)?.d || today;
+  const staffRow = [null, ...team].map((t) => `<button type="button" class="chip" data-staff="${t ?? ''}" aria-pressed="${sel.staff === t}">${t ? esc(t) : 'Whoever is free'}</button>`).join('');
+  const dayRow = days.map((x) => {
+    const dt = new Date(`${x.d}T12:00:00Z`);
+    return `<button type="button" class="day" data-date="${x.d}" aria-pressed="${x.d === sel.date}" ${x.off ? 'disabled' : ''}><span>${dt.toLocaleDateString('en-GB', { weekday: 'short', timeZone: 'UTC' })}</span><b class="data">${dt.getUTCDate()}</b><span>${dt.toLocaleDateString('en-GB', { month: 'short', timeZone: 'UTC' })}</span></button>`;
+  }).join('');
+  show(`<p class="pick-cat">${esc(item.name)}</p>
+    <h3 class="t-h">Who would you like?</h3><div class="chips" role="group" aria-label="Stylist">${staffRow}</div>
+    <h3 class="t-h">Pick a day</h3><div class="days" role="group" aria-label="Day">${dayRow}</div>
+    <h3 class="t-h" data-day-title>${esc(longDate(sel.date))}</h3><div class="times" data-times aria-live="polite"></div>`, 2);
+  setGo('Continue', () => { remember(viewTime); viewDetails(); }, demoNote, false);
+  const paintTimes = async () => {
+    const box = body.querySelector<HTMLElement>('[data-times]')!;
+    box.innerHTML = '<p class="t-empty">Finding times</p>';
+    try {
+      const times = await provider.times({ serviceId: sel.id, mins: item.mins || 60, date: sel.date, staff: sel.staff, noSaturday: noSat });
+      box.innerHTML = times.length ? times.map((t) => `<button type="button" class="time data" data-time="${t}" aria-pressed="${t === sel.time}">${t}</button>`).join('') : '<p class="t-empty">No times left that day. Try another day.</p>';
+      if (!times.includes(sel.time)) sel.time = '';
+      go.disabled = !sel.time;
+      box.querySelectorAll<HTMLButtonElement>('[data-time]').forEach((b) => b.addEventListener('click', () => {
+        sel.time = b.dataset.time!;
+        box.querySelectorAll('[data-time]').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+        go.disabled = false;
+      }));
+    } catch (err) { box.innerHTML = `<p class="t-empty">${esc((err as Error).message)}. Please call the salon on 0151 345 3463.</p>`; }
+  };
+  body.querySelectorAll<HTMLButtonElement>('[data-staff]').forEach((b) => b.addEventListener('click', () => {
+    sel.staff = b.dataset.staff || null;
+    body.querySelectorAll('[data-staff]').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+    paintTimes();
+  }));
+  body.querySelectorAll<HTMLButtonElement>('[data-date]').forEach((b) => b.addEventListener('click', () => {
+    sel.date = b.dataset.date!;
+    body.querySelectorAll('[data-date]').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+    body.querySelector('[data-day-title]')!.textContent = longDate(sel.date);
+    paintTimes();
+  }));
+  body.querySelector<HTMLElement>(`[data-date="${sel.date}"]`)?.scrollIntoView({ inline: 'center', block: 'nearest' });
+  paintTimes();
+}
+
+function whenRows(item: Item) {
+  return `<div><dt>Day</dt><dd>${esc(longDate(sel.date))}</dd></div><div><dt>Time</dt><dd class="data">${sel.time}${item.mins ? ` to ${endTime(sel.time, item.mins)}` : ''}</dd></div><div><dt>With</dt><dd>${esc(sel.staff || 'Whoever is free')}</dd></div>`;
+}
+function viewDetails() {
+  const { item, cat } = byId.get(sel.id)!;
+  const c = sel.customer || { name: '', phone: '', email: '', note: '' };
+  const patch = cat.key === 'colour' || item.note?.includes('patch') ? `<label class="check"><input type="checkbox" name="patch" required /><span>New to colour here, or no colour here in six months? I'll have a patch test at least 48 hours before.</span></label>` : '';
+  show(ticket(item, cat, whenRows(item)) + `<form class="form" data-form novalidate>
+    <label class="field"><span>Name</span><input name="name" autocomplete="name" required value="${esc(c.name)}" /></label>
+    <label class="field"><span>Mobile</span><input name="phone" type="tel" autocomplete="tel" inputmode="tel" required value="${esc(c.phone)}" /></label>
+    <label class="field"><span>Email</span><input name="email" type="email" autocomplete="email" required value="${esc(c.email)}" /></label>
+    <label class="field"><span>Anything we should know? <em>Optional</em></span><textarea name="note" rows="2">${esc(c.note)}</textarea></label>
+    ${patch}<p class="form-err" data-err role="alert"></p>
+    <p class="privacy">Your details are used only to manage this appointment. ${provider.demo ? 'In this demo nothing is sent.' : ''}</p></form>`, 3);
+  const form = body.querySelector<HTMLFormElement>('[data-form]')!;
+  const submit = async () => {
+    const f = new FormData(form);
+    const cust = { name: String(f.get('name') || '').trim(), phone: String(f.get('phone') || '').trim(), email: String(f.get('email') || '').trim(), note: String(f.get('note') || '').trim() };
+    sel.customer = cust;
+    const err = body.querySelector<HTMLElement>('[data-err]')!;
+    const bad = !cust.name ? 'name' : !/^[+\d][\d\s()-]{8,}$/.test(cust.phone) ? 'phone' : !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(cust.email) ? 'email' : form.patch && !form.patch.checked ? 'patch' : '';
+    if (bad) {
+      err.textContent = { name: 'Please add your name.', phone: 'Please add a mobile number the salon can reach you on.', email: 'Please add an email for your confirmation.', patch: 'Please confirm the patch test.' }[bad]!;
+      (form.elements.namedItem(bad) as HTMLElement)?.focus();
+      return;
+    }
+    err.textContent = '';
+    go.disabled = true; goLabel.textContent = 'Booking';
+    try {
+      const r = await provider.book({ serviceId: sel.id, mins: item.mins || 60, date: sel.date, staff: sel.staff, time: sel.time, customer: cust });
+      sel.ref = r.ref; history = []; viewDone();
+    } catch (e2) { err.textContent = `${(e2 as Error).message}.`; go.disabled = false; goLabel.textContent = 'Confirm booking'; }
+  };
+  form.addEventListener('submit', (e) => { e.preventDefault(); submit(); });
+  setGo('Confirm booking', submit, demoNote);
+}
+function icsFile(item: Item) {
+  const stamp = (d: Date) => d.toISOString().replace(/[-:]/g, '').slice(0, 15) + 'Z';
+  const start = londonToUtc(sel.date, sel.time);
+  const finish = new Date(start.getTime() + (item.mins || 60) * 60000);
+  const lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//The Salon Sanctuary//Booking//EN', 'BEGIN:VEVENT',
+    `UID:${sel.ref}-${sel.date}-${sel.time}@thesalonsanctuary`, `DTSTAMP:${new Date().toISOString().replace(/[-:]/g, '').slice(0, 15)}Z`,
+    `DTSTART:${stamp(start)}`, `DTEND:${stamp(finish)}`,
+    `SUMMARY:${item.name} at The Salon Sanctuary`, 'LOCATION:61 Burlington Street\\, Liverpool L3 6LG', 'END:VEVENT', 'END:VCALENDAR'];
+  return URL.createObjectURL(new Blob([lines.join('\r\n')], { type: 'text/calendar' }));
+}
+function viewDone() {
+  const { item, cat } = byId.get(sel.id)!;
+  const first = (sel.customer?.name || '').split(' ')[0];
+  show(`<div class="done"><div class="done-mark" aria-hidden="true"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="22" /><path d="M14 24.5 21 31l13-14" /></svg></div>
+    <h2 class="done-title">${provider.demo ? 'This is where it confirms' : `You're booked${first ? `, ${esc(first)}` : ''}`}</h2>
+    <p class="done-lead">${provider.demo ? 'Concept demo: no appointment has been made and nothing was sent. At launch this books straight into the salon\'s diary and sends a confirmation.' : `A confirmation is on its way to ${esc(sel.customer!.email)}.`}</p></div>`
+    + ticket(item, cat, whenRows(item)) + `<a class="btn swap ics" download="salon-sanctuary-appointment.ics" href="${icsFile(item)}"><span>Add to calendar</span>${arrow}</a>`, 4);
+  setGo('Done', () => sheet.close());
 }
 back.addEventListener('click', () => { const prev = history.pop(); if (prev) prev(); back.hidden = history.length === 0; });
 
@@ -319,7 +442,6 @@ function openSheet(start: () => void) {
 sheet.addEventListener('close', () => { root.classList.remove('sheet-open'); lastFocus?.focus(); });
 sheet.querySelector('[data-sheet-close]')!.addEventListener('click', () => sheet.close());
 sheet.addEventListener('click', (e) => { if (e.target === sheet) sheet.close(); });
-go.addEventListener('click', () => setStep(3));
 
 document.addEventListener('click', (e) => {
   const t = (e.target as HTMLElement).closest<HTMLElement>('[data-book],[data-book-cat],[data-book-id]');

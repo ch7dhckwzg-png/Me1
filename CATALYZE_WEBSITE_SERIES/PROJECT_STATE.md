@@ -121,3 +121,8 @@ None yet.
   - Live shopfront (windows lit when open, "Closed" sign when shut).
   - Price row cascade and 48 count-up.
   - Detector 0, sweep clean, QA passes at 1440 and 390.
+- v4 (tag ep02-salonsanctuary-v4), owner: "book fully on the site":
+  - Booking is now entirely on the site: service, then stylist/day/time, then details, then done, with a calendar file.
+  - Demo mode: sample times from opening hours, nothing sent, clearly labelled.
+  - Launch path is Square Appointments via `server/square-booking.mjs` (written, not deployed or tested).
+  - Fresha can't take on-site bookings: no public API, and its page can't be embedded. Going live means the salon moves its diary to Square and loses its Fresha profile. Raise this in the pitch.

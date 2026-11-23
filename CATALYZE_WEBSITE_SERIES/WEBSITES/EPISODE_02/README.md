@@ -2,25 +2,52 @@
 
 Unofficial speculative website concept by CATALYZE. Not affiliated with the salon. `noindex` everywhere (meta, robots.txt, `_headers`).
 
-## Concept: "Book in three taps"
+## Concept: book the whole appointment on the site
 
-The owner's brief: booking is the salon's priority, so it's built into the site, not bolted on.
+The owner's brief: booking is the salon's priority. Then: "book fully on the site", with no hand-off to Fresha.
 
-- A **Book** button is always in reach: in the header, in a bar pinned to the bottom of the screen on phones, and on every one of the 58 rows of the price list.
-- The **booking panel** walks through the choice on the site itself:
-  1. Pick a category.
-  2. Pick a service, with the real price and time.
-  3. Check the "before you book" notes in the salon's own words (colour consultation, patch test at least 48 hours before, extensions ordered once paid).
-  
-  **Choose a time** then opens the salon's Fresha booking **with that exact service already in the basket**. The visitor picks the time, confirms and pays there.
-- For colour and extensions, the panel offers to book the right consultation first.
-- `?book=colour` (any category key) or `?book=s:20394736` (any service id) opens the panel straight away. That's ready-made for an Instagram bio link.
+**Getting to booking:** a **Book** button is always in reach. It's in the header, in a bar pinned to the bottom on phones, on every price row, in the colour finder's suggestions, and on the consultation section.
 
-### Why it hands off to Fresha
+**The booking panel** does everything on the site:
+1. **Service:** pick a category, then a service (real price and length), then check the ticket-style card with the salon's own notes (colour consultation, patch test at least 48 hours before, extensions ordered once paid). For colour and extensions it offers to book the right consultation first.
+2. **Time:** choose a stylist (Whoever is free, Ashley or Macie), pick a day from the next three weeks, then pick a time.
+   - Closed days can't be picked.
+   - Consultations can't be booked on Saturdays.
+   - Only times where the whole service fits before closing are offered.
+3. **Details:**
+   - Name, mobile and email are required. Square needs a phone number to make a booking.
+   - Notes are optional.
+   - Colour bookings ask the client to confirm the patch test.
+   - Clear error messages show if anything is missing.
+4. **Done:** a check mark draws in, then the appointment card shows the day, time and stylist, with **Add to calendar** (a real calendar file).
 
-Fresha's booking page refuses to be shown inside another site (`content-security-policy: frame-ancestors` limits it to Fresha and Adyen). Its help centre doesn't document an embeddable widget. Its own listing data does give every service a booking link (`/booking?offerItemId=…`). Tested on 23 Nov 2026: the link opens Fresha with that service selected and a "Continue" button. Calendar, deposits, payments and reminders all stay in Fresha, where the salon already runs them.
+`?book=colour` (any category key) or `?book=s:20394736` (any service id) opens the panel straight away. That's ready for an Instagram bio link.
 
-**Before launch:** the salon creates its own Fresha direct link (Marketing, Direct links) and `booking.base` in `site.json` is swapped to it. Fresha says direct links don't show other businesses. Whether the per-service `offerItemId` parameter works on a direct link must be tested at that point.
+### What's real and what isn't (concept)
+
+- `booking.provider` in `site.json` is **"demo"**.
+- In demo mode, times are **sample times worked out from the real opening hours and service length**. They are **not** the salon's real free times.
+- Confirming sends nothing and makes no appointment. The panel says so at every step.
+- Nothing typed into the form leaves the browser.
+
+### Going live (needs the salon to move its diary)
+
+Fresha has no public booking API (as of Nov 2026), and its booking page can't be embedded. So a booking made on the site can't go into Fresha. Fully on-site booking means the salon runs its diary in a system with a bookings API. This build targets **Square Appointments** (Square Bookings API).
+
+To go live:
+1. The salon sets up Square Appointments: services, the team (Ashley, Macie), hours, and any deposit or no-show settings.
+2. Deploy `server/square-booking.mjs` as a server function (Cloudflare Workers, Netlify or Vercel). Set `SQUARE_ACCESS_TOKEN` and `SQUARE_LOCATION_ID` on the host, never in the repo.
+3. Fill in `SERVICE_MAP` (menu id to Square service variation id and version) and `STAFF_MAP`.
+4. In `site.json` set `"provider": "square"` and `"endpoint"` to the function's URL.
+5. Test against Square's sandbox: availability, booking, a double-booking race, and BST dates.
+6. Add the privacy policy and terms pages (CLAUDE.md launch gates). The form collects personal data.
+
+**Status:**
+- `server/square-booking.mjs` is **written but not deployed or tested**.
+- I checked it against Square's Bookings API docs: the availability window must be 24 hours to 31 days, and the customer must have a phone number.
+- Card payments and deposits aren't built. The site says "pay in the salon". Square's own deposit settings would need checking.
+
+**Trade-off to raise with the salon:** moving off Fresha loses their Fresha marketplace profile and its 456 reviews. Keeping Fresha means the last step (time and payment) happens on Fresha. The earlier hand-off version is at tag `ep02-salonsanctuary-v3`.
 
 ## Signature move: the name on a steamed mirror (v2, owner's pick of ideas 5 and 6 combined)
 

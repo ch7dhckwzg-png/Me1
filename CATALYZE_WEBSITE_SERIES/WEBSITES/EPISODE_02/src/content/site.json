@@ -2,7 +2,7 @@
  "_note": "All copy for the concept lives here. _source says where a fact came from; _placeholder marks anything the salon must confirm.",
  "concept": {
   "label": "Unofficial concept by CATALYZE",
-  "detail": "Not affiliated with The Salon Sanctuary. Prices and booking links are taken from their public Fresha page.",
+  "detail": "Not affiliated with The Salon Sanctuary. Prices are taken from their public Fresha page. Booking here is a demo.",
   "footer": "Website concept and build by CATALYZE, @catalyze.uk"
  },
  "business": {
@@ -34,11 +34,15 @@
   "_team_source": "Fresha team list, Nov 2026. _placeholder: confirm, and whether the independent stylists at the same address want to be listed."
  },
  "booking": {
-  "base": "https://www.fresha.com/a/the-salon-sanctuary-liverpool-61-burlington-street-wwhv0000/booking",
-  "_source": "Fresha structured data: each service has its own booking link (offerItemId), tested on 23 Nov 2026: the link opens Fresha with that service already in the basket.",
-  "_placeholder": "Before launch the salon creates its own Fresha direct link (Marketing, Direct links) and the base URL is swapped for it.",
-  "handoff": "Opens The Salon Sanctuary's booking on Fresha with this service already picked. You choose the time, confirm and pay there.",
-  "consultId": "s:20394736"
+  "provider": "demo",
+  "endpoint": "",
+  "team": [
+   "Ashley",
+   "Macie"
+  ],
+  "consultId": "s:20394736",
+  "_note": "provider 'demo' = concept: sample times from opening hours, nothing sent, no appointment made. At launch set provider 'square' and endpoint to the deployed server/square-booking.mjs URL, after the salon moves its diary to Square Appointments.",
+  "_source": "Services, prices and times from the salon's public Fresha page (Nov 2026)."
  },
  "hero": {
   "title": [
@@ -212,24 +216,21 @@
      "name": "Colour consultation",
      "price": 10.0,
      "from": false,
-     "mins": 30,
-     "book": "https://www.fresha.com/a/the-salon-sanctuary-liverpool-61-burlington-street-wwhv0000/booking?offerItemId=s:20394736"
+     "mins": 30
     },
     {
      "id": "s:19928300",
      "name": "Hair extension consultation",
      "price": 10.0,
      "from": false,
-     "mins": 30,
-     "book": "https://www.fresha.com/a/the-salon-sanctuary-liverpool-61-burlington-street-wwhv0000/booking?offerItemId=s:19928300"
+     "mins": 30
     },
     {
      "id": "s:24119914",
      "name": "Mesh integration consultation",
      "price": 20.0,
      "from": false,
-     "mins": 30,
-     "book": "https://www.fresha.com/a/the-salon-sanctuary-liverpool-61-burlington-street-wwhv0000/booking?offerItemId=s:24119914"
+     "mins": 30
     }
    ]
   },
@@ -244,152 +245,133 @@
      "name": "Root touch-up + blow-dry",
      "price": 65.0,
      "from": true,
-     "mins": 120,
-     "book": "https://www.fresha.com/a/the-salon-sanctuary-liverpool-61-burlington-street-wwhv0000/booking?offerItemId=p:1618983"
+     "mins": 120
     },
     {
      "id": "p:1618984",
      "name": "Root touch-up + cut & blow-dry",
      "price": 93.0,
      "from": true,
-     "mins": 135,
-     "book": "https://www.fresha.com/a/the-salon-sanctuary-liverpool-61-burlington-street-wwhv0000/booking?offerItemId=p:1618984"
+     "mins": 135
     },
     {
      "id": "p:1618977",
      "name": "Full head tint + blow-dry",
      "price": 75.0,
      "from": true,
-     "mins": 120,
-     "book": "https://www.fresha.com/a/the-salon-sanctuary-liverpool-61-burlington-street-wwhv0000/booking?offerItemId=p:1618977"
+     "mins": 120
     },
     {
      "id": "p:1618974",
      "name": "Full head tint + cut & blow-dry",
      "price": 103.0,
      "from": true,
-     "mins": 135,
-     "book": "https://www.fresha.com/a/the-salon-sanctuary-liverpool-61-burlington-street-wwhv0000/booking?offerItemId=p:1618974"
+     "mins": 135
     },
     {
      "id": "p:1618988",
      "name": "Half head foils + blow-dry",
      "price": 95.0,
      "from": true,
-     "mins": 150,
-     "book": "https://www.fresha.com/a/the-salon-sanctuary-liverpool-61-burlington-street-wwhv0000/booking?offerItemId=p:1618988"
+     "mins": 150
     },
     {
      "id": "p:1619016",
      "name": "Half head foils + cut & blow-dry",
      "price": 123.0,
      "from": true,
-     "mins": 165,
-     "book": "https://www.fresha.com/a/the-salon-sanctuary-liverpool-61-burlington-street-wwhv0000/booking?offerItemId=p:1619016"
+     "mins": 165
     },
     {
      "id": "p:1648910",
      "name": "Half head foils + toner + blow-dry",
      "price": 120.0,
      "from": true,
-     "mins": 180,
-     "book": "https://www.fresha.com/a/the-salon-sanctuary-liverpool-61-burlington-street-wwhv0000/booking?offerItemId=p:1648910"
+     "mins": 180
     },
     {
      "id": "p:1634551",
      "name": "Half head foils + toner + cut & blow-dry",
      "price": 148.0,
      "from": true,
-     "mins": 195,
-     "book": "https://www.fresha.com/a/the-salon-sanctuary-liverpool-61-burlington-street-wwhv0000/booking?offerItemId=p:1634551"
+     "mins": 195
     },
     {
      "id": "p:1629042",
      "name": "Full head foils + blow-dry",
      "price": 125.0,
      "from": true,
-     "mins": 180,
-     "book": "https://www.fresha.com/a/the-salon-sanctuary-liverpool-61-burlington-street-wwhv0000/booking?offerItemId=p:1629042"
+     "mins": 180
     },
     {
      "id": "p:1629035",
      "name": "Full head foils + cut & finish",
      "price": 153.0,
      "from": true,
-     "mins": 195,
-     "book": "https://www.fresha.com/a/the-salon-sanctuary-liverpool-61-burlington-street-wwhv0000/booking?offerItemId=p:1629035"
+     "mins": 195
     },
     {
      "id": "p:1619036",
      "name": "Full head foils + toner + blow-dry",
      "price": 150.0,
      "from": true,
-     "mins": 210,
-     "book": "https://www.fresha.com/a/the-salon-sanctuary-liverpool-61-burlington-street-wwhv0000/booking?offerItemId=p:1619036"
+     "mins": 210
     },
     {
      "id": "p:1619037",
      "name": "Full head foils + toner + cut & blow-dry",
      "price": 178.0,
      "from": true,
-     "mins": 225,
-     "book": "https://www.fresha.com/a/the-salon-sanctuary-liverpool-61-burlington-street-wwhv0000/booking?offerItemId=p:1619037"
+     "mins": 225
     },
     {
      "id": "p:1619038",
      "name": "Root tint + half foils + blow-dry",
      "price": 115.0,
      "from": true,
-     "mins": null,
-     "book": "https://www.fresha.com/a/the-salon-sanctuary-liverpool-61-burlington-street-wwhv0000/booking?offerItemId=p:1619038"
+     "mins": null
     },
     {
      "id": "p:1619039",
      "name": "Root tint + half foils + cut & blow-dry",
      "price": 143.0,
      "from": true,
-     "mins": null,
-     "book": "https://www.fresha.com/a/the-salon-sanctuary-liverpool-61-burlington-street-wwhv0000/booking?offerItemId=p:1619039"
+     "mins": null
     },
     {
      "id": "p:1619032",
      "name": "Root tint + full foils + blow-dry",
      "price": 145.0,
      "from": true,
-     "mins": null,
-     "book": "https://www.fresha.com/a/the-salon-sanctuary-liverpool-61-burlington-street-wwhv0000/booking?offerItemId=p:1619032"
+     "mins": null
     },
     {
      "id": "p:1629082",
      "name": "Full head tint + half foils + cut & blow-dry",
      "price": 173.0,
      "from": true,
-     "mins": null,
-     "book": "https://www.fresha.com/a/the-salon-sanctuary-liverpool-61-burlington-street-wwhv0000/booking?offerItemId=p:1629082"
+     "mins": null
     },
     {
      "id": "p:1642877",
      "name": "Full head tint & full head foils",
      "price": 203.0,
      "from": true,
-     "mins": null,
-     "book": "https://www.fresha.com/a/the-salon-sanctuary-liverpool-61-burlington-street-wwhv0000/booking?offerItemId=p:1642877"
+     "mins": null
     },
     {
      "id": "s:19928298",
      "name": "Facial framing maintenance",
      "price": 105.0,
      "from": false,
-     "mins": 135,
-     "book": "https://www.fresha.com/a/the-salon-sanctuary-liverpool-61-burlington-street-wwhv0000/booking?offerItemId=s:19928298"
+     "mins": 135
     },
     {
      "id": "p:1657423",
      "name": "Balayage package",
      "price": 195.0,
      "from": false,
-     "mins": 210,
-     "book": "https://www.fresha.com/a/the-salon-sanctuary-liverpool-61-burlington-street-wwhv0000/booking?offerItemId=p:1657423"
+     "mins": 210
     },
     {
      "id": "s:20091221",
@@ -397,7 +379,6 @@
      "price": 225.0,
      "from": true,
      "mins": 255,
-     "book": "https://www.fresha.com/a/the-salon-sanctuary-liverpool-61-burlington-street-wwhv0000/booking?offerItemId=s:20091221",
      "note": "Add a finishing service when you book."
     },
     {
@@ -406,7 +387,6 @@
      "price": 140.0,
      "from": true,
      "mins": 210,
-     "book": "https://www.fresha.com/a/the-salon-sanctuary-liverpool-61-burlington-street-wwhv0000/booking?offerItemId=s:20089976",
      "note": "Includes toner, cut and blow-dry."
     },
     {
@@ -415,7 +395,6 @@
      "price": 50.0,
      "from": true,
      "mins": 75,
-     "book": "https://www.fresha.com/a/the-salon-sanctuary-liverpool-61-burlington-street-wwhv0000/booking?offerItemId=p:1648914",
      "note": "Only if your colour was done here."
     },
     {
@@ -424,7 +403,6 @@
      "price": 75.0,
      "from": true,
      "mins": 90,
-     "book": "https://www.fresha.com/a/the-salon-sanctuary-liverpool-61-burlington-street-wwhv0000/booking?offerItemId=p:1648915",
      "note": "Only if your colour was done here."
     }
    ]
@@ -440,24 +418,21 @@
      "name": "Re-style cut & blow-dry",
      "price": 43.0,
      "from": true,
-     "mins": 60,
-     "book": "https://www.fresha.com/a/the-salon-sanctuary-liverpool-61-burlington-street-wwhv0000/booking?offerItemId=s:26319451"
+     "mins": 60
     },
     {
      "id": "s:21862664",
      "name": "Cut & blow-dry above shoulder",
      "price": 43.0,
      "from": false,
-     "mins": 60,
-     "book": "https://www.fresha.com/a/the-salon-sanctuary-liverpool-61-burlington-street-wwhv0000/booking?offerItemId=s:21862664"
+     "mins": 60
     },
     {
      "id": "s:19928311",
      "name": "Cut & blow-dry below shoulder",
      "price": 53.0,
      "from": false,
-     "mins": 60,
-     "book": "https://www.fresha.com/a/the-salon-sanctuary-liverpool-61-burlington-street-wwhv0000/booking?offerItemId=s:19928311"
+     "mins": 60
     },
     {
      "id": "s:19928312",
@@ -465,7 +440,6 @@
      "price": 30.0,
      "from": false,
      "mins": 75,
-     "book": "https://www.fresha.com/a/the-salon-sanctuary-liverpool-61-burlington-street-wwhv0000/booking?offerItemId=s:19928312",
      "note": "Ages 12 and under."
     }
    ]
@@ -481,96 +455,84 @@
      "name": "Short blow-dry, chin length & above",
      "price": 20.0,
      "from": true,
-     "mins": 45,
-     "book": "https://www.fresha.com/a/the-salon-sanctuary-liverpool-61-burlington-street-wwhv0000/booking?offerItemId=s:19928292"
+     "mins": 45
     },
     {
      "id": "s:19928295",
      "name": "Straight blow-dry, no extensions",
      "price": 22.0,
      "from": true,
-     "mins": 45,
-     "book": "https://www.fresha.com/a/the-salon-sanctuary-liverpool-61-burlington-street-wwhv0000/booking?offerItemId=s:19928295"
+     "mins": 45
     },
     {
      "id": "s:19928289",
      "name": "Straight blow-dry, with extensions or long thick hair",
      "price": 27.0,
      "from": true,
-     "mins": 60,
-     "book": "https://www.fresha.com/a/the-salon-sanctuary-liverpool-61-burlington-street-wwhv0000/booking?offerItemId=s:19928289"
+     "mins": 60
     },
     {
      "id": "s:19928291",
      "name": "Curly blow-dry, no extensions",
      "price": 25.0,
      "from": true,
-     "mins": 45,
-     "book": "https://www.fresha.com/a/the-salon-sanctuary-liverpool-61-burlington-street-wwhv0000/booking?offerItemId=s:19928291"
+     "mins": 45
     },
     {
      "id": "s:19928296",
      "name": "Curly blow-dry, with extensions or long thick hair",
      "price": 30.0,
      "from": true,
-     "mins": 60,
-     "book": "https://www.fresha.com/a/the-salon-sanctuary-liverpool-61-burlington-street-wwhv0000/booking?offerItemId=s:19928296"
+     "mins": 60
     },
     {
      "id": "s:19928287",
      "name": "Wash & wand, no extensions",
      "price": 35.0,
      "from": true,
-     "mins": 60,
-     "book": "https://www.fresha.com/a/the-salon-sanctuary-liverpool-61-burlington-street-wwhv0000/booking?offerItemId=s:19928287"
+     "mins": 60
     },
     {
      "id": "s:19928306",
      "name": "Wash & wand, with extensions or long thick hair",
      "price": 40.0,
      "from": true,
-     "mins": 75,
-     "book": "https://www.fresha.com/a/the-salon-sanctuary-liverpool-61-burlington-street-wwhv0000/booking?offerItemId=s:19928306"
+     "mins": 75
     },
     {
      "id": "s:19928288",
      "name": "Dry styling, no extensions",
      "price": 25.0,
      "from": true,
-     "mins": 45,
-     "book": "https://www.fresha.com/a/the-salon-sanctuary-liverpool-61-burlington-street-wwhv0000/booking?offerItemId=s:19928288"
+     "mins": 45
     },
     {
      "id": "s:19928290",
      "name": "Dry styling, with extensions",
      "price": 30.0,
      "from": true,
-     "mins": 45,
-     "book": "https://www.fresha.com/a/the-salon-sanctuary-liverpool-61-burlington-street-wwhv0000/booking?offerItemId=s:19928290"
+     "mins": 45
     },
     {
      "id": "s:19928293",
      "name": "Hair-up",
      "price": 25.0,
      "from": true,
-     "mins": 45,
-     "book": "https://www.fresha.com/a/the-salon-sanctuary-liverpool-61-burlington-street-wwhv0000/booking?offerItemId=s:19928293"
+     "mins": 45
     },
     {
      "id": "s:19928297",
      "name": "Half up & styling, no extensions",
      "price": 30.0,
      "from": true,
-     "mins": 45,
-     "book": "https://www.fresha.com/a/the-salon-sanctuary-liverpool-61-burlington-street-wwhv0000/booking?offerItemId=s:19928297"
+     "mins": 45
     },
     {
      "id": "s:19928294",
      "name": "Half up & styling, with extensions",
      "price": 35.0,
      "from": true,
-     "mins": 45,
-     "book": "https://www.fresha.com/a/the-salon-sanctuary-liverpool-61-burlington-street-wwhv0000/booking?offerItemId=s:19928294"
+     "mins": 45
     }
    ]
   },
@@ -585,48 +547,42 @@
      "name": "Weft removal",
      "price": 10.0,
      "from": false,
-     "mins": 15,
-     "book": "https://www.fresha.com/a/the-salon-sanctuary-liverpool-61-burlington-street-wwhv0000/booking?offerItemId=s:19928284"
+     "mins": 15
     },
     {
      "id": "s:20265640",
      "name": "Volume / secret weft, per weft",
      "price": 28.0,
      "from": true,
-     "mins": 45,
-     "book": "https://www.fresha.com/a/the-salon-sanctuary-liverpool-61-burlington-street-wwhv0000/booking?offerItemId=s:20265640"
+     "mins": 45
     },
     {
      "id": "s:19928278",
      "name": "Weft maintenance package",
      "price": 60.0,
      "from": true,
-     "mins": 60,
-     "book": "https://www.fresha.com/a/the-salon-sanctuary-liverpool-61-burlington-street-wwhv0000/booking?offerItemId=s:19928278"
+     "mins": 60
     },
     {
      "id": "s:19928269",
      "name": "New weft fitting package",
      "price": 95.0,
      "from": true,
-     "mins": 90,
-     "book": "https://www.fresha.com/a/the-salon-sanctuary-liverpool-61-burlington-street-wwhv0000/booking?offerItemId=s:19928269"
+     "mins": 90
     },
     {
      "id": "s:24120034",
      "name": "Nano fitting (25 strands)",
      "price": 37.5,
      "from": true,
-     "mins": 60,
-     "book": "https://www.fresha.com/a/the-salon-sanctuary-liverpool-61-burlington-street-wwhv0000/booking?offerItemId=s:24120034"
+     "mins": 60
     },
     {
      "id": "s:24120052",
      "name": "Nano removal (25 to 75 strands)",
      "price": 50.0,
      "from": false,
-     "mins": 45,
-     "book": "https://www.fresha.com/a/the-salon-sanctuary-liverpool-61-burlington-street-wwhv0000/booking?offerItemId=s:24120052"
+     "mins": 45
     }
    ]
   },
@@ -641,16 +597,14 @@
      "name": "Keratin blow-dry, above shoulder",
      "price": 150.0,
      "from": false,
-     "mins": 120,
-     "book": "https://www.fresha.com/a/the-salon-sanctuary-liverpool-61-burlington-street-wwhv0000/booking?offerItemId=s:19928283"
+     "mins": 120
     },
     {
      "id": "s:19928272",
      "name": "Keratin blow-dry, below shoulder",
      "price": 170.0,
      "from": false,
-     "mins": 135,
-     "book": "https://www.fresha.com/a/the-salon-sanctuary-liverpool-61-burlington-street-wwhv0000/booking?offerItemId=s:19928272"
+     "mins": 135
     }
    ]
   },
@@ -665,24 +619,21 @@
      "name": "Bond repair",
      "price": 20.0,
      "from": false,
-     "mins": 15,
-     "book": "https://www.fresha.com/a/the-salon-sanctuary-liverpool-61-burlington-street-wwhv0000/booking?offerItemId=s:19928313"
+     "mins": 15
     },
     {
      "id": "s:19928279",
      "name": "Bespoke To You",
      "price": 20.0,
      "from": false,
-     "mins": 15,
-     "book": "https://www.fresha.com/a/the-salon-sanctuary-liverpool-61-burlington-street-wwhv0000/booking?offerItemId=s:19928279"
+     "mins": 15
     },
     {
      "id": "s:20919678",
      "name": "Scalp scrub & hair detox",
      "price": 18.0,
      "from": false,
-     "mins": 15,
-     "book": "https://www.fresha.com/a/the-salon-sanctuary-liverpool-61-burlington-street-wwhv0000/booking?offerItemId=s:20919678"
+     "mins": 15
     }
    ]
   },
@@ -697,32 +648,28 @@
      "name": "Indian head massage",
      "price": 45.0,
      "from": false,
-     "mins": 60,
-     "book": "https://www.fresha.com/a/the-salon-sanctuary-liverpool-61-burlington-street-wwhv0000/booking?offerItemId=s:19928304"
+     "mins": 60
     },
     {
      "id": "s:19928270",
      "name": "Indian head massage & blow-dry",
      "price": 70.0,
      "from": false,
-     "mins": 105,
-     "book": "https://www.fresha.com/a/the-salon-sanctuary-liverpool-61-burlington-street-wwhv0000/booking?offerItemId=s:19928270"
+     "mins": 105
     },
     {
      "id": "s:19928263",
      "name": "Indian head wash & go",
      "price": 35.0,
      "from": false,
-     "mins": 45,
-     "book": "https://www.fresha.com/a/the-salon-sanctuary-liverpool-61-burlington-street-wwhv0000/booking?offerItemId=s:19928263"
+     "mins": 45
     },
     {
      "id": "s:19928268",
      "name": "Indian head wash & blow",
      "price": 60.0,
      "from": false,
-     "mins": 90,
-     "book": "https://www.fresha.com/a/the-salon-sanctuary-liverpool-61-burlington-street-wwhv0000/booking?offerItemId=s:19928268"
+     "mins": 90
     }
    ]
   }
