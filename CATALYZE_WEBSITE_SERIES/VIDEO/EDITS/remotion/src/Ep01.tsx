@@ -1,0 +1,257 @@
+import React from 'react';
+import { AbsoluteFill, Easing, Img, OffthreadVideo, Sequence, interpolate, staticFile, useCurrentFrame } from 'remotion';
+import { captions, code, footage, palette, place, scenes, type Cap } from './ep01';
+
+// CATALYZE series look: near-black, cream, one orange accent used sparingly.
+const C = { bg: '#12100e', cream: '#f1ebdd', muted: '#9a9286', orange: '#ff6e00', line: '#2b2622' };
+const serif = '"Instrument Serif", Georgia, serif';
+const sans = '"Hanken Grotesk", system-ui, sans-serif';
+const mono = '"DM Mono", ui-monospace, monospace';
+const out = Easing.bezier(0.16, 1, 0.3, 1);
+const inOut = Easing.bezier(0.65, 0, 0.35, 1);
+
+const fade = (f: number, a: number, b: number, c: number, d: number) =>
+  interpolate(f, [a, b, c, d], [0, 1, 1, 0], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: out });
+const rise = (f: number, start: number, dist = 40, dur = 22) =>
+  interpolate(f, [start, start + dur], [dist, 0], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: out });
+const show = (f: number, start: number, dur = 18) =>
+  interpolate(f, [start, start + dur], [0, 1], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: out });
+
+const Label: React.FC<{ children: React.ReactNode; style?: React.CSSProperties }> = ({ children, style }) => (
+  <div style={{ fontFamily: sans, fontWeight: 600, fontSize: 26, letterSpacing: '0.16em', textTransform: 'uppercase', color: C.muted, ...style }}>{children}</div>
+);
+
+/* ---------- 1. Location hook ---------- */
+const Hook: React.FC = () => {
+  const f = useCurrentFrame();
+  const end = scenes.hook.dur;
+  return (
+    <AbsoluteFill style={{ background: C.bg }}>
+      {footage.street && (
+        <AbsoluteFill style={{ opacity: 0.55 }}>
+          <OffthreadVideo src={staticFile(footage.street)} muted style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+        </AbsoluteFill>
+      )}
+      <AbsoluteFill style={{ padding: '0 96px', justifyContent: 'center', opacity: fade(f, 0, 6, end - 8, end) }}>
+        <div style={{ fontFamily: mono, fontSize: 28, color: C.muted, letterSpacing: '0.08em', opacity: show(f, 2) }}>{place.coords}</div>
+        <div style={{ height: 2, width: interpolate(f, [4, 40], [0, 220], { extrapolateRight: 'clamp', easing: out }), background: C.orange, margin: '34px 0 40px' }} />
+        <div style={{ overflow: 'hidden' }}>
+          <div style={{ fontFamily: serif, fontSize: 168, lineHeight: 0.95, color: C.cream, letterSpacing: '-0.02em', transform: `translateY(${rise(f, 6, 180, 26)}px)` }}>New Brighton,</div>
+        </div>
+        <div style={{ overflow: 'hidden' }}>
+          <div style={{ fontFamily: serif, fontSize: 168, lineHeight: 1.05, color: C.cream, letterSpacing: '-0.02em', transform: `translateY(${rise(f, 12, 180, 26)}px)` }}>Wirral.</div>
+        </div>
+        <div style={{ marginTop: 56, fontFamily: sans, fontWeight: 500, fontSize: 44, lineHeight: 1.3, color: C.cream, maxWidth: 820, opacity: show(f, 34), transform: `translateY(${rise(f, 34, 24)}px)` }}>
+          One café. <span style={{ color: C.orange }}>One website</span> they didn't ask for.
+        </div>
+      </AbsoluteFill>
+    </AbsoluteFill>
+  );
+};
+
+/* ---------- 2. The business (shopfront drawing until your footage is in) ---------- */
+const Shopfront: React.FC<{ f: number }> = ({ f }) => {
+  const draw = (start: number, dur = 24) => interpolate(f, [start, start + dur], [1, 0], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: inOut });
+  const ln = (start: number) => ({ pathLength: 1, strokeDasharray: 1, strokeDashoffset: draw(start) });
+  let seed = 7;
+  const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+  const tones = ['', '', '', '', '#d4a53a', '#4d8a84', '#86a9c2', ''];
+  const panes = [[40, 300, 12], [360, 120, 4], [500, 300, 12]].flatMap(([x0, w, n]) =>
+    Array.from({ length: n * 2 }, (_, i) => ({ x: x0 + (i % n) * (w / n), y: 40 + Math.floor(i / n) * 20, w: w / n, t: tones[Math.floor(rnd() * tones.length)] })));
+  const lit = show(f, 30, 20);
+  return (
+    <svg viewBox="0 0 840 430" width={920} fill="none" stroke={C.cream} strokeWidth={1.6} style={{ overflow: 'visible' }}>
+      {panes.map((p, i) => <rect key={i} x={p.x} y={p.y} width={p.w} height={20} fill={p.t || 'none'} fillOpacity={p.t ? show(f, 18 + (i % 12), 10) * 0.8 : 0} strokeOpacity={0.6} {...ln(4 + (i % 12))} />)}
+      <rect x={20} y={24} width={800} height={380} {...ln(0)} />
+      <rect x={40} y={88} width={300} height={296} fill="#e9b86a" fillOpacity={lit * 0.18} {...ln(6)} />
+      <rect x={500} y={88} width={300} height={296} fill="#e9b86a" fillOpacity={lit * 0.18} {...ln(8)} />
+      <rect x={360} y={88} width={120} height={316} fill="#a3461e" fillOpacity={show(f, 22, 14) * 0.95} {...ln(10)} />
+      <text x={190} y={214} textAnchor="middle" fill={C.cream} stroke="none" style={{ fontFamily: '"Fraunces Variable", Georgia, serif', fontSize: 44, opacity: show(f, 24) }}>Social 114.</text>
+      <path d="M0 404 H840" {...ln(2)} />
+    </svg>
+  );
+};
+const Business: React.FC = () => {
+  const f = useCurrentFrame();
+  const end = scenes.business.dur;
+  return (
+    <AbsoluteFill style={{ background: C.bg, opacity: fade(f, 0, 4, end - 6, end) }}>
+      {footage.storefront ? (
+        <OffthreadVideo src={staticFile(footage.storefront)} muted style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+      ) : (
+        <AbsoluteFill style={{ alignItems: 'center', justifyContent: 'center' }}><Shopfront f={f} /></AbsoluteFill>
+      )}
+      <AbsoluteFill style={{ padding: '150px 96px', justifyContent: 'flex-start' }}>
+        <Label style={{ opacity: show(f, 6) }}>{place.street}</Label>
+        <div style={{ fontFamily: '"Fraunces Variable", Georgia, serif', fontWeight: 420, fontSize: 120, color: C.cream, letterSpacing: '-0.03em', marginTop: 18, opacity: show(f, 8), transform: `translateY(${rise(f, 8, 30)}px)` }}>
+          Social 114<span style={{ color: C.orange }}>.</span>
+        </div>
+      </AbsoluteFill>
+    </AbsoluteFill>
+  );
+};
+
+/* ---------- 3. The build: real code, real drafts, the decisions ---------- */
+const Browser: React.FC<{ children: React.ReactNode; width: number; url?: string }> = ({ children, width, url = 'social-114 concept' }) => (
+  <div style={{ width, borderRadius: 18, overflow: 'hidden', background: '#1c1a18', boxShadow: '0 50px 100px -30px rgba(0,0,0,.8), 0 0 0 1px rgba(255,255,255,.08)' }}>
+    <div style={{ height: 54, display: 'flex', alignItems: 'center', gap: 12, padding: '0 22px' }}>
+      {[0, 1, 2].map((i) => <div key={i} style={{ width: 13, height: 13, borderRadius: '50%', background: '#3a3632' }} />)}
+      <div style={{ marginLeft: 18, flex: 1, height: 30, borderRadius: 6, background: '#2a2724', color: C.muted, fontFamily: sans, fontSize: 17, display: 'flex', alignItems: 'center', paddingLeft: 14 }}>{url}</div>
+    </div>
+    {children}
+  </div>
+);
+
+const CodeShot: React.FC<{ f: number }> = ({ f }) => {
+  const chars = Math.floor(interpolate(f, [0, 42], [0, code.length], { extrapolateRight: 'clamp' }));
+  const shown = code.slice(0, chars);
+  const kw = /\b(function|const|return)\b/g;
+  return (
+    <div style={{ background: '#16140f', borderRadius: 18, padding: '40px 44px', width: 940, boxShadow: '0 0 0 1px rgba(255,255,255,.07)' }}>
+      <div style={{ fontFamily: mono, fontSize: 20, color: C.muted, marginBottom: 22 }}>src/scripts/main.ts</div>
+      <pre style={{ margin: 0, fontFamily: mono, fontSize: 25, lineHeight: 1.55, color: C.cream, whiteSpace: 'pre-wrap' }}>
+        {shown.split(kw).map((part, i) => (part.match(/^(function|const|return)$/) ? <span key={i} style={{ color: C.orange }}>{part}</span> : <span key={i}>{part}</span>))}
+        <span style={{ display: 'inline-block', width: 13, height: 28, background: C.orange, verticalAlign: -5, opacity: Math.floor(f / 8) % 2 ? 0.2 : 1 }} />
+      </pre>
+    </div>
+  );
+};
+
+const Build: React.FC = () => {
+  const f = useCurrentFrame();
+  const end = scenes.build.dur;
+  const DRAFT0 = 46, PER = 12; // five drafts, 12 frames each
+  const draft = Math.min(5, Math.max(1, Math.floor((f - DRAFT0) / PER) + 1));
+  const inDrafts = f >= DRAFT0 && f < DRAFT0 + PER * 5;
+  const pal0 = DRAFT0 + PER * 5; // 106
+  return (
+    <AbsoluteFill style={{ background: C.bg, opacity: fade(f, 0, 4, end - 6, end) }}>
+      <AbsoluteFill style={{ padding: '150px 70px 0', justifyContent: 'flex-start' }}>
+        <Label>{f < DRAFT0 ? 'Building the hero' : inDrafts ? `Draft 0${draft}` : 'Colours from the room'}</Label>
+      </AbsoluteFill>
+      {f < DRAFT0 && (
+        <AbsoluteFill style={{ alignItems: 'center', justifyContent: 'center', opacity: fade(f, 0, 4, DRAFT0 - 4, DRAFT0) }}>
+          <div style={{ transform: `scale(${interpolate(f, [0, DRAFT0], [1, 1.04])})` }}><CodeShot f={f} /></div>
+        </AbsoluteFill>
+      )}
+      {inDrafts && (
+        <AbsoluteFill style={{ alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ transform: `scale(${interpolate(f - DRAFT0, [0, PER * 5], [0.98, 1.03])})` }}>
+            <Browser width={980}><Img src={staticFile(`ep01/draft-v${draft}.jpg`)} style={{ width: 980, display: 'block' }} /></Browser>
+          </div>
+          <div style={{ position: 'absolute', top: 212, left: 70, display: 'flex', gap: 14 }}>
+            {[1, 2, 3, 4, 5].map((v) => <div key={v} style={{ width: 52, height: 3, background: v <= draft ? C.orange : C.line }} />)}
+          </div>
+        </AbsoluteFill>
+      )}
+      {f >= pal0 && (
+        <AbsoluteFill style={{ alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 280px)', gap: 24 }}>
+            {palette.map((c, i) => (
+              <div key={i} style={{ opacity: show(f, pal0 + i * 3, 12), transform: `translateY(${rise(f, pal0 + i * 3, 30, 16)}px)` }}>
+                <div style={{ height: 230, borderRadius: 14, background: c.hex, boxShadow: '0 0 0 1px rgba(255,255,255,.08)' }} />
+                <div style={{ fontFamily: sans, fontSize: 24, color: C.cream, marginTop: 14 }}>{c.name}</div>
+                <div style={{ fontFamily: mono, fontSize: 20, color: C.muted, marginTop: 4 }}>{c.hex}</div>
+              </div>
+            ))}
+          </div>
+        </AbsoluteFill>
+      )}
+    </AbsoluteFill>
+  );
+};
+
+/* ---------- 4. The reveal ---------- */
+const Phone: React.FC<{ children: React.ReactNode; width: number }> = ({ children, width }) => (
+  <div style={{ width, padding: 16, borderRadius: 74, background: '#0b0a09', boxShadow: '0 60px 120px -30px rgba(0,0,0,.85), 0 0 0 2px #2c2925' }}>
+    <div style={{ borderRadius: 60, overflow: 'hidden', position: 'relative' }}>{children}</div>
+  </div>
+);
+const Reveal: React.FC = () => {
+  const f = useCurrentFrame();
+  const end = scenes.reveal.dur;
+  const SWITCH = 104; // desktop, then phone
+  const desk = f < SWITCH;
+  const night = interpolate(f, [40, 80], [0, 1], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
+  return (
+    <AbsoluteFill style={{ background: C.bg, opacity: fade(f, 0, 6, end - 6, end) }}>
+      {/* the frame around the site warms as the site turns to night */}
+      <AbsoluteFill style={{ background: `radial-gradient(70% 45% at 50% 58%, rgba(255,110,0,${0.07 * night}), transparent)` }} />
+      {desk && (
+        <AbsoluteFill style={{ alignItems: 'center', justifyContent: 'center', paddingTop: 140, opacity: fade(f, 0, 8, SWITCH - 10, SWITCH) }}>
+          <div style={{ transform: `scale(${interpolate(f, [0, SWITCH], [0.96, 1.02], { easing: inOut })}) translateY(${rise(f, 0, 60, 26)}px)` }}>
+            <Browser width={1040}>
+              <OffthreadVideo src={staticFile('ep01/hero-desktop.mp4')} muted playbackRate={1.45} style={{ width: 1040, display: 'block' }} />
+            </Browser>
+          </div>
+        </AbsoluteFill>
+      )}
+      {/* the phone rises in while the desktop is still fading, so the frame never dips */}
+      <Sequence from={SWITCH - 10}>
+        <AbsoluteFill style={{ alignItems: 'center', justifyContent: 'center', paddingTop: 170 }}>
+          <div style={{ opacity: show(f, SWITCH - 10, 12), transform: `translateY(${rise(f, SWITCH - 10, 80, 26)}px)` }}>
+            <Phone width={560}>
+              <OffthreadVideo src={staticFile('ep01/hero-mobile.mp4')} muted playbackRate={2.1} style={{ width: 528, display: 'block' }} />
+            </Phone>
+          </div>
+        </AbsoluteFill>
+      </Sequence>
+    </AbsoluteFill>
+  );
+};
+
+/* ---------- 5. Outro ---------- */
+const Outro: React.FC = () => {
+  const f = useCurrentFrame();
+  return (
+    <AbsoluteFill style={{ background: C.bg, alignItems: 'center', justifyContent: 'center' }}>
+      <div style={{ opacity: show(f, 0, 12), transform: `scale(${interpolate(f, [0, 30], [0.94, 1], { extrapolateRight: 'clamp', easing: out })})` }}>
+        <Img src={staticFile('catalyze-logo-orange-cream.svg')} style={{ width: 640 }} />
+      </div>
+      <Label style={{ marginTop: 46, color: C.cream, opacity: show(f, 6) }}>Liverpool × Wirral</Label>
+      <div style={{ fontFamily: serif, fontSize: 120, color: C.orange, marginTop: 70, opacity: show(f, 12), transform: `translateY(${rise(f, 12, 30)}px)` }}>Who's next?</div>
+      <div style={{ position: 'absolute', bottom: 430, fontFamily: sans, fontSize: 24, color: C.muted, opacity: show(f, 16) }}>Unofficial concept by CATALYZE · @catalyze.uk</div>
+    </AbsoluteFill>
+  );
+};
+
+/* ---------- Captions: minimal, one line at a time, inside the 9:16 safe zone ---------- */
+const Caption: React.FC<{ c: Cap }> = ({ c }) => {
+  const f = useCurrentFrame();
+  const o = fade(f, c.from, c.from + 4, c.to - 4, c.to);
+  if (f < c.from || f > c.to) return null;
+  const words = c.text.split(' ');
+  return (
+    <AbsoluteFill style={{ justifyContent: 'flex-start', alignItems: 'flex-start', padding: '0 150px 0 96px', top: c.top ? 300 : 1400 }}>
+      <div style={{ opacity: o, transform: `translateY(${interpolate(o, [0, 1], [8, 0])}px)`, fontFamily: sans, fontWeight: 600, fontSize: 64, lineHeight: 1.1, color: '#fff', textShadow: '0 2px 18px rgba(0,0,0,.45)' }}>
+        {words.map((w, i) => <span key={i} style={{ color: w === c.hl ? C.orange : '#fff' }}>{w}{i < words.length - 1 ? ' ' : ''}</span>)}
+      </div>
+    </AbsoluteFill>
+  );
+};
+
+export const Ep01: React.FC<{ withCaptions: boolean }> = ({ withCaptions }) => (
+  <AbsoluteFill style={{ background: C.bg }}>
+    <Sequence from={scenes.hook.from} durationInFrames={scenes.hook.dur}><Hook /></Sequence>
+    <Sequence from={scenes.business.from} durationInFrames={scenes.business.dur}><Business /></Sequence>
+    <Sequence from={scenes.build.from} durationInFrames={scenes.build.dur}><Build /></Sequence>
+    <Sequence from={scenes.reveal.from} durationInFrames={scenes.reveal.dur}><Reveal /></Sequence>
+    <Sequence from={scenes.outro.from} durationInFrames={scenes.outro.dur}><Outro /></Sequence>
+    {withCaptions && captions.map((c, i) => <Caption key={i} c={c} />)}
+  </AbsoluteFill>
+);
+
+/* ---------- Cover (key text kept inside the centre 1080x1350 that the Instagram grid shows) ---------- */
+export const Ep01Cover: React.FC = () => (
+  <AbsoluteFill style={{ background: C.bg, alignItems: 'center' }}>
+    <div style={{ position: 'absolute', top: 330, width: '100%', padding: '0 90px' }}>
+      <Label>{place.area}</Label>
+      <div style={{ fontFamily: '"Fraunces Variable", Georgia, serif', fontWeight: 420, fontSize: 150, color: C.cream, letterSpacing: '-0.03em', marginTop: 16, lineHeight: 1 }}>Social 114<span style={{ color: C.orange }}>.</span></div>
+      <div style={{ fontFamily: serif, fontSize: 64, color: C.cream, marginTop: 22 }}>A website they <span style={{ color: C.orange }}>didn't ask for.</span></div>
+    </div>
+    <div style={{ position: 'absolute', top: 860 }}>
+      <Browser width={980}><Img src={staticFile('ep01/cover-site.jpg')} style={{ width: 980, display: 'block' }} /></Browser>
+    </div>
+    <Img src={staticFile('catalyze-logo-orange-cream.svg')} style={{ position: 'absolute', top: 1560, width: 250 }} />
+  </AbsoluteFill>
+);

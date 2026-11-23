@@ -54,3 +54,12 @@ Nothing yet (shot lists come after the website stage).
 ## Revisions requested
 
 None yet.
+
+## Episode 01 video (draft, 23 Nov 2026)
+
+- Edit: Remotion project `VIDEO/EDITS/remotion` (timings and captions in `src/ep01.ts`). 17.5s, 1080x1920, 30 fps, H.264 + AAC (silent).
+- Renders (local only, gitignored because they show the placeholder photos): `VIDEO/EDITS/remotion/out/ep01-social114-captioned-DRAFT.mp4`, `...-clean-DRAFT.mp4`, `...-cover-DRAFT.jpg`.
+- Footage: frame-accurate captures of the live site (`scripts/capture-site.cjs`), real drafts v1 to v5 from git tags, real code. No storefront or street footage yet: typographic hook and the site's shopfront drawing stand in; set `footage.street` / `footage.storefront` in `src/ep01.ts` once filmed.
+- Voice: owner generating TTS from `VOICE/SCRIPTS/EPISODE_01.md`. No music yet (needs a licensed track).
+- Post captions: `CAPTIONS/EPISODE_01.md` (handles unconfirmed).
+- To final: replace hero photos, add storefront/street clips, add VO + licensed music, retime captions to the VO, re-render, then platform exports and PostZen drafts (Facebook not connected).

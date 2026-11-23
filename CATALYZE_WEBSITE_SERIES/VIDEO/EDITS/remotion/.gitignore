@@ -1,0 +1,4 @@
+node_modules
+out
+# captures include the placeholder stock photos: never commit
+public/ep01
