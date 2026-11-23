@@ -83,7 +83,18 @@ const { booking, business } = site;
   .sheet-body :global(.opt svg) { grid-row: 1 / span 2; grid-column: 3; width: 16px; height: 16px; color: var(--muted); }
   .sheet-body :global(.cat-title) { margin: 0 0 6px; font-family: var(--font-display); font-size: 30px; font-weight: 600; line-height: 1.1; }
   .sheet-body :global(.note) { margin: 0 0 18px; font-size: 14px; color: var(--muted); padding-left: 12px; border-left: 2px solid var(--tile); }
-  .sheet-body :global(.pick) { padding: 22px 0 20px; border-bottom: 1px solid var(--line); }
+  .sheet-body :global(.ticket) { position: relative; margin-top: 4px; padding: 22px 22px 18px; background: #fbf3f4; border: 1px solid var(--line); border-radius: 10px; box-shadow: 0 18px 40px rgba(43, 46, 49, .1); animation: ticketIn .5s var(--ease-out); }
+  @keyframes ticketIn { from { opacity: 0; transform: translateY(10px) scale(.98); } }
+  .sheet-body :global(.t-top) { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+  .sheet-body :global(.t-mono) { font-family: var(--font-display); font-size: 18px; letter-spacing: .3em; color: var(--rose); }
+  .sheet-body :global(.t-label) { font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+  .sheet-body :global(.t-cut) { position: relative; margin: 20px -22px 16px; border-top: 1.5px dashed var(--line); }
+  .sheet-body :global(.t-cut::before), .sheet-body :global(.t-cut::after) { content: ""; position: absolute; top: -11px; width: 20px; height: 20px; border-radius: 50%; background: var(--bg); border: 1px solid var(--line); }
+  .sheet-body :global(.t-cut::before) { left: -11px; clip-path: inset(0 0 0 50%); }
+  .sheet-body :global(.t-cut::after) { right: -11px; clip-path: inset(0 50% 0 0); }
+  .sheet-body :global(.t-rows) { display: grid; grid-template-columns: repeat(3, auto); justify-content: space-between; gap: 12px; margin: 0; }
+  .sheet-body :global(.t-rows dt) { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+  .sheet-body :global(.t-rows dd) { margin: 4px 0 0; font-size: 15px; }
   .sheet-body :global(.pick-cat) { margin: 0 0 8px; font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
   .sheet-body :global(.pick-name) { margin: 0; font-family: var(--font-display); font-size: 34px; line-height: 1.05; font-weight: 600; text-wrap: balance; }
   .sheet-body :global(.pick-meta) { display: flex; gap: 22px; margin: 16px 0 0; font-size: 15px; }

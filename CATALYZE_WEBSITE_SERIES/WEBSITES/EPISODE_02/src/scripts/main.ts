@@ -50,6 +50,7 @@ function status() {
 }
 function paintStatus() {
   const s = status();
+  root.dataset.open = String(s.open);
   document.querySelectorAll<HTMLElement>('[data-status]').forEach((el) => { el.innerHTML = `<span class="dot${s.open ? ' open' : ''}"></span>${esc(s.long)}`; });
   document.querySelectorAll<HTMLElement>('[data-status-short]').forEach((el) => { el.textContent = s.short; });
   const n = nowLondon();
@@ -60,35 +61,158 @@ setInterval(paintStatus, 30_000);
 
 /* ---------- Arrive once ---------- */
 const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -8% 0px' });
-document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+document.querySelectorAll('.reveal, .reveal-wall, .reveal-draw, [data-count]').forEach((el) => io.observe(el));
 
-/* ---------- Swatch ring (intro section) ---------- */
-// Fans open once when the section arrives: darkest roots on the left to the
-// salon's rose gloss on the right. Not tied to scroll position.
+/* ---------- Find your colour ---------- */
+// The swatch ring fans open once when it arrives. Picking "now" and "would
+// like" draws those two locks out of the ring and suggests a starting
+// service from the real menu. Everything here answers a tap.
 const sws = [...document.querySelectorAll<SVGGElement>('[data-sw]')];
 const easeInOut = (t: number) => (t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
-function placeFan(p: number) {
-  const e = easeInOut(p), n = sws.length, mid = (n - 1) / 2;
+const finder = document.getElementById('finder-data') ? JSON.parse(document.getElementById('finder-data')!.textContent!) : null;
+let fanOpen = reduce ? 1 : 0;
+const push = sws.map(() => 0), pushTo = sws.map(() => 0);
+let pickNow = -1, pickGoal = -1;
+const angleOf = (i: number, e: number) => { const mid = (sws.length - 1) / 2; return (mid - i) * 1.1 + ((mid - i) * 14.5 - (mid - i) * 1.1) * e; };
+function placeFan() {
+  const e = easeInOut(fanOpen), mid = (sws.length - 1) / 2;
   sws.forEach((g, i) => {
-    const a = (mid - i) * 1.1 + ((mid - i) * 14.5 - (mid - i) * 1.1) * e;
-    const lift = Math.sin(Math.PI * e) * (i - mid) * .6;
-    g.setAttribute('transform', `rotate(${a.toFixed(3)}) translate(0 ${lift.toFixed(2)})`);
+    const lift = Math.sin(Math.PI * e) * (i - mid) * .6 + push[i];
+    g.setAttribute('transform', `rotate(${angleOf(i, e).toFixed(3)}) translate(0 ${lift.toFixed(2)})`);
+    g.classList.toggle('picked', i === pickNow || i === pickGoal);
   });
+  const tag = (el: HTMLElement | null, i: number) => {
+    if (!el) return;
+    if (i < 0) { el.classList.remove('on'); return; }
+    const a = angleOf(i, e) * Math.PI / 180, r = 486 + push[i];
+    const x = -Math.sin(a) * r, y = Math.cos(a) * r;
+    el.style.left = `${Math.min(93, Math.max(7, ((x + 420) / 840) * 100))}%`;
+    el.style.top = `${((y + 50) / 520) * 100}%`;
+    el.classList.add('on');
+  };
+  tag(document.querySelector('[data-tag-now]'), pickNow);
+  tag(document.querySelector('[data-tag-goal]'), pickGoal);
 }
-const fan = document.querySelector('[data-fan]');
-if (fan) {
-  placeFan(reduce ? 1 : 0);
+let animating = false;
+function animatePush() {
+  if (animating) return; animating = true;
+  const step = () => {
+    let moving = false;
+    push.forEach((v, i) => { const d = pushTo[i] - v; if (Math.abs(d) > .3) { push[i] = reduce ? pushTo[i] : v + d * .16; moving = true; } else push[i] = pushTo[i]; });
+    placeFan();
+    if (moving) requestAnimationFrame(step); else animating = false;
+  };
+  requestAnimationFrame(step);
+}
+const fanEl = document.querySelector('[data-fan]');
+if (fanEl) {
+  placeFan();
   if (!reduce) {
     const fio = new IntersectionObserver(([e]) => {
       if (!e.isIntersecting) return;
       fio.disconnect();
       const t0 = performance.now();
-      const step = (t: number) => { const p = Math.min(1, (t - t0) / 1800); placeFan(p); if (p < 1) requestAnimationFrame(step); };
-      setTimeout(() => requestAnimationFrame(step), 250);
-    }, { threshold: .45 });
-    fio.observe(fan);
+      const step = (t: number) => { fanOpen = Math.min(1, (t - t0) / 1800); placeFan(); if (fanOpen < 1) requestAnimationFrame(step); };
+      setTimeout(() => requestAnimationFrame(step), 200);
+    }, { threshold: .4 });
+    fio.observe(fanEl);
   }
 }
+function finderResult() {
+  if (!finder) return;
+  const box = document.querySelector<HTMLElement>('[data-result]')!;
+  if (pickNow < 0 || pickGoal < 0) return;
+  const ROSE = 8, COPPER = 2;
+  // light level of each shade, darkest 0 to lightest 7 (rose sits on light hair)
+  const level = [0, 1, 2, 2, 3, 4, 6, 7, 5];
+  let key: string;
+  if (pickGoal === ROSE) key = 'rose';
+  else if (pickGoal === pickNow) key = 'same';
+  else if (pickGoal === COPPER) key = 'copper';
+  else {
+    const diff = level[pickGoal] - level[pickNow];
+    key = diff <= 0 ? 'darker' : diff <= 2 ? 'lighter' : 'blonde';
+  }
+  const r = finder.results[key];
+  const rows = r.ids.filter((id: string) => byId.has(id)).map((id: string) => {
+    const it = byId.get(id)!.item;
+    return `<button type="button" class="res-row" data-book-id="${id}"><span>${esc(it.name)}</span><span class="data">${it.from ? 'from ' : ''}${money(it.price)}</span>${arrow}<small>${esc([dur(it.mins), it.note].filter(Boolean).join('. '))}</small></button>`;
+  }).join('');
+  const c = byId.get(booking.consultId)!.item;
+  box.innerHTML = `<div class="res"><p class="res-title">${esc(r.title)}</p><p class="res-body">${esc(r.body)}</p>${rows}<button type="button" class="res-row" data-book-id="${c.id}"><span>Start with a ${esc(c.name.toLowerCase())}</span><span class="data">${money(c.price)}</span>${arrow}<small>${dur(c.mins)}. Not on Saturdays.</small></button></div>`;
+}
+document.querySelectorAll<HTMLButtonElement>('[data-pick]').forEach((b) => b.addEventListener('click', () => {
+  const k = b.dataset.pick!, i = +b.dataset.shade!;
+  document.querySelectorAll<HTMLButtonElement>(`[data-pick="${k}"]`).forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+  if (k === 'now') pickNow = i; else pickGoal = i;
+  pushTo.fill(0);
+  if (pickNow >= 0) pushTo[pickNow] = 28;
+  if (pickGoal >= 0) pushTo[pickGoal] = pickGoal === pickNow ? 28 : 46;
+  if (fanOpen < 1) fanOpen = 1;
+  animatePush();
+  finderResult();
+  const sum = document.querySelector('[data-pick-sum]');
+  if (sum && finder) sum.textContent = [pickNow >= 0 ? `Now: ${finder.shades[pickNow]}` : '', pickGoal >= 0 ? `Would like: ${finder.shades[pickGoal]}` : ''].filter(Boolean).join('. ');
+}));
+
+/* ---------- Herringbone wall, laid tile by tile on arrival ---------- */
+const wallCv = document.querySelector<HTMLCanvasElement>('[data-wall]');
+if (wallCv) {
+  const W = 600, H = 640, u = 22, R = Math.PI / 4, ox = W * .15, oy = H * .1;
+  const tiles: { x: number; y: number; w: number; h: number; d: number; c: string }[] = [];
+  for (let k = -16; k < 16; k++) for (let n = -34; n < 34; n++) {
+    for (const [x, y, w, h] of [[n - 3 * k, n + 3 * k, 3, 1], [n - 3 * k, n + 1 + 3 * k, 1, 3]]) {
+      const X = (x + w / 2) * u, Y = (y + h / 2) * u;
+      const rx = X * Math.cos(R) - Y * Math.sin(R) + ox, ry = X * Math.sin(R) + Y * Math.cos(R) + oy;
+      if (rx < -40 || rx > W + 40 || ry < -40 || ry > H + 40) continue;
+      const c = Math.abs(Math.sin(x * 12.9898 + y * 78.233) * 43758.5453) % 1;
+      tiles.push({ x, y, w, h, d: Math.max(0, Math.min(1, (rx / W) * .45 + (1 - ry / H) * .55)), c: c < .33 ? '#d6b2ab' : c < .66 ? '#cda69f' : '#c49b94' });
+    }
+  }
+  const ctx = wallCv.getContext('2d')!;
+  let tWall = reduce ? 99 : 0;
+  const paint = () => {
+    const r = wallCv.getBoundingClientRect(), dpr = Math.min(2, devicePixelRatio || 1);
+    if (wallCv.width !== Math.round(r.width * dpr)) { wallCv.width = Math.round(r.width * dpr); wallCv.height = Math.round(r.height * dpr); }
+    const s = Math.max(r.width / W, r.height / H) * dpr;
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.fillStyle = '#efe1df'; ctx.fillRect(0, 0, wallCv.width, wallCv.height);
+    ctx.setTransform(s, 0, 0, s, (wallCv.width - W * s) / 2, (wallCv.height - H * s) / 2);
+    ctx.translate(ox, oy); ctx.rotate(R);
+    for (const t of tiles) {
+      const a = Math.min(1, Math.max(0, (tWall - t.d * 1.5) / .5));
+      if (a <= 0) continue;
+      ctx.globalAlpha = a; ctx.fillStyle = t.c;
+      ctx.fillRect(t.x * u + 1, t.y * u + 1 + (1 - a) * 6, t.w * u - 2, t.h * u - 2);
+    }
+    ctx.globalAlpha = 1;
+  };
+  paint();
+  addEventListener('resize', paint);
+  if (!reduce) {
+    const wio = new IntersectionObserver(([e]) => {
+      if (!e.isIntersecting) return; wio.disconnect();
+      const t0 = performance.now();
+      const step = (t: number) => { tWall = (t - t0) / 1000; paint(); if (tWall < 2.1) requestAnimationFrame(step); };
+      requestAnimationFrame(step);
+    }, { threshold: .35 });
+    wio.observe(wallCv);
+  }
+}
+
+/* ---------- 48 counts up once on arrival ---------- */
+document.querySelectorAll<HTMLElement>('[data-count]').forEach((el) => {
+  const to = +el.dataset.count!;
+  if (reduce) return;
+  el.textContent = '0';
+  const cio = new IntersectionObserver(([e]) => {
+    if (!e.isIntersecting) return; cio.disconnect();
+    const t0 = performance.now();
+    const step = (t: number) => { const p = Math.min(1, (t - t0) / 1400); el.textContent = String(Math.round(to * (1 - Math.pow(1 - p, 3)))); if (p < 1) requestAnimationFrame(step); };
+    requestAnimationFrame(step);
+  }, { threshold: .5 });
+  cio.observe(el);
+});
 
 /* ---------- Header name appears once the mirror is out of view ---------- */
 const mirrorEl = document.querySelector('[data-mirror]');
@@ -105,7 +229,11 @@ function selectTab(key: string, focus = false) {
     t.tabIndex = on ? 0 : -1;
     if (on) { if (focus) t.focus(); t.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: reduce ? 'auto' : 'smooth' }); }
   });
-  document.querySelectorAll<HTMLElement>('[data-panel]').forEach((p) => { p.hidden = p.dataset.panel !== key; });
+  document.querySelectorAll<HTMLElement>('[data-panel]').forEach((p) => {
+    const was = p.hidden;
+    p.hidden = p.dataset.panel !== key;
+    if (!p.hidden && was && !reduce) { p.classList.remove('enter'); void p.offsetWidth; p.classList.add('enter'); }
+  });
 }
 tabs.forEach((t, i) => {
   t.addEventListener('click', () => selectTab(t.dataset.tab!));
@@ -166,8 +294,10 @@ function viewPick(id: string) {
     const s = byId.get(swapTo)!.item;
     swap = `<button type="button" class="btn swap" data-swap="${s.id}"><span>Book the ${esc(s.name.toLowerCase())} first<small>${money(s.price)}, ${dur(s.mins)}, not on Saturdays</small></span>${arrow}</button>`;
   }
-  const html = `<div class="pick"><p class="pick-cat">${esc(cat.label)}</p><h2 class="pick-name">${esc(item.name)}</h2>
-    <p class="pick-meta"><span>Price <b class="data">${item.from ? 'from ' : ''}${money(item.price)}</b></span>${item.mins ? `<span>Time <b class="data">${dur(item.mins)}</b></span>` : ''}</p></div>
+  const html = `<div class="ticket"><div class="t-top"><span class="t-mono">TSS</span><span class="t-label">Your appointment</span></div>
+    <p class="pick-cat">${esc(cat.label)}</p><h2 class="pick-name">${esc(item.name)}</h2>
+    <div class="t-cut" aria-hidden="true"></div>
+    <dl class="t-rows"><div><dt>Price</dt><dd class="data">${item.from ? 'from ' : ''}${money(item.price)}</dd></div>${item.mins ? `<div><dt>Time</dt><dd class="data">${dur(item.mins)}</dd></div>` : ''}<div><dt>Where</dt><dd>61 Burlington Street</dd></div></dl></div>
     <div class="before"><h3>Before you book</h3><ul>${notes.map((n) => `<li>${dotIcon}<span>${esc(n)}</span></li>`).join('')}</ul></div>${swap}`;
   show(html, 2, () => viewPick(id));
   go.href = item.book;

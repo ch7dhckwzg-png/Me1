@@ -4,7 +4,7 @@ const { consult, booking } = site;
 ---
 <section id="consult" class="consult" aria-labelledby="consult-title">
   <div class="wrap grid">
-    <p class="big reveal" aria-hidden="true"><span class="num">{consult.number}</span><span class="unit">{consult.unit}</span></p>
+    <p class="big reveal" aria-hidden="true"><span class="num" data-count={consult.number}>{consult.number}</span><span class="unit">{consult.unit}</span></p>
     <div class="copy reveal">
       <h2 id="consult-title" class="h-section">{consult.title}</h2>
       <p class="lead">{consult.lead}</p>
@@ -24,7 +24,7 @@ const { consult, booking } = site;
   .consult { background: var(--basin); color: var(--fascia); border-top: 0; }
   .grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px 80px; align-items: start; }
   .big { margin: 0; font-family: var(--font-display); font-weight: 500; line-height: .8; color: var(--door); display: flex; flex-direction: column; }
-  .num { font-size: clamp(180px, 24vw, 360px); letter-spacing: -0.04em; }
+  .num { font-size: clamp(180px, 24vw, 360px); letter-spacing: -0.04em; font-variant-numeric: lining-nums tabular-nums; }
   .unit { font-family: var(--font-body); font-size: 15px; letter-spacing: .3em; text-transform: uppercase; color: #b9adaa; margin-top: 52px; padding-left: 10px; }
   .consult .lead { color: #c4b8b4; }
   .list { list-style: none; margin: 36px 0 36px; padding: 0; border-top: 1px solid #2e3032; }

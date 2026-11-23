@@ -41,6 +41,20 @@ Mechanic used: **a reveal through a mask (fog clearing) plus a line drawing that
 
 The "Colour, blonding and cutting on Burlington Street." section moved to second place, with the quick booking picks. Its swatch ring now fans open once on arrival instead of following the scroll.
 
+## v3: wow factor (owner: "worth big bucks")
+
+All motion still plays once or answers a tap. Nothing follows scroll or the cursor.
+
+- **The mirror reflects their room.** A soft reflection sits behind the glass: herringbone wall, black basin and chair, blush stools on gold legs, pendant light. It's drawn in code (`art-src/mirror-room.svg`) and rendered once to `public/art/mirror-room.webp`. Water droplets sit on the fog and clear with it.
+- **Herringbone wall.** In the second section, their tile wall is painted on a canvas tile by tile on arrival, then a black basin on a stitched leather chair with gold piping settles in front.
+- **Find your colour** (new section):
+  - Tap your shade now, then the shade you'd like. Those two locks slide out of the ring with "Now" and "Goal" labels.
+  - It suggests a starting service from the real menu, with prices and booking, plus the £10 consultation.
+  - **[PLACEHOLDER]** The shade-to-service suggestions are our reading of the menu and need the salon's approval.
+- **Appointment card.** The booking panel's check step is a ticket with their TSS monogram, service, price, time and address.
+- **Live shopfront.** The drawing draws itself on arrival. Its windows glow warm while the salon is open, and a "Closed" sign hangs on the door when it isn't.
+- **Small touches.** Price rows cascade in when you switch category, and "48" counts up when the consultation section arrives.
+
 ## Colours from the room (Fresha venue photos, Nov 2026)
 
 | Token | Hex | From |

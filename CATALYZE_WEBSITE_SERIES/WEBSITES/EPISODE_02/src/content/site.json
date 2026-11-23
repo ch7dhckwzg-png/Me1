@@ -184,6 +184,10 @@
  },
  "nav": [
   {
+   "label": "Find your colour",
+   "href": "#finder"
+  },
+  {
    "label": "Prices",
    "href": "#prices"
   },
@@ -727,5 +731,75 @@
   "line": "Hair salon at 61 Burlington Street, Liverpool.",
   "book": "Book an appointment",
   "prices": "See prices"
+ },
+ "finder": {
+  "title": "Not sure what to book?",
+  "lead": "Tap the shade your hair is now, then the shade you'd like. You'll get a starting point from the salon's menu.",
+  "now": "Your hair now",
+  "goal": "You'd like",
+  "empty": "Pick both shades to see where to start.",
+  "small": "A starting point from the menu, not a quote. Every colour begins with a £10 consultation, where your stylist confirms the right service and price.",
+  "shades": [
+   "Dark brown",
+   "Chestnut",
+   "Copper",
+   "Caramel",
+   "Honey",
+   "Golden blonde",
+   "Pale blonde",
+   "Icy blonde",
+   "Rose"
+  ],
+  "results": {
+   "same": {
+    "title": "Keep it fresh",
+    "body": "Same shade, new roots and shine.",
+    "ids": [
+     "p:1618983",
+     "p:1648914"
+    ]
+   },
+   "darker": {
+    "title": "Go richer",
+    "body": "A full head tint takes you deeper in one appointment.",
+    "ids": [
+     "p:1618977",
+     "p:1618974"
+    ]
+   },
+   "copper": {
+    "title": "Warm it up",
+    "body": "Copper is a tint, all over.",
+    "ids": [
+     "p:1618977",
+     "p:1618974"
+    ]
+   },
+   "lighter": {
+    "title": "A few shades lighter",
+    "body": "Foils and toner, or a softer balayage.",
+    "ids": [
+     "p:1648910",
+     "p:1657423"
+    ]
+   },
+   "blonde": {
+    "title": "All the way blonde",
+    "body": "Full head foils and toner, or the full blonde service.",
+    "ids": [
+     "p:1619036",
+     "s:20091221"
+    ]
+   },
+   "rose": {
+    "title": "Rose tones",
+    "body": "A gloss over light hair gives the pink. Darker hair is lifted first.",
+    "ids": [
+     "p:1648914",
+     "p:1648910"
+    ]
+   }
+  },
+  "_placeholder": "The shade-to-service suggestions are CATALYZE's reading of the menu. The salon must approve them before launch."
  }
 }

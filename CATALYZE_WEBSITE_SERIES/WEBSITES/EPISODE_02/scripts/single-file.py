@@ -12,7 +12,7 @@ def css_inline(m):
 s = re.sub(r'<link rel="stylesheet" href="([^"]+\.css)"\s*/?>', css_inline, s)
 s = re.sub(r'<script type="module" src="([^"]+)"></script>', lambda m: f'<script type="module">{(dist / m.group(1).lstrip("/")).read_text()}</script>', s)
 s = re.sub(r'<link rel="icon"[^>]*>', '', s)
-s = re.sub(r'src="(/images/[^"]+\.webp)"', lambda m: f'src="{b64(m.group(1), "image/webp")}"', s)
+s = re.sub(r'src="(/(?:images|art)/[^"]+\.webp)"', lambda m: f'src="{b64(m.group(1), "image/webp")}"', s)
 for t in [r'<!DOCTYPE html>', r'<!doctype html>', r'</?head>', r'</?body>', r'</html>']: s = re.sub(t, '', s, flags=re.I)
 s = re.sub(r'<html[^>]*>', '', s)
 

@@ -1,0 +1,149 @@
+---
+import site from '../content/site.json';
+const { finder } = site;
+
+// Hair-colour swatch ring, drawn in code: dark roots on the left, the
+// salon's rose gloss on the far right. Each lock is a shaped path with a
+// root-to-tip gradient, a soft sheen and fine strands clipped inside it.
+const shades = [
+  ['#211814', '#3d2a20'], // darkest brown
+  ['#3a2419', '#6a412a'], // chestnut
+  ['#5a2c1a', '#a15a33'], // copper
+  ['#6c482c', '#ad7f52'], // caramel
+  ['#8a6740', '#c9a26a'], // honey
+  ['#a8875a', '#dcc090'], // golden blonde
+  ['#c2a881', '#ecdcbc'], // pale blonde
+  ['#d3c6b2', '#f4ece0'], // toned, icy
+  ['#b98d86', '#ebcdc6'], // rose gloss (their pink)
+];
+let seed = 7;
+const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+const lock = 'M -14 44 C -20 150 -25 290 -20 392 C -16 428 -8 446 1 452 C 9 444 17 426 21 390 C 25 290 21 150 15 44 Z';
+const swatches = shades.map(([root, tip], i) => {
+  const strands = Array.from({ length: 30 }, (_, k) => {
+    const x0 = -14 + (k / 29) * 29 + (rnd() - .5) * 2;
+    const spread = x0 * 1.45;
+    const x1 = spread + (rnd() - .5) * 6;
+    const bow = (rnd() - .5) * 10;
+    const end = 380 + rnd() * 66 - Math.abs(x1) * 1.4;
+    return { d: `M ${x0.toFixed(1)} 44 C ${(x0 + bow).toFixed(1)} 170 ${(x1 - bow).toFixed(1)} 290 ${x1.toFixed(1)} ${end.toFixed(1)}`, light: k % 3 === 0, w: (.5 + rnd() * .7).toFixed(2) };
+  });
+  return { i, root, tip, strands };
+});
+---
+<section id="finder" class="finder" aria-labelledby="finder-title">
+  <div class="wrap grid">
+        <div class="fan-wrap" aria-hidden="true">
+          <svg class="fan" viewBox="-420 -50 840 520" data-fan>
+            <defs>
+              <path id="lock" d={lock} />
+              <clipPath id="lock-clip"><use href="#lock" /></clipPath>
+              <linearGradient id="sheen" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#fff" stop-opacity="0" />
+                <stop offset=".26" stop-color="#fff" stop-opacity=".22" />
+                <stop offset=".36" stop-color="#fff" stop-opacity="0" />
+                <stop offset=".9" stop-color="#000" stop-opacity="0" />
+                <stop offset="1" stop-color="#000" stop-opacity=".12" />
+              </linearGradient>
+              <linearGradient id="side" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0" stop-color="#000" stop-opacity=".22" />
+                <stop offset=".3" stop-color="#000" stop-opacity="0" />
+                <stop offset=".7" stop-color="#fff" stop-opacity=".06" />
+                <stop offset="1" stop-color="#000" stop-opacity=".2" />
+              </linearGradient>
+              {swatches.map((s) => (
+                <linearGradient id={`g${s.i}`} x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color={s.root} />
+                  <stop offset="1" stop-color={s.tip} />
+                </linearGradient>
+              ))}
+            </defs>
+            <g class="locks">
+              {swatches.map((s) => (
+                <g class="sw" data-sw={s.i}>
+                  <g class="sw-body">
+                    <use href="#lock" fill={`url(#g${s.i})`} />
+                    <g clip-path="url(#lock-clip)">
+                      {s.strands.map((t) => <path d={t.d} fill="none" stroke={t.light ? '#fff' : '#000'} stroke-opacity={t.light ? .16 : .14} stroke-width={t.w} />)}
+                      <rect x="-30" y="40" width="60" height="420" fill="url(#side)" />
+                      <rect x="-30" y="40" width="60" height="420" fill="url(#sheen)" />
+                    </g>
+                    <rect class="clamp" x="-18" y="22" width="36" height="26" rx="3" />
+                    <rect x="-18" y="22" width="36" height="5" rx="2" fill="#fff" fill-opacity=".08" />
+                  </g>
+                </g>
+              ))}
+            </g>
+            <circle class="ring" cx="0" cy="0" r="26" />
+            <circle class="ring-in" cx="0" cy="0" r="20" />
+          </svg>
+          <div class="tags" aria-hidden="true"><span class="tag tag-now" data-tag-now>Now</span><span class="tag tag-goal" data-tag-goal>Goal</span></div>
+        </div>
+    <div class="panel reveal">
+      <h2 id="finder-title" class="h-section">{finder.title}</h2>
+      <p class="lead">{finder.lead}</p>
+      {[['now', finder.now], ['goal', finder.goal]].map(([k, label], n) => (
+        <fieldset class="pick-row">
+          <legend><span class="data">{n + 1}</span>{label}</legend>
+          <div class="dots">
+            {swatches.map((s) => (
+              <button type="button" class="dot" data-pick={k} data-shade={s.i} aria-pressed="false" aria-label={finder.shades[s.i]} style={`--root:${s.root};--tip:${s.tip}`}><span class="dot-name">{finder.shades[s.i]}</span></button>
+            ))}
+          </div>
+        </fieldset>
+      ))}
+      <p class="pick-sum" data-pick-sum aria-hidden="true"></p>
+      <div class="result" data-result aria-live="polite"><p class="result-empty">{finder.empty}</p></div>
+      <p class="small">{finder.small}</p>
+    </div>
+  </div>
+</section>
+<script type="application/json" id="finder-data" set:html={JSON.stringify(finder)} />
+
+<style>
+  .grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px 72px; align-items: center; }
+  .fan-wrap { position: relative; }
+  .fan { width: 100%; height: auto; overflow: visible; display: block; }
+  .sw { will-change: transform; }
+  .sw-body { filter: drop-shadow(0 6px 10px rgba(43, 46, 49, .16)); transition: filter .4s; }
+  .sw.picked .sw-body { filter: drop-shadow(0 14px 18px rgba(43, 46, 49, .28)); }
+  .clamp { fill: var(--sign); }
+  .ring { fill: none; stroke: var(--gold); stroke-width: 6; }
+  .ring-in { fill: none; stroke: #c9ab73; stroke-width: 1.2; opacity: .7; }
+  .tags { position: absolute; inset: 0; pointer-events: none; }
+  .tag { position: absolute; transform: translate(-50%, -50%); font: 500 12px/1 var(--font-body); letter-spacing: .14em; text-transform: uppercase; padding: 7px 10px; border-radius: var(--radius); background: var(--sign); color: var(--fascia); opacity: 0; transition: opacity .3s, left .6s var(--ease-out), top .6s var(--ease-out); white-space: nowrap; }
+  .tag-goal { background: var(--rose); }
+  .tag.on { opacity: 1; }
+  .pick-row { border: 0; margin: 28px 0 0; padding: 0; }
+  .pick-row legend { padding: 0; margin-bottom: 12px; font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+  .pick-row legend .data { color: var(--rose); margin-right: 10px; letter-spacing: 0; }
+  .dots { display: flex; flex-wrap: wrap; gap: 10px; }
+  .dot { position: relative; width: 40px; height: 40px; border-radius: 50%; border: 0; padding: 0; cursor: pointer; background: linear-gradient(160deg, var(--root), var(--tip)); box-shadow: inset 0 0 0 1px rgba(43, 46, 49, .12); transition: transform .2s var(--ease-out), box-shadow .2s; -webkit-tap-highlight-color: transparent; }
+  .dot:active { transform: scale(.92); }
+  .dot[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--bg), 0 0 0 3.5px var(--sign); }
+  [data-pick="goal"][aria-pressed="true"] { box-shadow: 0 0 0 2px var(--bg), 0 0 0 3.5px var(--rose); }
+  .dot-name { position: absolute; left: 50%; top: calc(100% + 8px); transform: translateX(-50%); font-size: 12px; white-space: nowrap; color: var(--muted); opacity: 0; transition: opacity .2s; pointer-events: none; }
+  @media (hover: hover) { .dot:hover { transform: scale(1.08); } .dot:hover .dot-name { opacity: 1; } }
+  .dot[aria-pressed="true"] .dot-name { opacity: 1; color: var(--fg); }
+  .result { margin-top: 44px; min-height: 230px; }
+  .pick-sum { display: none; }
+  @media (max-width: 600px) {
+    .dots { gap: 5px; flex-wrap: nowrap; }
+    .dot { width: 32px; height: 32px; flex: none; }
+    .dot-name { display: none; }
+    .pick-sum { display: block; margin: 18px 0 0; font-size: 14px; color: var(--muted); min-height: 1.4em; }
+    .result { margin-top: 18px; }
+  }
+  .result-empty { margin: 0; padding: 22px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); color: var(--muted); }
+  .result :global(.res) { border-top: 1px solid var(--line); animation: resIn .5s var(--ease-out); }
+  .result :global(.res-title) { margin: 20px 0 4px; font-family: var(--font-display); font-size: 32px; font-weight: 600; line-height: 1.1; }
+  .result :global(.res-body) { margin: 0 0 14px; color: var(--muted); }
+  .result :global(.res-row) { width: 100%; display: grid; grid-template-columns: 1fr auto 18px; gap: 4px 14px; align-items: center; padding: 14px 6px; border: 0; border-top: 1px solid var(--line); background: none; text-align: left; font: inherit; color: var(--fg); cursor: pointer; border-radius: var(--radius); transition: background-color .2s; }
+  @media (hover: hover) { .result :global(.res-row:hover) { background: var(--bg-2); } }
+  .result :global(.res-row small) { grid-column: 1; color: var(--muted); font-size: 13px; }
+  .result :global(.res-row .data) { grid-row: 1; grid-column: 2; font-size: 15px; }
+  .result :global(.res-row svg) { grid-row: 1 / span 2; grid-column: 3; width: 16px; height: 16px; color: var(--muted); }
+  @keyframes resIn { from { opacity: 0; transform: translateY(8px); } }
+  .small { margin: 18px 0 0; font-size: 13px; color: var(--muted); max-width: 52ch; }
+  @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } .fan-wrap { max-width: 420px; margin: 0 auto; width: 100%; } .result { min-height: 0; } }
+</style>

@@ -113,3 +113,11 @@ None yet.
   - verify there's no website (including the Instagram bio and link-in-bio);
   - take colours from their branding;
   - use a new signature move.
+- v3 (tag ep02-salonsanctuary-v3), owner asked for wow factor:
+  - The mirror reflects their room, with droplets on the fog.
+  - Herringbone wall plus basin laying in on arrival.
+  - New "Find your colour" section: shade now, then shade wanted, suggests real menu services. Suggestions need the salon's sign-off.
+  - Appointment-card booking step.
+  - Live shopfront (windows lit when open, "Closed" sign when shut).
+  - Price row cascade and 48 count-up.
+  - Detector 0, sweep clean, QA passes at 1440 and 390.

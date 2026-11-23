@@ -28,8 +28,8 @@ const low = (c: any) => Math.min(...c.items.map((i: any) => i.price));
         </div>
         {c.note && <p class="panel-note">{c.note}</p>}
         <ul class="rows">
-          {c.items.map((it: any) => (
-            <li>
+          {c.items.map((it: any, n: number) => (
+            <li style={`--i:${Math.min(n, 14)}`}>
               <button type="button" class="row" data-book-id={it.id}>
                 <span class="row-name">{it.name}{it.note && <span class="row-note">{it.note}</span>}</span>
                 <span class="row-dur data">{dur(it.mins)}</span>
@@ -63,6 +63,9 @@ const low = (c: any) => Math.min(...c.items.map((i: any) => i.price));
   .panel-note { margin: 12px 0 0; max-width: 70ch; font-size: 15px; color: var(--muted); padding-left: 14px; border-left: 2px solid var(--tile); }
   .rows { list-style: none; margin: 26px 0 0; padding: 0; border-top: 1px solid var(--line); }
   .rows li { border-bottom: 1px solid var(--line); }
+  .panel.enter .rows li { animation: rowIn .45s var(--ease-out) both; animation-delay: calc(var(--i) * 28ms); }
+  .panel.enter .panel-head, .panel.enter .panel-note { animation: rowIn .45s var(--ease-out) both; }
+  @keyframes rowIn { from { opacity: 0; transform: translateY(8px); } }
   .row { width: 100%; display: grid; grid-template-columns: minmax(0, 1fr) 110px 110px 28px; gap: 16px; align-items: center; padding: 17px 6px; border: 0; background: none; text-align: left; color: var(--fg); font: inherit; cursor: pointer; border-radius: var(--radius); -webkit-tap-highlight-color: transparent; transition: background-color .2s; }
   .row:active { background: var(--bg-2); }
   @media (hover: hover) { .row:hover { background: var(--bg-2); } .row:hover .row-go { color: var(--rose); transform: translateX(3px); } }
