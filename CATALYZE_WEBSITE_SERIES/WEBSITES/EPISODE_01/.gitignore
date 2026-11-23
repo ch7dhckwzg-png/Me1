@@ -1,0 +1,4 @@
+
+# Placeholder hero photos (watermarked stock previews): private comp only, never commit
+public/images/hero-*.webp
+preview/

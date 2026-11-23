@@ -30,7 +30,7 @@ Only handles the business links itself (Fresha partner pages) are verified:
 
 ## Websites and preview links
 
-- Episode 01 Social 114: built in `WEBSITES/EPISODE_01/` (Astro + Tailwind). Private preview page: https://claude.ai/artifact/ELnnFbmVpNc2wrU3wMGpDo (v3). **Not yet approved.** No public deploy.
+- Episode 01 Social 114: built in `WEBSITES/EPISODE_01/` (Astro + Tailwind). Private preview page: https://claude.ai/artifact/ELnnFbmVpNc2wrU3wMGpDo (v4). **Not yet approved.** No public deploy.
 
 
 

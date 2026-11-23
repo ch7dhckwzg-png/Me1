@@ -232,5 +232,17 @@
     "headline": "114 Victoria Road.",
     "dogs": "Dogs welcome.",
     "mapsLabel": "Open in Maps"
+  },
+  "heroImages": {
+    "_placeholder": true,
+    "_note": "PRIVATE COMP ONLY. Supplied by the owner as stand-ins: watermarked stock previews, probably AI-generated, and not Social 114's food (a margherita is not on their verified menu). Replace with Catalyze's own top-down photos of a Social 114 flat white and pizza before any video, pitch or publishing.",
+    "cup": {
+      "src": "/images/hero-cup.webp",
+      "alt": "A flat white from above"
+    },
+    "pizza": {
+      "src": "/images/hero-pizza.webp",
+      "alt": "A wood-fired pizza from above"
+    }
   }
 }

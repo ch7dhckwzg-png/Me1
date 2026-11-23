@@ -29,38 +29,115 @@ function londonNow() {
 }
 
 /* ---------- Day / Night ---------- */
-// Switching plays in the hero: the dish turns away and the next one turns in,
-// the headline rolls over, and the whole page fades between light and dark.
-import { renderDish } from './dishes';
+// The hero holds while you scroll through its track: the morning cup crosses
+// from the left, spins, and becomes the evening pizza on the right. Halfway,
+// the page fades to night and the headline rolls over. Only the dish follows
+// the scroll; the text changes once at the threshold.
 let busy = false;
 function paintSwitch() {
   document.querySelectorAll<HTMLButtonElement>('[data-set-mode]').forEach((b) =>
     b.setAttribute('aria-pressed', String(b.dataset.setMode === root.dataset.mode)));
+  document.querySelectorAll<HTMLElement>('[data-copy]').forEach((c) =>
+    c.setAttribute('aria-hidden', String(c.dataset.copy !== root.dataset.mode)));
 }
-function setMode(mode: Mode) {
-  if (busy || mode === root.dataset.mode) return;
-  busy = true;
+function applyMode(mode: Mode) {
+  if (mode === root.dataset.mode) return;
   root.classList.add('theme-anim');
   root.dataset.mode = mode;
   paintSwitch();
   selectTab(mode === 'night' ? 'pizza' : 'brunch');
-  setTimeout(() => { root.classList.remove('theme-anim'); busy = false; }, reduce ? 0 : 1700);
+  clearTimeout((applyMode as any).t);
+  (applyMode as any).t = setTimeout(() => root.classList.remove('theme-anim'), reduce ? 0 : 1500);
 }
+
+const track = document.querySelector<HTMLElement>('[data-hero-track]')!;
+const stage = document.querySelector<HTMLElement>('[data-dish-stage]')!;
+const cupImg = document.querySelector<HTMLElement>('[data-dish="cup"]')!;
+const pizzaImg = document.querySelector<HTMLElement>('[data-dish="pizza"]')!;
+const halo = document.querySelector<HTMLElement>('[data-halo]')!;
+const HEADER = 72;
+const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
+const smooth = (a: number, b: number, v: number) => { const t = clamp01((v - a) / (b - a)); return t * t * (3 - 2 * t); };
+const easeInOut = (t: number) => (t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+let lastP = -1;
+
+function trackRange() {
+  const top = track.getBoundingClientRect().top + scrollY - HEADER;
+  const len = Math.max(1, track.offsetHeight - (innerHeight - HEADER));
+  return { top, len };
+}
+function progress() { const { top, len } = trackRange(); return clamp01((scrollY - top) / len); }
+
+function placeDish(p: number) {
+  const vw = document.documentElement.clientWidth;
+  const W = stage.offsetWidth;
+  const narrow = vw <= 900;
+  const x0 = narrow ? vw * .5 - W / 2 - vw * .2 : vw * .25 - W / 2;
+  const x1 = narrow ? vw * .5 - W / 2 + vw * .2 : vw * .75 - W / 2;
+  const e = easeInOut(p);
+  const bell = Math.sin(Math.PI * clamp01((p - .2) / .6));
+  const x = x0 + (x1 - x0) * e;
+  const rot = e * 400;
+  const scale = 1 - .12 * bell;
+  stage.style.transform = `translate3d(${x.toFixed(1)}px, ${(-14 * bell).toFixed(1)}px, 0) rotate(${rot.toFixed(1)}deg) scale(${scale.toFixed(3)})`;
+  const k = smooth(.36, .64, p);
+  const blur = (9 * bell * bell).toFixed(1);
+  if (!root.classList.contains('intro')) {
+    cupImg.style.opacity = String(1 - k);
+    cupImg.style.filter = `drop-shadow(0 30px 40px rgba(60,40,20,.22)) blur(${blur}px)`;
+  }
+  pizzaImg.style.opacity = String(k);
+  pizzaImg.style.filter = `drop-shadow(0 34px 44px rgba(0,0,0,.5)) blur(${blur}px)`;
+  halo.style.opacity = String(smooth(.55, .9, p));
+}
+let ticking = false;
+function onScroll() {
+  if (ticking) return;
+  ticking = true;
+  requestAnimationFrame(() => {
+    ticking = false;
+    const p = progress();
+    placeDish(p);
+    // switch modes only when crossing the middle (with a little hysteresis)
+    if (lastP >= 0) {
+      if (lastP < .5 && p >= .5) applyMode('night');
+      else if (lastP > .42 && p <= .42) applyMode('day');
+    }
+    lastP = p;
+  });
+}
+if (!reduce) {
+  addEventListener('scroll', onScroll, { passive: true });
+  addEventListener('resize', onScroll);
+  placeDish(progress()); lastP = progress();
+  if (lastP >= .5 && root.dataset.mode === 'day') applyMode('night');
+} else {
+  // still version: show the dish for the current mode, no movement
+  const night = root.dataset.mode === 'night';
+  stage.style.transform = `translate3d(${document.documentElement.clientWidth * (night ? .75 : .25) - stage.offsetWidth / 2}px,0,0)`;
+  cupImg.style.opacity = night ? '0' : '1'; pizzaImg.style.opacity = night ? '1' : '0';
+}
+
+// the switch: inside the hero it scrolls through the move; further down it just changes mode
 document.querySelectorAll<HTMLButtonElement>('[data-set-mode]').forEach((b) =>
-  b.addEventListener('click', () => setMode(b.dataset.setMode as Mode)));
+  b.addEventListener('click', () => {
+    const mode = b.dataset.setMode as Mode;
+    const { top, len } = trackRange();
+    if (!reduce && scrollY <= top + len + 4) scrollTo({ top: mode === 'night' ? top + len : Math.max(0, top - 1), behavior: 'smooth' });
+    else applyMode(mode);
+  }));
 paintSwitch();
 
-function renderDishes() {
-  document.querySelectorAll<HTMLCanvasElement>('[data-dish]').forEach((cv) => renderDish(cv, cv.dataset.dish as 'cup' | 'pizza'));
-}
-renderDishes();
-let rz = 0;
-addEventListener('resize', () => { clearTimeout(rz); rz = window.setTimeout(renderDishes, 300); });
-
-// Opening: the morning cup turns in, then the evening takes over (plays once).
+// opening: the morning cup turns into place (plays once)
 if (root.classList.contains('intro')) {
-  requestAnimationFrame(() => requestAnimationFrame(() => root.classList.remove('intro')));
-  setTimeout(() => setMode('night'), 2900);
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    root.classList.remove('intro');
+    setTimeout(() => { cupImg.style.transition = 'none'; placeDish(progress()); }, 1500);
+  }));
+}
+// ?mode=night for recordings: start at the end of the move
+if (new URLSearchParams(location.search).get('mode') === 'night' && !reduce) {
+  addEventListener('load', () => { const { top, len } = trackRange(); scrollTo(0, top + len); });
 }
 
 /* ---------- Today line + live status ---------- */
