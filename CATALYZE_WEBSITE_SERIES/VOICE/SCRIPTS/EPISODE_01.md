@@ -14,7 +14,7 @@ ElevenLabs version (the break tags add the pauses the edit needs):
 This café didn't have a website. <break time="0.2s" /> So I built them a new one. <break time="0.3s" /> Social one-fourteen does coffee by day, and wood-fired pizza by night. <break time="0.3s" /> Five drafts later, this is what I made. <break time="1.6s" /> From morning... <break time="0.3s" /> to night. <break time="3.6s" /> Who's next?
 ```
 
-- **The first two lines are the hook.** Quick and punchy: both land inside the first 3 seconds, over the Street View arrival and the cup spinning into the pizza.
+- **The first two lines are the hook.** Quick and punchy: both land inside the first 3 seconds, over the slow Street View pan and the cup spinning into the pizza.
 - **"one-fourteen"** is spelled out so the voice doesn't say "one hundred and fourteen". **Check how the owners say it** (it could be "one-one-four"); change only that word if so. The captions show "114" either way.
 - Delivery: relaxed, confident, conversational, a little cheeky. Not an announcer. Slight smile on "Who's next?"
 
@@ -26,7 +26,7 @@ This café didn't have a website. <break time="0.2s" /> So I built them a new on
 | 1.5 to 2.9s | So I built them a new one. | Zooms through into the flat white, spins into the pizza, frame turns to night |
 | 3.2 to 6.2s | Social one-fourteen does coffee by day, and wood-fired pizza by night. | "Social 114." and the shopfront drawing, then the real code |
 | 6.5 to 8.3s | Five drafts later, this is what I made. | The five real drafts, colours from the room |
-| 8.3 to 10.6s | (no voice) | Colours, then the site in the browser |
+| 8.3 to 10.0s | (no voice) | Colours from the room, then the laptop and phone rise in |
 | 10.2 to 11.1s | From morning... | Laptop and phone side by side, cup on screen |
 | 11.4 to 12.3s | to night. | Both screens turn to night, pizza in |
 | 12.3 to 16.2s | (no voice: let the site breathe) | Both scroll the whole site in sync: menu, 18:00, nights, the street, opening hours |
