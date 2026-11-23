@@ -1,0 +1,36 @@
+---
+import site from '../content/site.json';
+const { timetable, sites } = site;
+---
+<section id="timetable" class="tt">
+  <div class="wrap">
+    <div class="top reveal">
+      <h2 class="h-section">{timetable.headline} <em class="for-birkenhead">{sites.birkenhead.name}.</em><em class="for-ellesmere">{sites.ellesmere.name}.</em></h2>
+      <p class="label sample">Sample timetable</p>
+    </div>
+    <div class="days reveal" role="tablist" aria-label="Day">
+      {timetable.days.map((d) => <button role="tab" type="button" data-day={d} aria-selected="false">{d}</button>)}
+    </div>
+    <ol class="rows" data-rows aria-live="polite"></ol>
+    <p class="note">{timetable.note}</p>
+  </div>
+  <script is:inline type="application/json" id="tt-data" set:html={JSON.stringify(timetable.sessions)}></script>
+</section>
+
+<style>
+  .top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 8px 40px; }
+  .sample { border: 1px solid var(--line); border-radius: var(--radius); padding: 7px 10px; margin: 0 0 30px; }
+  .days { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); border-bottom: 1px solid var(--line); margin-top: 18px; }
+  .days button { all: unset; cursor: pointer; text-align: center; padding: 16px 0 14px; font: 750 15px/1 var(--font-body); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); position: relative; transition: color .3s; }
+  .days button::after { content: ""; position: absolute; left: 18%; right: 18%; bottom: -1px; height: 3px; background: var(--accent); transform: scaleX(0); transition: transform .5s var(--ease); }
+  .days button[aria-selected="true"] { color: var(--fg); }
+  .days button[aria-selected="true"]::after { transform: scaleX(1); }
+  .days button:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+  .rows { list-style: none; margin: 0; padding: 0; }
+  .rows :global(li) { display: grid; grid-template-columns: 110px minmax(0, 1fr) auto; gap: 20px; align-items: baseline; padding: 24px 0; border-bottom: 1px solid var(--line); animation: row .6s var(--ease) both; animation-delay: calc(var(--i) * 60ms); }
+  .rows :global(.t) { font-family: var(--font-mono); font-size: 18px; letter-spacing: .04em; }
+  .rows :global(.n) { font-family: var(--font-display); font-weight: 800; font-variation-settings: "wdth" 78; text-transform: uppercase; font-size: clamp(26px, 3vw, 40px); line-height: 1; }
+  .rows :global(.d) { color: var(--muted); font-family: var(--font-mono); font-size: 14px; }
+  @keyframes row { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  @media (max-width: 600px) { .days button { font-size: 12px; letter-spacing: .06em; } .rows :global(li) { grid-template-columns: 70px 1fr; } .rows :global(.d) { grid-column: 2; } }
+</style>

@@ -1,0 +1,326 @@
+{
+  "_note": "ALL copy for the Apex concept. Only the name, 'gym', and the two towns come from the owner (CATALYZE). Everything marked _placeholder is an example to be replaced with Apex's real details before this is shown as accurate. No prices, timetables, addresses or hours have been invented as facts: they are labelled on the page as examples or 'to confirm'.",
+  "concept": {
+    "label": "Unofficial concept by CATALYZE",
+    "detail": "Apex did not commission this site. Timetable, memberships and opening hours are examples to be confirmed with Apex.",
+    "catalyze": "@catalyze.uk"
+  },
+  "business": {
+    "name": "Apex",
+    "type": "Gym",
+    "tagline": "Two gyms: Birkenhead and Ellesmere Port."
+  },
+  "sites": {
+    "birkenhead": {
+      "id": "birkenhead",
+      "name": "Birkenhead",
+      "short": "BIRKENHEAD",
+      "area": "Birkenhead, Wirral",
+      "address": {
+        "_placeholder": true,
+        "lines": [
+          "Address to confirm",
+          "Birkenhead, Wirral"
+        ]
+      },
+      "hours": {
+        "_placeholder": true,
+        "text": "Opening hours to confirm"
+      },
+      "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Apex+gym+Birkenhead",
+      "headline": [
+        "Train in",
+        "Birkenhead."
+      ],
+      "body": "Your Apex on the Wirral side. Pick a session, check the times and come in."
+    },
+    "ellesmere": {
+      "id": "ellesmere",
+      "name": "Ellesmere Port",
+      "short": "ELLESMERE PORT",
+      "area": "Ellesmere Port, Cheshire",
+      "address": {
+        "_placeholder": true,
+        "lines": [
+          "Address to confirm",
+          "Ellesmere Port"
+        ]
+      },
+      "hours": {
+        "_placeholder": true,
+        "text": "Opening hours to confirm"
+      },
+      "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Apex+gym+Ellesmere+Port",
+      "headline": [
+        "Train in",
+        "Ellesmere",
+        "Port."
+      ],
+      "body": "The other Apex, in Ellesmere Port, with its own timetable."
+    }
+  },
+  "nav": [
+    {
+      "label": "Timetable",
+      "href": "#timetable"
+    },
+    {
+      "label": "Memberships",
+      "href": "#memberships"
+    },
+    {
+      "label": "Gyms",
+      "href": "#gyms"
+    },
+    {
+      "label": "Join",
+      "href": "#join"
+    }
+  ],
+  "timetable": {
+    "_placeholder": true,
+    "headline": "This week at",
+    "note": "Sample timetable. Real class names and times to come from Apex.",
+    "days": [
+      "Mon",
+      "Tue",
+      "Wed",
+      "Thu",
+      "Fri",
+      "Sat",
+      "Sun"
+    ],
+    "sessions": {
+      "birkenhead": {
+        "Mon": [
+          [
+            "06:30",
+            "Strength",
+            "60 min"
+          ],
+          [
+            "12:15",
+            "Conditioning",
+            "45 min"
+          ],
+          [
+            "18:30",
+            "Strength",
+            "60 min"
+          ]
+        ],
+        "Tue": [
+          [
+            "06:30",
+            "Mobility",
+            "45 min"
+          ],
+          [
+            "18:00",
+            "Circuits",
+            "45 min"
+          ],
+          [
+            "19:00",
+            "Strength",
+            "60 min"
+          ]
+        ],
+        "Wed": [
+          [
+            "06:30",
+            "Strength",
+            "60 min"
+          ],
+          [
+            "12:15",
+            "Conditioning",
+            "45 min"
+          ],
+          [
+            "18:30",
+            "Olympic lifting",
+            "75 min"
+          ]
+        ],
+        "Thu": [
+          [
+            "06:30",
+            "Mobility",
+            "45 min"
+          ],
+          [
+            "18:00",
+            "Circuits",
+            "45 min"
+          ],
+          [
+            "19:00",
+            "Strength",
+            "60 min"
+          ]
+        ],
+        "Fri": [
+          [
+            "06:30",
+            "Strength",
+            "60 min"
+          ],
+          [
+            "17:30",
+            "Conditioning",
+            "45 min"
+          ]
+        ],
+        "Sat": [
+          [
+            "09:00",
+            "Team session",
+            "60 min"
+          ],
+          [
+            "10:30",
+            "Open gym coaching",
+            "90 min"
+          ]
+        ],
+        "Sun": [
+          [
+            "10:00",
+            "Mobility",
+            "45 min"
+          ]
+        ]
+      },
+      "ellesmere": {
+        "Mon": [
+          [
+            "07:00",
+            "Conditioning",
+            "45 min"
+          ],
+          [
+            "18:00",
+            "Strength",
+            "60 min"
+          ]
+        ],
+        "Tue": [
+          [
+            "07:00",
+            "Strength",
+            "60 min"
+          ],
+          [
+            "12:30",
+            "Mobility",
+            "45 min"
+          ],
+          [
+            "18:30",
+            "Circuits",
+            "45 min"
+          ]
+        ],
+        "Wed": [
+          [
+            "07:00",
+            "Conditioning",
+            "45 min"
+          ],
+          [
+            "18:00",
+            "Strength",
+            "60 min"
+          ],
+          [
+            "19:15",
+            "Mobility",
+            "45 min"
+          ]
+        ],
+        "Thu": [
+          [
+            "07:00",
+            "Strength",
+            "60 min"
+          ],
+          [
+            "18:30",
+            "Circuits",
+            "45 min"
+          ]
+        ],
+        "Fri": [
+          [
+            "07:00",
+            "Conditioning",
+            "45 min"
+          ],
+          [
+            "17:30",
+            "Strength",
+            "60 min"
+          ]
+        ],
+        "Sat": [
+          [
+            "09:30",
+            "Team session",
+            "60 min"
+          ]
+        ],
+        "Sun": [
+          [
+            "10:30",
+            "Open gym coaching",
+            "90 min"
+          ]
+        ]
+      }
+    }
+  },
+  "memberships": {
+    "_placeholder": true,
+    "headline": "Memberships.",
+    "note": "Membership types, prices and what's included to confirm with Apex.",
+    "plans": [
+      {
+        "name": "Pay as you go",
+        "price": "Price to confirm",
+        "points": [
+          "What's included to confirm"
+        ]
+      },
+      {
+        "name": "Monthly",
+        "price": "Price to confirm",
+        "points": [
+          "What's included to confirm"
+        ],
+        "featured": true
+      },
+      {
+        "name": "Annual",
+        "price": "Price to confirm",
+        "points": [
+          "What's included to confirm"
+        ]
+      }
+    ]
+  },
+  "gyms": {
+    "headline": "Two gyms. Pick yours."
+  },
+  "join": {
+    "headline": "Come and train.",
+    "body": "Tell us which gym and what you're after, and the team will get back to you.",
+    "demoNotice": "Demo form: nothing is sent.",
+    "goals": [
+      "Get stronger",
+      "Get fitter",
+      "Classes",
+      "Not sure yet"
+    ]
+  }
+}

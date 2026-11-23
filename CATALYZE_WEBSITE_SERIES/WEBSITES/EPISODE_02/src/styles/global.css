@@ -1,0 +1,98 @@
+@import "tailwindcss";
+@import "@fontsource-variable/archivo/wdth.css";
+@import "@fontsource/dm-mono/400.css";
+
+/*
+  Apex. "Two gyms, one Apex".
+  PROVISIONAL palette (Apex's real branding not yet seen): chalk, graphite, steel, one hard red.
+  Birkenhead = chalk theme, Ellesmere Port = graphite theme. Every colour and font lives here.
+*/
+:root {
+  /* raw palette */
+  --bk-bg: #ededee;
+  --bk-bg-2: #e2e3e5;
+  --bk-fg: #141517;
+  --bk-muted: #5c5e62;
+  --bk-line: #cdd0d4;
+  --bk-accent: #b8291c;
+
+  --ep-bg: #141517;
+  --ep-bg-2: #1c1d20;
+  --ep-fg: #efede8;
+  --ep-muted: #9a9ca1;
+  --ep-line: #2c2e32;
+  --ep-accent: #e2493a;
+
+  --steel: #9aa0a6;
+
+  /* fonts */
+  --font-display: "Archivo Variable", "Archivo", "Arial Narrow", system-ui, sans-serif;
+  --font-body: "Archivo Variable", "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "DM Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  /* shape */
+  --radius: 6px;
+  --gutter-l: max(24px, env(safe-area-inset-left, 0px));
+  --gutter-r: max(24px, env(safe-area-inset-right, 0px));
+  --max: 1280px;
+  --ease: cubic-bezier(.2, .7, .1, 1);
+
+  /* active site tokens (Birkenhead) */
+  --bg: var(--bk-bg);
+  --bg-2: var(--bk-bg-2);
+  --fg: var(--bk-fg);
+  --muted: var(--bk-muted);
+  --line: var(--bk-line);
+  --accent: var(--bk-accent);
+  --on-accent: #ffffff;
+  color-scheme: light;
+}
+:root[data-site="ellesmere"] {
+  --bg: var(--ep-bg);
+  --bg-2: var(--ep-bg-2);
+  --fg: var(--ep-fg);
+  --muted: var(--ep-muted);
+  --line: var(--ep-line);
+  --accent: var(--ep-accent);
+  --on-accent: #141517;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; caret-color: var(--accent); scrollbar-color: color-mix(in srgb, var(--fg) 30%, transparent) var(--bg); }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: 1ms !important; animation-iteration-count: 1 !important; transition-duration: 1ms !important; }
+}
+body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--font-body); font-variation-settings: "wdth" 100; font-size: 17px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+img, svg { max-width: 100%; }
+a { color: inherit; }
+p { text-wrap: pretty; }
+::selection { background: var(--accent); color: #fff; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+
+.wrap { max-width: var(--max); margin: 0 auto; padding-left: var(--gutter-l); padding-right: var(--gutter-r); }
+.label { font-family: var(--font-body); font-weight: 650; font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+.data { font-family: var(--font-mono); font-weight: 400; letter-spacing: .04em; font-variant-numeric: tabular-nums; }
+.display { font-family: var(--font-display); font-weight: 800; font-variation-settings: "wdth" 72; text-transform: uppercase; letter-spacing: -0.01em; line-height: .9; }
+.h-section { font-family: var(--font-display); font-weight: 800; font-variation-settings: "wdth" 75; text-transform: uppercase; font-size: clamp(44px, 6.4vw, 96px); line-height: .92; letter-spacing: -0.005em; margin: 0 0 22px; text-wrap: balance; }
+.h-section em { font-style: normal; color: var(--accent); }
+.lead { font-size: clamp(17px, 1.4vw, 19px); color: var(--muted); max-width: 52ch; margin: 0; }
+.note { font-size: 13px; color: var(--muted); margin: 14px 0 0; }
+section { padding-block: clamp(88px, 11vw, 160px); border-top: 1px solid var(--line); }
+
+/* buttons: small radius, never pills */
+.btn { display: inline-flex; align-items: center; gap: 12px; font: 650 15px/1 var(--font-body); letter-spacing: .04em; text-transform: uppercase; padding: 16px 22px; border-radius: var(--radius); border: 1px solid var(--line); background: transparent; color: var(--fg); cursor: pointer; text-decoration: none; transition: background-color .3s, color .3s, border-color .3s, transform .2s cubic-bezier(.23, 1, .32, 1); }
+.btn:active { transform: scale(.97); transition-duration: .12s; }
+.btn-solid { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+@media (hover: hover) { .btn:hover { border-color: var(--fg); } .btn-solid:hover { background: var(--fg); border-color: var(--fg); color: var(--bg); } }
+.btn svg { width: 16px; height: 16px; }
+
+/* arrive once */
+.js .reveal { transition: opacity 1s var(--ease), transform 1s var(--ease); }
+.js .reveal:not(.in) { opacity: 0; transform: translateY(18px); }
+
+/* the page fades between sites while the hero plate rolls (colours only) */
+.theme-anim body, .theme-anim * { transition-property: background-color, color, border-color, fill, stroke; transition-duration: 1.2s; transition-timing-function: cubic-bezier(.65, 0, .25, 1); }
+
+:root[data-site="birkenhead"] .for-ellesmere, :root[data-site="ellesmere"] .for-birkenhead { display: none !important; }

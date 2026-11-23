@@ -79,3 +79,10 @@ None yet.
 
 - First clip names "114 Victoria Road, New Brighton, Wirral". Hook line 2 is "So I built them one." over a blurred plain downward scroll of the real site (tease) instead of the cup/pizza spin.
 - Ending is a head-on grand reveal: warm light bloom, laptop rises in facing camera, phone stands in front, one light sheen across both screens, slow push-in while both scroll the whole site in sync. The angled 3D laptop is gone.
+
+## Episode 02: Apex (Birkenhead and Ellesmere Port gyms), started 23 Nov 2026
+
+- Owner asked for a demo directly. Owner-supplied facts only: name Apex, gym, Birkenhead and Ellesmere Port. No online presence found (no site, listings or socials). Everything else is labelled placeholder (see `WEBSITES/EPISODE_02/README.md`).
+- Concept "Two gyms, one Apex": hero plate rolls across, rim BIRKENHEAD to ELLESMERE PORT, chalk to graphite theme; site switch; sample timetable per gym; memberships (prices to confirm); two gyms; demo join form.
+- Private preview published as an Artifact. Tag ep02-apex-v1. **Not yet approved.**
+- Needed from owner: Apex's Instagram/Facebook, addresses, hours, logo/colours, real timetable and membership details.
