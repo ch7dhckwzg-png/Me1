@@ -77,5 +77,5 @@ None yet.
 
 ## Episode 01 edit, cut 5 (23 Nov 2026)
 
-- First clip names "114 Victoria Road, New Brighton, Wirral". Hook line 2 is "So I built them one." over a blurred scroll of the real site (tease) instead of the cup/pizza spin.
+- First clip names "114 Victoria Road, New Brighton, Wirral". Hook line 2 is "So I built them one." over a blurred plain downward scroll of the real site (tease) instead of the cup/pizza spin.
 - Ending is a head-on grand reveal: warm light bloom, laptop rises in facing camera, phone stands in front, one light sheen across both screens, slow push-in while both scroll the whole site in sync. The angled 3D laptop is gone.

@@ -43,12 +43,13 @@ const Hook: React.FC = () => {
       <AbsoluteFill style={{ background: C.bg, opacity: bIn, transform: `scale(${bScale})` }}>
         {f >= SW - 8 && (
           <Sequence from={SW - 8} layout="none">
-            <AbsoluteFill style={{ filter: 'blur(26px) saturate(1.15)', transform: 'scale(1.18)' }}>
-              <OffthreadVideo src={staticFile('ep01/full-mobile.mp4')} muted playbackRate={1.6} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top' }} />
+            <AbsoluteFill style={{ filter: 'blur(14px) saturate(1.2) brightness(1.15)', transform: 'scale(1.12)' }}>
+              {/* from frame 72 of the capture the page simply scrolls down: no dish change, just the scroll */}
+              <OffthreadVideo src={staticFile('ep01/full-mobile.mp4')} muted trimBefore={72} playbackRate={2.3} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top' }} />
             </AbsoluteFill>
           </Sequence>
         )}
-        <AbsoluteFill style={{ background: 'linear-gradient(180deg, rgba(10,9,8,.62) 0%, rgba(10,9,8,.30) 45%, rgba(10,9,8,.55) 100%)' }} />
+        <AbsoluteFill style={{ background: 'linear-gradient(180deg, rgba(10,9,8,.6) 0%, rgba(10,9,8,.12) 40%, rgba(10,9,8,.35) 100%)' }} />
         <AbsoluteFill style={{ padding: '210px 84px 0', fontFamily: serif, fontSize: 150, lineHeight: 0.98, letterSpacing: '-0.02em' }}>
           {hookLines.b.map((l, i) => (
             <div key={l} style={{ overflow: 'hidden', paddingBottom: 10 }}><div style={{ color: i ? C.orange : C.cream, transform: lineB(i) }}>{l}</div></div>

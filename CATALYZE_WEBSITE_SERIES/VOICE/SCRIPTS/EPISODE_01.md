@@ -23,7 +23,7 @@ This café didn't have a website. <break time="0.2s" /> So I built them one. <br
 | Video time | Line | On screen |
 | --- | --- | --- |
 | 0.0 to 1.5s | This café didn't have a website. | Slow-motion Street View pan along the shopfront, punching in on the sign |
-| 1.5 to 2.9s | So I built them one. | Zooms through the sign into a blurred scroll of the new site, morning to night |
+| 1.5 to 2.9s | So I built them one. | Zooms through the sign into a blurred scroll down the new site |
 | 3.2 to 6.2s | Social one-fourteen does coffee by day, and wood-fired pizza by night. | "Social 114." and the shopfront drawing, then the real code |
 | 6.5 to 8.3s | Five drafts later, this is what I made. | The five real drafts, colours from the room |
 | 8.3 to 10.0s | (no voice) | Colours from the room |
