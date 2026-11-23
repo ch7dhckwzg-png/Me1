@@ -9,6 +9,13 @@ const URL = process.argv[3] || 'http://127.0.0.1:4321/';
 const OUT = `public/ep01/${name}`;
 const SLOW = 10, FPS = 30, FRAME_MS = 1000 / FPS * SLOW;
 const ease = (t) => (t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+// 0-10 hold on the cup, 10-64 the morph, 64-72 hold on the pizza, 72-176 scroll to the bottom
+function fullPath(f, r) {
+  if (f < 10) return 0;
+  if (f < 64) return r.top + r.len * ease((f - 10) / 54);
+  if (f < 72) return r.top + r.len;
+  return r.top + r.len + (r.bottom - r.top - r.len) * ease(Math.min(1, (f - 72) / 104));
+}
 
 const shots = {
   // desktop hero: hold on the cup, scroll the morph, hold on the pizza while the headline rolls in
@@ -18,6 +25,9 @@ const shots = {
   'hero-mobile': { vp: { width: 390, height: 844 }, dsf: 3, frames: 170, path: (f, r) => {
     if (f < 12) return 0; if (f < 92) return r.top + r.len * ease((f - 12) / 80);
     if (f < 112) return r.top + r.len; return r.top + r.len + 900 * ease(Math.min(1, (f - 112) / 58)); } },
+  // the whole page, top to bottom, on one shared timeline so laptop and phone scroll in sync
+  'full-desktop': { vp: { width: 1440, height: 900 }, dsf: 1.25, frames: 180, path: fullPath },
+  'full-mobile': { vp: { width: 390, height: 844 }, dsf: 2, frames: 180, path: fullPath },
   // desktop menu: pizza tab drawing itself
   'menu-desktop': { vp: { width: 1440, height: 900 }, dsf: 1.5, frames: 90, menu: true, path: (f, r) => r.menuTop },
 };
@@ -34,7 +44,7 @@ const shots = {
   await p.goto(URL + '?mode=day', { waitUntil: 'networkidle' });
   await p.waitForTimeout(3500); // opening cup turn-in finishes at normal speed
   const r = await p.evaluate(() => { const t = document.querySelector('[data-hero-track]'); const m = document.querySelector('#menu');
-    return { top: t.getBoundingClientRect().top + scrollY - 72, len: t.offsetHeight - (innerHeight - 72), menuTop: m.getBoundingClientRect().top + scrollY - 72 }; });
+    return { top: t.getBoundingClientRect().top + scrollY - 72, len: t.offsetHeight - (innerHeight - 72), menuTop: m.getBoundingClientRect().top + scrollY - 72, bottom: document.documentElement.scrollHeight - innerHeight }; });
   if (cfg.menu) { await p.evaluate((y) => scrollTo(0, y), r.menuTop); await p.waitForTimeout(1500); }
   const cdp = await ctx.newCDPSession(p);
   await cdp.send('Animation.enable');
@@ -49,7 +59,7 @@ const shots = {
     await p.screenshot({ path: `${OUT}/f${String(f).padStart(4, '0')}.jpg`, type: 'jpeg', quality: 94 });
   }
   await b.close();
-  execSync(`ffmpeg -v error -y -framerate ${FPS} -i ${OUT}/f%04d.jpg -c:v libx264 -preset slow -crf 14 -pix_fmt yuv420p ${OUT}.mp4`);
+  execSync(`ffmpeg -v error -y -framerate ${FPS} -i ${OUT}/f%04d.jpg -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" -c:v libx264 -preset slow -crf 14 -pix_fmt yuv420p ${OUT}.mp4`);
   fs.rmSync(OUT, { recursive: true, force: true });
   console.log(name, 'done', execSync(`ffprobe -v error -show_entries stream=width,height,nb_frames -of csv=p=0 ${OUT}.mp4`).toString().trim());
 })();

@@ -30,7 +30,7 @@ const Hook: React.FC = () => {
   const f = useCurrentFrame();
   const SW = 54; // 1.8s: the zoom through the sign into the dish
   // Part A: the street. Punches in on the sign at the end of the approach.
-  const zoom = lerp(f, 0, 36, 1.04, 1.1, inOut) * lerp(f, 36, SW + 2, 1, 2.1, whipEase);
+  const zoom = lerp(f, 0, 42, 1.02, 1.1, inOut) * lerp(f, 42, SW + 2, 1, 2.1, whipEase);
   const aBlur = lerp(f, SW - 10, SW + 2, 0, 18, whipEase);
   const aOut = 1 - lerp(f, SW - 4, SW + 4, 0, 1);
   // Part B: the dish spins, the cup becomes the pizza, the frame turns to night.
@@ -66,7 +66,7 @@ const Hook: React.FC = () => {
       {/* A on top: Street View arrival */}
       {f < SW + 4 && footage.street && (
         <AbsoluteFill style={{ opacity: aOut }}>
-          <AbsoluteFill style={{ transform: `scale(${zoom})`, transformOrigin: '50% 44%', filter: aBlur > 0.3 ? `blur(${aBlur.toFixed(1)}px)` : undefined }}>
+          <AbsoluteFill style={{ transform: `scale(${zoom})`, transformOrigin: '38% 47%', filter: aBlur > 0.3 ? `blur(${aBlur.toFixed(1)}px)` : undefined }}>
             <OffthreadVideo src={staticFile(footage.street)} muted playbackRate={footage.streetRate} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           </AbsoluteFill>
           <AbsoluteFill style={{ background: 'linear-gradient(180deg, rgba(10,9,8,.82) 0%, rgba(10,9,8,.55) 30%, rgba(10,9,8,0) 50%)' }} />
@@ -200,41 +200,71 @@ const Build: React.FC = () => {
   );
 };
 
-/* ---------- 4. The reveal ---------- */
+/* ---------- 4. The reveal: laptop and phone side by side, scrolling the whole site in sync ---------- */
+const LW = 1000, LH = 640, SCR_W = 948, SCR_H = 593; // lid and screen (16:10)
+const Laptop: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <div style={{ position: 'relative', width: LW, height: LH, transformStyle: 'preserve-3d' }}>
+    <div style={{ position: 'absolute', inset: 0, transformStyle: 'preserve-3d', transformOrigin: 'bottom center', transform: 'rotateX(-12deg)' }}>
+    {/* lid back + edge for thickness */}
+    <div style={{ position: 'absolute', inset: 0, borderRadius: 26, background: '#8e9096', transform: 'translateZ(-10px)' }} />
+    <div style={{ position: 'absolute', top: 14, bottom: 0, right: -5, width: 10, background: 'linear-gradient(#b5b7bc, #7d8086)', transform: 'rotateY(90deg)', transformOrigin: 'left' }} />
+    {/* lid front: bezel and screen */}
+    <div style={{ position: 'absolute', inset: 0, borderRadius: 26, background: '#0c0c0e', boxShadow: 'inset 0 0 0 2px #2b2b2f', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div style={{ width: SCR_W, height: SCR_H, borderRadius: 8, overflow: 'hidden', background: '#000', position: 'relative' }}>
+        {children}
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(115deg, rgba(255,255,255,.07) 0%, rgba(255,255,255,0) 38%)' }} />
+      </div>
+    </div>
+    </div>
+    {/* base: lies flat, toward the viewer from the hinge */}
+    <div style={{ position: 'absolute', left: -30, top: LH - 2, width: LW + 60, height: 640, transformOrigin: 'top center', transform: 'rotateX(90deg)', transformStyle: 'preserve-3d' }}>
+      <div style={{ position: 'absolute', inset: 0, borderRadius: '6px 6px 34px 34px', background: 'linear-gradient(180deg, #c4c6cb 0%, #a9abb1 100%)' }}>
+        <div style={{ position: 'absolute', left: 90, right: 90, top: 50, height: 330, borderRadius: 14, background: '#2a2b2f', display: 'grid', gridTemplateColumns: 'repeat(14, 1fr)', gap: 7, padding: 12 }}>
+          {Array.from({ length: 84 }, (_, i) => <div key={i} style={{ background: '#17181b', borderRadius: 5 }} />)}
+        </div>
+        <div style={{ position: 'absolute', left: '50%', top: 410, width: 420, height: 200, marginLeft: -210, borderRadius: 16, background: '#b6b8bd', boxShadow: 'inset 0 0 0 1.5px #9d9fa5' }} />
+      </div>
+      {/* front edge */}
+      <div style={{ position: 'absolute', left: 0, right: 0, bottom: -18, height: 18, borderRadius: '0 0 20px 20px', background: '#7f8187', transformOrigin: 'top', transform: 'rotateX(-90deg)' }} />
+    </div>
+  </div>
+);
 const Phone: React.FC<{ children: React.ReactNode; width: number }> = ({ children, width }) => (
-  <div style={{ width, padding: 16, borderRadius: 74, background: '#0b0a09', boxShadow: '0 60px 120px -30px rgba(0,0,0,.85), 0 0 0 2px #2c2925' }}>
-    <div style={{ borderRadius: 60, overflow: 'hidden', position: 'relative' }}>{children}</div>
+  <div style={{ width, padding: Math.round(width * 0.03), borderRadius: width * 0.13, background: '#0b0a09', boxShadow: '0 0 0 2px #2c2925, inset 0 0 0 2px #3a3631' }}>
+    <div style={{ borderRadius: width * 0.105, overflow: 'hidden', position: 'relative' }}>{children}</div>
   </div>
 );
 const Reveal: React.FC = () => {
   const f = useCurrentFrame();
   const end = scenes.reveal.dur;
-  const SWITCH = 104; // desktop, then phone
-  const desk = f < SWITCH;
-  const night = interpolate(f, [40, 80], [0, 1], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
+  const t = lerp(f, 0, 30, 0, 1);                       // the pair rises in
+  const drift = lerp(f, 0, end, 0, 1, inOut);            // slow camera drift to the right
+  const night = lerp(f, 30, 60, 0, 1);
+  const PW = 280;
+  const rise = (1 - t) * 240;
   return (
     <AbsoluteFill style={{ background: C.bg, opacity: fade(f, 0, 6, end - 6, end) }}>
-      {/* the frame around the site warms as the site turns to night */}
-      <AbsoluteFill style={{ background: `radial-gradient(70% 45% at 50% 58%, rgba(255,110,0,${0.07 * night}), transparent)` }} />
-      {desk && (
-        <AbsoluteFill style={{ alignItems: 'center', justifyContent: 'center', paddingTop: 140, opacity: fade(f, 0, 8, SWITCH - 10, SWITCH) }}>
-          <div style={{ transform: `scale(${interpolate(f, [0, SWITCH], [0.96, 1.02], { easing: inOut })}) translateY(${rise(f, 0, 60, 26)}px)` }}>
-            <Browser width={1040}>
-              <OffthreadVideo src={staticFile('ep01/hero-desktop.mp4')} muted playbackRate={1.45} style={{ width: 1040, display: 'block' }} />
-            </Browser>
-          </div>
-        </AbsoluteFill>
-      )}
-      {/* the phone rises in while the desktop is still fading, so the frame never dips */}
-      <Sequence from={SWITCH - 10}>
-        <AbsoluteFill style={{ alignItems: 'center', justifyContent: 'center', paddingTop: 170 }}>
-          <div style={{ opacity: show(f, SWITCH - 10, 12), transform: `translateY(${rise(f, SWITCH - 10, 80, 26)}px)` }}>
-            <Phone width={560}>
-              <OffthreadVideo src={staticFile('ep01/hero-mobile.mp4')} muted playbackRate={2.1} style={{ width: 528, display: 'block' }} />
-            </Phone>
-          </div>
-        </AbsoluteFill>
-      </Sequence>
+      <AbsoluteFill style={{ background: `radial-gradient(75% 40% at 50% 55%, rgba(255,110,0,${0.08 * night}), transparent)` }} />
+      {/* desk shadow under both */}
+      <AbsoluteFill style={{ alignItems: 'center', justifyContent: 'center', top: 360 }}>
+        <div style={{ width: 1050, height: 170, borderRadius: '50%', background: 'rgba(0,0,0,.75)', filter: 'blur(55px)' }} />
+      </AbsoluteFill>
+      <AbsoluteFill style={{ perspective: 2600, perspectiveOrigin: '50% 30%' }}>
+        {/* laptop, left */}
+        <div style={{ position: 'absolute', left: 540 - 95 - 500, top: 600, transformStyle: 'preserve-3d',
+          transform: `translateY(${rise}px) scale(${0.66 + 0.03 * drift}) rotateX(-11deg) rotateY(${-15 + 7 * drift}deg)` }}>
+          <Laptop>
+            <OffthreadVideo src={staticFile('ep01/full-desktop.mp4')} muted style={{ width: SCR_W, height: SCR_H, objectFit: 'cover', objectPosition: 'top', display: 'block' }} />
+          </Laptop>
+        </div>
+        {/* phone, right, standing on the same desk */}
+        <div style={{ position: 'absolute', left: 540 + 360 - PW / 2, top: 640, transformStyle: 'preserve-3d',
+          transform: `translateY(${rise * 1.15}px) scale(${1 + 0.03 * drift}) rotateX(-8deg) rotateY(${-16 + 7 * drift}deg)` }}>
+          <Phone width={PW}>
+            <OffthreadVideo src={staticFile('ep01/full-mobile.mp4')} muted style={{ width: PW - 2 * Math.round(PW * 0.03), display: 'block' }} />
+          </Phone>
+        </div>
+      </AbsoluteFill>
     </AbsoluteFill>
   );
 };

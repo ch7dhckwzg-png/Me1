@@ -69,3 +69,8 @@ None yet.
 - Owner preferred cut 1 (17.5s) over cut 2; cut 3 = cut 1 with a new hook and "Liverpool × Wirral" removed from the outro. Cut 2's source kept in git history (commit 530a7f9).
 - Hook: owner-supplied **Google Street View screen recording** of Victoria Road (UI cropped out, on-screen credit "Google Street View · Jul 2024"), punching in on the sign, then zooming through into the cup spinning into the pizza. **Before publishing:** confirm Google's Street View terms allow this promotional use, or replace with the owner's own street clip (`footage.street` in `src/ep01.ts`).
 - VO script updated for cut 3 (`VOICE/SCRIPTS/EPISODE_01.md`).
+
+## Episode 01 edit, cut 4 (23 Nov 2026)
+
+- Hook line now "This café didn't have a website." Street View clip is now a slow-motion pan along the shopfront (source 0.4 to 1.65s at 60fps, played at 0.69x).
+- Reveal: laptop and phone side by side, both scrolling the whole site in sync (new captures `full-desktop` / `full-mobile` on one shared timeline).

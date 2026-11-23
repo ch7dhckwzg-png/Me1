@@ -9,7 +9,7 @@ export const scenes = {
   hook: { from: 0, dur: 90 },        // 0.0 to 3.0s  hook: Street View arrival, then the cup spins into the pizza
   business: { from: 90, dur: 60 },   // 3.0 to 5.0s  the business
   build: { from: 150, dur: 150 },    // 5.0 to 10.0s the build (code, real drafts, decisions)
-  reveal: { from: 300, dur: 180 },   // 10.0 to 16.0s the website
+  reveal: { from: 300, dur: 180 },   // 10.0 to 16.0s laptop and phone side by side, both scrolling the whole site
   outro: { from: 480, dur: 45 },     // 16.0 to 17.5s CATALYZE
 };
 export const TOTAL = 525; // 17.5s (brief: 19s maximum)
@@ -19,15 +19,15 @@ export const TOTAL = 525; // 17.5s (brief: 19s maximum)
 // street clip (set streetCredit to null) before publishing if Google's terms don't cover this use.
 // `storefront` replaces the shopfront drawing in the business scene.
 export const footage = {
-  street: 'ep01/streetview-approach.mp4' as string | null,
-  streetRate: 2.2,                                  // 4s of approach played in about 1.8s
+  street: 'ep01/streetview-pan.mp4' as string | null,
+  streetRate: 0.69,                                 // slow motion: a 1.25s pan along the shopfront stretched to 1.8s (60fps source)
   streetCredit: 'Google Street View · Jul 2024' as string | null,
   storefront: null as string | null,                // e.g. 'ep01/storefront.mp4'
 };
 
 // The hook's two on-screen lines (the voiceover says the same words, so they aren't captioned twice).
 export const hookLines = {
-  a: ['This café lost', 'its website.'],
+  a: ["This café didn't", 'have a website.'],
   b: ['So I built them', 'a new one.'],
 };
 
@@ -48,8 +48,8 @@ export const captions: Cap[] = [
   { from: 164, to: 186, text: 'by night.', hl: 'night.' },
   { from: 196, to: 222, text: 'Five drafts later,', hl: 'Five' },
   { from: 222, to: 250, text: 'this is what I made.', hl: 'made.' },
-  { from: 318, to: 350, text: 'From morning', hl: 'morning', top: true },
-  { from: 366, to: 396, text: 'to night.', hl: 'night.', top: true },
+  { from: 306, to: 334, text: 'From morning', hl: 'morning', top: true },
+  { from: 342, to: 370, text: 'to night.', hl: 'night.', top: true },
   // "Who's next?" is the outro title itself, so it isn't repeated as a caption
 ];
 
