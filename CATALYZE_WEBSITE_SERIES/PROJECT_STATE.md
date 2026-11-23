@@ -84,3 +84,7 @@ None yet.
 
 - Owner scrapped Apex: they already have a website (Instagram @apex_wirral, "Apex Wirral | Kettlebell & Wellness Gyms", Ellesmere Port and Birkenhead, linktr.ee/ApexWirral). The concept build is kept only in git history (tag ep02-apex-v1); the EPISODE_02 folder is free for the next business.
 - Lessons: before building, check the business's Instagram bio and link-in-bio for a website; and each episode needs its own new hero animation (no reusing the cross-and-spin move).
+
+## Buyer ranking (23 Nov 2026)
+
+- Owner wants businesses that will actually buy. Ranked in `RESEARCH/buyer_ranking.md` using Companies House checks: 1 The Salon Sanctuary, 2 Mode Beauty and Hair, 3 Golden Afternoon Floristry, 4 Goddess Hair & Skin Clinic, 5 Oxton Boutique, 6 Helen Seaton. Stollies dropped (old company in liquidation). Note: SOCIAL 114 LTD was dissolved in Jul 2024 (they trade under another entity now).
