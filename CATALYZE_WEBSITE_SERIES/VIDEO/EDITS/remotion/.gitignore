@@ -4,3 +4,5 @@ out
 public/ep01
 # owner-supplied Street View recording and its crops: never commit
 public/ep01/streetview-*
+# large captures, regenerate with scripts/capture-ep02.cjs
+public/ep02

@@ -7,14 +7,18 @@
     "render:ep01": "remotion render Ep01 out/ep01-social114-captioned.mp4 && remotion render Ep01Clean out/ep01-social114-clean.mp4"
   },
   "dependencies": {
+    "@fontsource-variable/cormorant-garamond": "5.3.0",
+    "@fontsource-variable/fraunces": "5.3.0",
     "@fontsource/dm-mono": "5.3.0",
     "@fontsource/hanken-grotesk": "5.3.0",
     "@fontsource/instrument-serif": "5.3.0",
-    "@fontsource-variable/fraunces": "5.3.0",
     "@remotion/cli": "4.0.545",
     "react": "19.2.0",
     "react-dom": "19.2.0",
     "remotion": "4.0.545"
   },
-  "devDependencies": { "@types/react": "19.2.2", "typescript": "5.9.3" }
+  "devDependencies": {
+    "@types/react": "19.2.2",
+    "typescript": "5.9.3"
+  }
 }

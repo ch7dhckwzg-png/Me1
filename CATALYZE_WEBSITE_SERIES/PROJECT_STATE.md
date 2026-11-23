@@ -129,3 +129,16 @@ None yet.
 - v5 (tag ep02-salonsanctuary-v5): owner picked the backwash station (option 1 of 6) to replace the basin graphic.
   - It builds once on arrival: cabinet, bowl tilt, chair recline, tap, drop.
   - It has its own trigger, so it plays when visible, while the tiles still start early.
+
+## Episode 02 video (draft, 23 Nov 2026)
+
+- **Edit:** Remotion `VIDEO/EDITS/remotion`, config `src/ep02.ts`, scenes `src/Ep02.tsx`. It is built on the Episode 01 template; the series layer hasn't been extracted yet.
+- **Format:** 19.0s, 1080x1920, 30fps, H.264 12 Mb/s, silent AAC. The black-frame check finds 0 segments.
+- **Structure:** hook (shopfront line drawing, then blurred site scroll), mirror opening, build (real finder code, five real versions, colours from the room), **Find your colour feature beat**, head-on reveal, outro.
+- **Captures:** `scripts/capture-ep02.cjs`, which also slows the page's JS clock. Files are in `public/ep02` (gitignored, can be regenerated).
+- **Renders:** local only in `out/`: `ep02-salonsanctuary-captioned-DRAFT.mp4`, `-clean-DRAFT.mp4`, `-cover-DRAFT.jpg`.
+- **VO script:** `VOICE/SCRIPTS/EPISODE_02.md`. **Post captions:** `CAPTIONS/EPISODE_02.md`.
+- **Before publishing:**
+  - Owner checks the parked domains on a phone, because the hook depends on it.
+  - Add VO and licensed music.
+  - The owner's own storefront clip could replace the line drawing.
