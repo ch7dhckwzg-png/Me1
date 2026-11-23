@@ -1,39 +1,40 @@
-# Episode 01 voiceover: Social 114, New Brighton
+# Episode 01 voiceover: Social 114, New Brighton (v2 cut)
 
-29 words, about 10 seconds of speech inside a 17.5-second edit. The on-screen captions in the draft already match these words and this timing.
+30 words, about 11 seconds of speech inside an 18.5-second edit. The on-screen text and captions in the draft already match these words and this timing.
 
 ## Paste this into your text-to-speech tool
 
 Plain version (works anywhere):
 
-> New Brighton. Social one-fourteen does coffee by day, and wood-fired pizza by night. Their old website's gone, so I built them a new one. From morning... to night. Who's next?
+> This café lost its website. So I built them a new one. Social one-fourteen, on Victoria Road. Coffee by day, pizza by night, so the site does both. From morning... to night. Who's next?
 
 ElevenLabs version (the break tags add the pauses the edit needs):
 
 ```
-New Brighton. <break time="0.3s" /> Social one-fourteen does coffee by day, and wood-fired pizza by night. <break time="0.4s" /> Their old website's gone, so I built them a new one. <break time="2.2s" /> From morning... <break time="0.4s" /> to night. <break time="2.5s" /> Who's next?
+This café lost its website. <break time="0.2s" /> So I built them a new one. <break time="0.3s" /> Social one-fourteen, on Victoria Road. <break time="0.2s" /> Coffee by day, pizza by night, so the site does both. <break time="1.6s" /> From morning... <break time="0.4s" /> to night. <break time="3.6s" /> Who's next?
 ```
 
-- **"one-fourteen"** is spelled out so the voice doesn't say "one hundred and fourteen". **Check how the owners say it** (it could be "one-one-four"). If it's different, change only that word; the captions show "114" either way.
-- Delivery: relaxed, confident, conversational, a little cheeky on "they didn't ask for" energy. Not an announcer. Slight smile on "Who's next?"
-- Pronunciation: "New Brighton" is two clear words; no "Brigh-tun" swallowing.
+- **The first two lines carry the hook.** Say them quickly and with a bit of punch: they land in under 3 seconds.
+- **"one-fourteen"** is spelled out so the voice doesn't say "one hundred and fourteen". **Check how the owners say it** (it could be "one-one-four"); change only that word if so. The captions show "114" either way.
+- Delivery: relaxed, confident, conversational, a little cheeky. Not an announcer. Slight smile on "Who's next?"
 
 ## Timing against the video (30 fps)
 
-| Video time | Line | Caption on screen | What's on screen |
-| --- | --- | --- | --- |
-| 0.3 to 1.4s | New Brighton. | New **Brighton.** | Coordinates, "New Brighton, Wirral." |
-| 1.5 to 4.7s | Social one-fourteen does coffee by day, and wood-fired pizza by night. | Social **114** does / **coffee** by day / and wood-fired **pizza** / by **night.** | Hook, then the shopfront |
-| 5.1 to 8.0s | Their old website's gone, so I built them a new one. | Their old website's **gone,** / so I **built** them / a **new** one. | Real code, then the five real drafts |
-| 8.0 to 10.6s | (no voice) | | Colours from the room, desktop reveal starts |
-| 10.6 to 11.7s | From morning... | From **morning** | Cup on the left of the site |
-| 12.2 to 13.2s | to night. | to **night.** | Site turns to night, pizza on the right |
-| 13.2 to 16.2s | (no voice: let the phone reveal breathe) | | Phone version |
-| 16.3 to 17.3s | Who's next? | (the outro title says it) | CATALYZE, Liverpool × Wirral |
+| Video time | Line | On screen |
+| --- | --- | --- |
+| 0.1 to 1.3s | This café lost its website. | Hook text, flat white spinning, "Social 114 · New Brighton, Wirral" |
+| 1.4 to 2.8s | So I built them a new one. | Whips to the pizza, frame turns to night, hook text changes |
+| 3.2 to 4.9s | Social one-fourteen, on Victoria Road. | "Social 114." with the shopfront drawing |
+| 5.1 to 8.0s | Coffee by day, pizza by night, so the site does both. | Real code, the five real drafts stacking in, colours from the room |
+| 8.0 to 9.8s | (no voice) | Colours drop in, then the site fills the frame |
+| 9.8 to 10.9s | From morning... | Camera pulls back from the site: it's on a laptop |
+| 11.4 to 12.5s | to night. | Camera swings right, the site turns to night |
+| 12.5 to 17.0s | (no voice: let the laptop and phone breathe) | Laptop, then the phone version |
+| 17.2 to 18.2s | Who's next? | CATALYZE, Liverpool × Wirral, "Who's next?" |
 
-If your audio comes out a little faster or slower, send me the file: I'll line the captions up to it word by word (the edit's timings all live in `VIDEO/EDITS/remotion/src/ep01.ts`).
+If your audio comes out faster or slower, send me the file and I'll line the captions up to it word by word (all timings live in `VIDEO/EDITS/remotion/src/ep01.ts`).
 
 ## Facts behind the script
 
-- "Coffee by day, wood-fired pizza by night": La Vida Liverpool (Oct 2022) and current listings; brunch 9:30 to 15:00, pizza from 18:00.
-- "Their old website's gone": social114.com was linked in 2022 and the domain is no longer registered (domain registry check, Nov 2026).
+- "Lost its website": social114.com was linked in a 2022 press piece and the domain is no longer registered (domain registry check, Nov 2026).
+- "Coffee by day, pizza by night": La Vida Liverpool (Oct 2022) and current listings; brunch 9:30 to 15:00, pizza from 18:00.
