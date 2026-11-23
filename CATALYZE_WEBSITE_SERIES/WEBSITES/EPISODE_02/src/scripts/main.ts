@@ -180,7 +180,7 @@ if (wallCv) {
     ctx.setTransform(s, 0, 0, s, (wallCv.width - W * s) / 2, (wallCv.height - H * s) / 2);
     ctx.translate(ox, oy); ctx.rotate(R);
     for (const t of tiles) {
-      const a = Math.min(1, Math.max(0, (tWall - t.d * 1.5) / .5));
+      const a = Math.min(1, Math.max(0, (tWall - t.d * .8) / .3));
       if (a <= 0) continue;
       ctx.globalAlpha = a; ctx.fillStyle = t.c;
       ctx.fillRect(t.x * u + 1, t.y * u + 1 + (1 - a) * 6, t.w * u - 2, t.h * u - 2);
@@ -192,10 +192,11 @@ if (wallCv) {
   if (!reduce) {
     const wio = new IntersectionObserver(([e]) => {
       if (!e.isIntersecting) return; wio.disconnect();
+      wallCv.parentElement!.classList.add('laid');
       const t0 = performance.now();
-      const step = (t: number) => { tWall = (t - t0) / 1000; paint(); if (tWall < 2.1) requestAnimationFrame(step); };
+      const step = (t: number) => { tWall = (t - t0) / 1000; paint(); if (tWall < 1.2) requestAnimationFrame(step); };
       requestAnimationFrame(step);
-    }, { threshold: .35 });
+    }, { threshold: 0, rootMargin: '0px 0px 30% 0px' });
     wio.observe(wallCv);
   }
 }

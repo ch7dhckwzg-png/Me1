@@ -61,7 +61,7 @@ const W = 600, H = 640;
   .status :global(.dot.open) { background: #4f7a56; }
   .wall { position: relative; aspect-ratio: 600 / 640; border-radius: var(--radius); overflow: hidden; box-shadow: 0 30px 60px rgba(43, 46, 49, .12); background: #efe1df; }
   .wall canvas, .wall svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
-  :global(.js) .reveal-wall .basin { opacity: 0; transform: translateY(40px); transition: opacity .7s ease-out 1.6s, transform 1s var(--ease-out) 1.6s; }
-  :global(.js) .reveal-wall.in .basin { opacity: 1; transform: none; }
+  :global(.js) .reveal-wall .basin { opacity: 0; transform: translateY(40px); transition: opacity .6s ease-out .8s, transform .9s var(--ease-out) .8s; }
+  :global(.js) .reveal-wall.laid .basin { opacity: 1; transform: none; }
   @media (max-width: 900px) { .hero-in { grid-template-columns: 1fr; } .title { font-size: clamp(38px, 10vw, 56px); } .wall { max-width: 460px; width: 100%; } }
 </style>
