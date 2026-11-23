@@ -130,3 +130,93 @@ Social handles: none linked on their site; confirm on phone.
 Notes: afternoon tea Tue to Sat (Visit Wirral). FSA rating 5.
 Signature move idea: "Set the table": an empty china cup and saucer crossing the screen and becoming a full three-tier stand.
 ```
+
+---
+
+# New options (research round 2, 23 Nov 2026)
+
+Found after Apex was scrapped. Website status checked against the domain registries (.uk and .com) and their booking pages; **each still needs you to check their Instagram bio and link-in-bio for a website** before building. Signature move ideas are all new mechanics (not the Episode 01 cross-and-spin).
+
+## Twelve Quays Boxing Gym + Rocky's Gym (Seacombe and Birkenhead)
+
+```
+Business: Twelve Quays Boxing Gym, with sister gym Rocky's Gym (same coaches)
+Addresses: 27 Wheatland Lane, Seacombe, Wallasey CH44 7ER (spelling varies: Wheatland / Weatland); Rocky's: 63 Argyle Street, Birkenhead
+Type: boxing gym (boxing and Box Fit classes per Wellhub); Rocky's has a gym floor downstairs and boxing / Thai boxing upstairs
+Website status (Nov 2026): none found. twelvequaysboxing.co.uk, 12quaysboxing.co.uk, 12quaysboxinggym.co.uk, twelvequaysboxinggym.co.uk, rockysgym.co.uk, rockysgymbirkenhead.co.uk all unregistered. Listed on Wellhub only.
+Hook line if still true: "This boxing gym didn't have a website."
+Story (La Vida Liverpool): coach Mickey Allen has trained boxers for about 20 years, including British featherweight champion Jamie McKeever. Re-verify before using.
+Social handles: not sourced; confirm on phone.
+Signature move idea: "Wrap up": as you scroll, a hand wrap winds round a fist layer by layer (drawn in code), tightening, and the page goes from warm-up to fight night; or a round clock counting down a 3-minute round that flips the page between ROUND and REST.
+```
+
+## Beth Windsor Hairdressing (Wallasey)
+
+```
+Business: Beth Windsor Hairdressing
+Address: 2B Saint John's Road, Wallasey CH45 3LU (one Fresha page also shows 6 Rowson Street, New Brighton: confirm which is current)
+Type: hair salon (cuts and styling, fabriq smoothing, colouring, toning, extensions consultations)
+Website status (Nov 2026): none. Fresha partner page links Instagram only; bethwindsorhair.co.uk/.com, bethwindsor.co.uk, bethwindsorhairdressing.co.uk unregistered.
+Hook line if still true: "This salon didn't have a website."
+Instagram: @bethwindsor_hair (verified: linked by the business on Fresha).
+Hours (Fresha): Tue 10:00 to 17:30, Wed and Thu 10:00 to 20:00, Fri 10:00 to 17:30, Sat 8:00 to 17:30.
+Prices: published on Fresha (pull exact service prices from the page).
+Notes: 5.0 from 314 Fresha reviews (don't quote).
+Signature move idea: "The tone": a before/after wipe the visitor drags across a cut-out hair photo, from root to toned; or colour pouring down through the giant headline letters.
+```
+
+## Golden Afternoon Floristry (Hamilton Square, Birkenhead)
+
+```
+Business: Golden Afternoon Floristry
+Address: studio in the MAKE CIC Hamilton building, Argyle Street, Hamilton Square, Birkenhead CH41 6AB
+Type: wedding florist (bouquets, buttonholes, venue flowers); free consultations at the studio; "pick and mix" so couples pay only for what they need
+Website status (Nov 2026): none found. goldenafternoonfloristry.co.uk / .com unregistered. Listed on Bridebook.
+Hook line if still true: "This florist didn't have a website."
+People: Daisy, trained at the British School of Floristry (Bridebook). Prices on Bridebook: £98 to £6,000.
+Social handles: not sourced; confirm on phone.
+Notes: wedding work = high value per client. Hamilton Square is very filmable. Check whether the studio is appointment-only before filming.
+Signature move idea: "Stem by stem": a bouquet that builds itself as you scroll, one cut-out stem at a time, ending tied with ribbon; the "pick and mix" builder then lets couples tap items in and out.
+```
+
+## Lane & Brew (Lark Lane, Liverpool)
+
+```
+Business: Lane & Brew
+Address: 83 Lark Lane, Liverpool L17 8UP
+Type: Mediterranean-inspired café and restaurant: breakfast and brunch until 1pm, main menu (steak, pasta) until 8pm; dog friendly
+Website status (Nov 2026): none found. laneandbrew.co.uk / .com unregistered.
+Hook line if still true: "This café didn't have a website."
+Opened: around May 2026 (Liverpool Noise, Confidentials).
+Social handles: not sourced; confirm on phone.
+Note: a café again (like Episode 01), so the concept must feel very different.
+Signature move idea: "The menu board": a split-flap board that flips letter by letter from the brunch menu to the evening menu as you scroll, with Mediterranean tile pattern laying itself across the page.
+```
+
+## Goddess Hair & Skin Clinic (Rodney Street, Liverpool)
+
+```
+Business: Goddess Hair & Skin Clinic
+Address: 49a Rodney Street, Liverpool L1 9EW (Georgian Quarter). A Fresha page also lists a Goddess Hair Clinic at 217 Seaview Road, Wallasey: confirm if related.
+Type: hair and skin clinic (hair treatments, skin, brows; consultations)
+Website status (Nov 2026): none. goddesshairclinic.co.uk / .com, goddesshairandskin.co.uk unregistered.
+Hook line if still true: "This clinic didn't have a website."
+Instagram: @goddesshairclinic (verified: linked by the business on Fresha).
+Hours (Fresha, conflicting across pages): Thu and Fri 10:00 to 20:00, Sat 10:00 to 19:00. Confirm.
+Caution: skin and aesthetic treatments: make no medical or results claims; check practitioner credentials before featuring.
+Signature move idea: "The Georgian door": the visitor scrolls up to a Rodney Street door that opens as they arrive, revealing the treatment rooms (drawn in fine line, then your photos).
+```
+
+## The Salon Sanctuary (Burlington Street, Liverpool)
+
+```
+Business: The Salon Sanctuary
+Address: 61 Burlington Street, Liverpool L3 6LG
+Type: hair salon (consultations, colour and blonding, cutting); 2+ stylists, plus independent stylists at the same address
+Website status (Nov 2026): domains bought in 2026 but not built: thesalonsanctuary.co.uk is parked; thesalonsanctuary.com registered May 2026 (couldn't load: check on your phone).
+Hook line if still true: "This salon bought a web address and never built the site."
+Instagram: @thesalonsanctuary (verified: linked by the business on Fresha).
+Hours (Fresha): Wed 10:00 to 18:45, Thu 10:00 to 19:45, Fri 8:00 to 18:45, Sat 8:00 to 16:45. Wheelchair accessible.
+Notes: 5.0 from 456 Fresha reviews (don't quote).
+Signature move idea: "Sanctuary": light moving slowly through blinds across the page as you scroll, from early-morning cool to warm late-afternoon, the headline sharpening out of soft focus.
+```
