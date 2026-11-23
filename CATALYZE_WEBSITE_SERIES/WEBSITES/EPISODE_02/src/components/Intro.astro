@@ -31,14 +31,14 @@ const swatches = shades.map(([root, tip], i) => {
   return { i, root, tip, strands };
 });
 ---
-<section class="hero" aria-labelledby="hero-title">
-  <div class="track" data-hero-track>
+<section class="intro" id="start" aria-labelledby="hero-title">
+  <div>
     <div class="stage">
       <div class="wrap hero-in">
         <div class="copy">
-          <h1 id="hero-title" class="title">
+          <h2 id="hero-title" class="title reveal">
             {hero.title.map((l) => <span class="line">{l}</span>)}
-          </h1>
+          </h2>
           <p class="lead hero-lead">{hero.lead}</p>
           <div class="quick" role="group" aria-labelledby="quick-label">
             <p id="quick-label" class="quick-label">{hero.quick}</p>
@@ -103,9 +103,7 @@ const swatches = shades.map(([root, tip], i) => {
 </section>
 
 <style>
-  .hero { border-top: 0; padding: 0; }
-  .track { position: relative; height: 210vh; }
-  .stage { position: sticky; top: var(--hdr); height: calc(100svh - var(--hdr)); min-height: 600px; display: flex; align-items: center; overflow: hidden; }
+  .intro { border-top: 0; }
   .hero-in { width: 100%; display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 40px; align-items: center; }
   .title { font-family: var(--font-display); font-weight: 500; font-size: clamp(42px, 4.6vw, 70px); line-height: 1; letter-spacing: -0.02em; margin: 0 0 26px; }
   .title .line { display: block; }
@@ -118,9 +116,8 @@ const swatches = shades.map(([root, tip], i) => {
   .status { margin: 22px 0 0; font-size: 13px; color: var(--muted); display: flex; align-items: center; gap: 10px; min-height: 1.6em; }
   .status :global(.dot) { width: 7px; height: 7px; border-radius: 50%; background: var(--gold); flex: none; }
   .status :global(.dot.open) { background: #4f7a56; }
-
   .fan-wrap { position: relative; display: flex; flex-direction: column; align-items: center; }
-  .fan { width: 100%; max-width: 640px; height: auto; overflow: visible; }
+  .fan { width: 100%; max-width: 620px; height: auto; overflow: visible; }
   .sw { will-change: transform; }
   .sw-body { filter: drop-shadow(0 6px 10px rgba(43, 46, 49, .16)); }
   .clamp { fill: var(--sign); }
@@ -128,21 +125,10 @@ const swatches = shades.map(([root, tip], i) => {
   .ring-in { fill: none; stroke: #c9ab73; stroke-width: 1.2; opacity: .7; }
   .fan-scale { display: flex; align-items: center; gap: 14px; width: min(420px, 80%); margin-top: 8px; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
   .fan-scale i { flex: 1; height: 1px; background: linear-gradient(90deg, #3d2a20, #c9a26a 60%, #ebcdc6); }
-
-  /* Reduced motion and no-JS: the fan sits open. */
-  :global(html:not(.js)) .track { height: auto; }
-
   @media (max-width: 900px) {
-    .track { height: 180vh; }
-    .stage { align-items: flex-start; padding-top: 28px; min-height: 0; }
-    .hero-in { grid-template-columns: 1fr; gap: 4px; }
-    .fan-wrap { order: -1; }
-    .fan { max-width: 330px; }
+    .hero-in { grid-template-columns: 1fr; gap: 24px; }
+    .fan { max-width: 360px; }
     .fan-scale { display: none; }
-    .title { font-size: clamp(40px, 11vw, 60px); margin-bottom: 16px; }
-    .hero-lead { margin-bottom: 20px; font-size: 16px; }
-    .quick-btn { padding: 11px 13px; font-size: 14px; }
-    .status { margin-top: 14px; }
+    .title { font-size: clamp(38px, 10vw, 56px); }
   }
-  @media (max-width: 900px) and (max-height: 760px) { .fan { max-width: 250px; } .title { font-size: 38px; } }
 </style>

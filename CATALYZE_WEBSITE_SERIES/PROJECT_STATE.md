@@ -99,3 +99,8 @@ None yet.
   - Impeccable detector: 0 findings. Rule sweep clean. WCAG AA contrast checked.
   - Playwright checks at 1440 and 390: no errors, no horizontal scroll.
 - **Not yet approved (checkpoint 2).**
+- v2 (tag ep02-salonsanctuary-v2):
+  - Owner asked for the name/logo first, not the "colour, blonding" line, and to combine ideas 5 (sign) and 6 (mirror).
+  - Hero is now the sign lettering on a steamed salon mirror, fog clearing on load.
+  - The colour headline and swatch ring moved to the second section; the swatch ring is arrival-driven, not scroll.
+  - Detector 0, sweep clean, Playwright checks pass at 1440 and 390, reduced motion verified.

@@ -1,6 +1,6 @@
 // The Salon Sanctuary concept: client behaviour.
 // Motion rules: things animate once on arrival or in answer to a tap.
-// The only thing tied to scroll is the hero's swatch ring (series exception).
+// Nothing is tied to scroll position.
 
 type Day = { day: string; open?: string; close?: string; closed?: boolean };
 type Item = { id: string; name: string; price: number; from: boolean; mins?: number | null; book: string; note?: string };
@@ -62,44 +62,39 @@ setInterval(paintStatus, 30_000);
 const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -8% 0px' });
 document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
 
-/* ---------- Signature move: the swatch ring opens ---------- */
-// While the hero is held, scrolling fans the colour swatches open from the
-// darkest root shade to the salon's rose gloss. Only the ring follows scroll.
-const track = document.querySelector<HTMLElement>('[data-hero-track]');
+/* ---------- Swatch ring (intro section) ---------- */
+// Fans open once when the section arrives: darkest roots on the left to the
+// salon's rose gloss on the right. Not tied to scroll position.
 const sws = [...document.querySelectorAll<SVGGElement>('[data-sw]')];
-const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
 const easeInOut = (t: number) => (t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
-let arrive = reduce ? 1 : 0;
-function heroProgress() {
-  if (!track) return 1;
-  const hdr = 72;
-  const top = track.getBoundingClientRect().top + scrollY - hdr;
-  const len = Math.max(1, track.offsetHeight - (innerHeight - hdr));
-  return clamp01((scrollY - top) / (len * .8));
-}
-function placeFan() {
-  // a little opening on arrival, the rest with scroll
-  const p = reduce ? 1 : Math.max(heroProgress(), .14 * arrive);
-  const e = easeInOut(p);
-  const n = sws.length, mid = (n - 1) / 2;
+function placeFan(p: number) {
+  const e = easeInOut(p), n = sws.length, mid = (n - 1) / 2;
   sws.forEach((g, i) => {
-    const closed = (mid - i) * 1.1;
-    const open = (mid - i) * 14.5;
-    const a = closed + (open - closed) * e;
+    const a = (mid - i) * 1.1 + ((mid - i) * 14.5 - (mid - i) * 1.1) * e;
     const lift = Math.sin(Math.PI * e) * (i - mid) * .6;
     g.setAttribute('transform', `rotate(${a.toFixed(3)}) translate(0 ${lift.toFixed(2)})`);
   });
 }
-let ticking = false;
-const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(() => { ticking = false; placeFan(); }); } };
-addEventListener('scroll', onScroll, { passive: true });
-addEventListener('resize', onScroll);
-if (!reduce) {
-  const t0 = performance.now();
-  const step = (t: number) => { arrive = Math.min(1, (t - t0) / 1400); arrive = 1 - Math.pow(1 - arrive, 3); placeFan(); if (arrive < 1) requestAnimationFrame(step); };
-  requestAnimationFrame(step);
+const fan = document.querySelector('[data-fan]');
+if (fan) {
+  placeFan(reduce ? 1 : 0);
+  if (!reduce) {
+    const fio = new IntersectionObserver(([e]) => {
+      if (!e.isIntersecting) return;
+      fio.disconnect();
+      const t0 = performance.now();
+      const step = (t: number) => { const p = Math.min(1, (t - t0) / 1800); placeFan(p); if (p < 1) requestAnimationFrame(step); };
+      setTimeout(() => requestAnimationFrame(step), 250);
+    }, { threshold: .45 });
+    fio.observe(fan);
+  }
 }
-placeFan();
+
+/* ---------- Header name appears once the mirror is out of view ---------- */
+const mirrorEl = document.querySelector('[data-mirror]');
+if (mirrorEl) {
+  new IntersectionObserver(([e]) => root.classList.toggle('name-in-view', e.isIntersecting), { threshold: .25 }).observe(mirrorEl);
+}
 
 /* ---------- Price tabs ---------- */
 const tabs = [...document.querySelectorAll<HTMLButtonElement>('[data-tab]')];
@@ -216,7 +211,7 @@ if (q) {
 
 /* ---------- Phone: hide the book bar while the header button is enough ---------- */
 const mbar = document.querySelector<HTMLElement>('[data-mbar]');
-if (mbar && track) {
-  const hero = new IntersectionObserver(([e]) => root.classList.toggle('mbar-away', e.intersectionRatio > .6), { threshold: [0, .6, 1] });
-  hero.observe(document.querySelector('.hero-in')!);
+const heroCtas = document.querySelector('.mh-ctas');
+if (mbar && heroCtas) {
+  new IntersectionObserver(([e]) => root.classList.toggle('mbar-away', e.isIntersecting)).observe(heroCtas);
 }

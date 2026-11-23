@@ -22,14 +22,24 @@ Fresha's booking page refuses to be shown inside another site (`content-security
 
 **Before launch:** the salon creates its own Fresha direct link (Marketing, Direct links) and `booking.base` in `site.json` is swapped to it. Fresha says direct links don't show other businesses. Whether the per-service `offerItemId` parameter works on a direct link must be tested at that point.
 
-## Signature move: the swatch ring (new for the series)
+## Signature move: the name on a steamed mirror (v2, owner's pick of ideas 5 and 6 combined)
 
-A hair-colour swatch ring, drawn in code (SVG locks with root-to-tip gradients and fine strands). It comes from the salon's own consultation step, "colour swatching".
+The first thing you see is the salon's name, set like their shop sign, inside an arched salon mirror with a gold frame. It plays once on load:
 
-- On arrival it parts slightly. As you scroll through the held hero, it fans open from the darkest brown on the left, through copper, caramel and honey to pale and icy blonde, ending on a rose gloss in the salon's pink.
-- Only the ring follows scroll (series exception). The text never moves.
-- With reduced motion it sits open.
-- Mechanic used: **a fan opening around a pivot.**
+1. The glass is fogged.
+2. The sign lettering writes itself on in fine line.
+3. The fog clears from the centre outwards.
+4. The letters set solid.
+5. The rules either side of "THE" slide out.
+6. The TSS monogram drops in, and one light sheen crosses the glass.
+
+Under the mirror: "Hair salon at 61 Burlington Street, Liverpool.", Book and See prices, and the live open/closed line. Nothing follows the scroll or the cursor. With reduced motion the finished mirror shows straight away.
+
+The header hides its wordmark while the mirror is on screen, so the name isn't shown twice.
+
+Mechanic used: **a reveal through a mask (fog clearing) plus a line drawing that writes itself.**
+
+The "Colour, blonding and cutting on Burlington Street." section moved to second place, with the quick booking picks. Its swatch ring now fans open once on arrival instead of following the scroll.
 
 ## Colours from the room (Fresha venue photos, Nov 2026)
 

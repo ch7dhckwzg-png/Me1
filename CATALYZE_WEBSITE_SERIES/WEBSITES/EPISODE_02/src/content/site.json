@@ -722,5 +722,10 @@
     }
    ]
   }
- ]
+ ],
+ "mirror": {
+  "line": "Hair salon at 61 Burlington Street, Liverpool.",
+  "book": "Book an appointment",
+  "prices": "See prices"
+ }
 }
