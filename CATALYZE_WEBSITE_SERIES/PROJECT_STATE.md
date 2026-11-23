@@ -142,3 +142,6 @@ None yet.
   - Owner checks the parked domains on a phone, because the hook depends on it.
   - Add VO and licensed music.
   - The owner's own storefront clip could replace the line drawing.
+- Video cut 2 (owner: show different recommendations):
+  - The finder beat runs three combinations, each with its own suggestion: Dark brown to Golden blonde ("All the way blonde"), goal Rose ("Rose tones"), then Golden blonde to Chestnut ("Go richer").
+  - The feature is now 6.7s; build and reveal are shorter. Still 19.0s, with 0 black frames.

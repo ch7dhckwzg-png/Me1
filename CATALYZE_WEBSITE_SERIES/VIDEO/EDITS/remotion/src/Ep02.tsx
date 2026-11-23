@@ -124,7 +124,7 @@ const Browser: React.FC<{ children: React.ReactNode; width: number; url?: string
 );
 
 const CodeShot: React.FC<{ f: number }> = ({ f }) => {
-  const chars = Math.floor(interpolate(f, [0, 30], [0, code.length], { extrapolateRight: 'clamp' }));
+  const chars = Math.floor(interpolate(f, [0, 16], [0, code.length], { extrapolateRight: 'clamp' }));
   const shown = code.slice(0, chars);
   const kw = /\b(function|const|return|let|if|else)\b/g;
   return (
@@ -141,10 +141,10 @@ const CodeShot: React.FC<{ f: number }> = ({ f }) => {
 const Build: React.FC = () => {
   const f = useCurrentFrame();
   const end = scenes.build.dur;
-  const DRAFT0 = 34, PER = 10; // five drafts, 10 frames each
+  const DRAFT0 = 20, PER = 7; // five drafts, 7 frames each
   const draft = Math.min(5, Math.max(1, Math.floor((f - DRAFT0) / PER) + 1));
   const inDrafts = f >= DRAFT0 && f < DRAFT0 + PER * 5;
-  const pal0 = DRAFT0 + PER * 5; // 84
+  const pal0 = DRAFT0 + PER * 5; // 55
   return (
     <AbsoluteFill style={{ background: C.bg, opacity: fade(f, 0, 4, end - 6, end) }}>
       <AbsoluteFill style={{ padding: '150px 70px 0', justifyContent: 'flex-start' }}>
@@ -190,9 +190,9 @@ const Feature: React.FC = () => {
   const t = finderTaps;
   const inP = lerp(f, 0, 18, 0, 1);
   // a slow push; the capture itself glides down to the suggestion
-  const zoom = lerp(f, 0, t.settle, 1, 1.03, inOut);
+  const zoom = lerp(f, 0, end, 1, 1.03, inOut);
   const pulse = (at: number) => { const k = interpolate(f, [at, at + 6, at + 22], [0, 1, 0], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' }); return k; };
-  const glow = Math.max(pulse(t.now), pulse(t.goal));
+  const glow = Math.max(...[45, 62, 120, 152, 165].map((at) => pulse(at - t.trim)));
   return (
     <AbsoluteFill style={{ background: C.bg, opacity: fade(f, 0, 4, end - 6, end) }}>
       <AbsoluteFill style={{ background: `radial-gradient(55% 40% at 50% 60%, rgba(231,198,191,${0.16 + glow * 0.1}), transparent 75%)` }} />

@@ -13,16 +13,19 @@ const SLOW = 10, FPS = 30, FRAME_MS = 1000 / FPS * SLOW;
 const ease = (t) => (t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
 const clamp = (v) => Math.max(0, Math.min(1, v));
 
-const fullPath = (f, r) => (f < 12 ? 0 : r.bottom * ease(clamp((f - 12) / 106)));
+const fullPath = (f, r) => (f < 8 ? 0 : r.bottom * ease(clamp((f - 8) / 82)));
 const shots = {
   // the mirror opening, from the first frame of fog, at 2.2x speed (4.4s into 2s)
   'mirror-mobile': { vp: { width: 390, height: 844 }, dsf: 3, frames: 60, speed: 2.2, fromLoad: true, path: () => 0 },
-  // Find your colour: the ring fans open, tap "Dark brown", tap "Golden blonde", glide down to the suggestions
-  'finder-mobile': { vp: { width: 390, height: 844 }, dsf: 3, frames: 140, speed: 1, finder: true,
-    path: (f, r) => r.finder + 270 * ease(clamp((f - 84) / 36)) },
+  // Find your colour: the ring fans open, then three combinations, each with its own suggestion:
+  // Dark brown to Golden blonde, then goal Rose, then Golden blonde to Chestnut.
+  // After the first pick it glides down so the dots and the suggestion share the screen.
+  'finder-mobile': { vp: { width: 390, height: 844 }, dsf: 3, frames: 200, speed: 1,
+    taps: { 45: 'now:0', 62: 'goal:5', 120: 'goal:8', 152: 'now:5', 165: 'goal:1' },
+    path: (f, r) => r.finder + (r.dots - r.finder) * ease(clamp((f - 70) / 25)) },
   // whole page top to bottom on one shared timeline (laptop and phone in sync)
-  'full-desktop': { vp: { width: 1440, height: 900 }, dsf: 1.25, frames: 125, speed: 1, path: fullPath },
-  'full-mobile': { vp: { width: 390, height: 844 }, dsf: 2, frames: 125, speed: 1, path: fullPath },
+  'full-desktop': { vp: { width: 1440, height: 900 }, dsf: 1.25, frames: 95, speed: 1, path: fullPath },
+  'full-mobile': { vp: { width: 390, height: 844 }, dsf: 2, frames: 95, speed: 1, path: fullPath },
 };
 
 (async () => {
@@ -63,6 +66,7 @@ const shots = {
   }
   const r = await p.evaluate(() => ({
     finder: (document.querySelector('#finder .fan')?.getBoundingClientRect().top ?? 0) + scrollY - 40,
+    dots: (document.querySelector('#finder [data-pick="now"]')?.getBoundingClientRect().top ?? 0) + scrollY - 110,
     bottom: document.documentElement.scrollHeight - innerHeight,
   }));
   if (!cfg.fromLoad) await slowDown();
@@ -77,8 +81,8 @@ const shots = {
   for (let f = 0; f < cfg.frames; f++) {
     const t0 = Date.now();
     await p.evaluate((y) => { scrollTo(0, y); window.dispatchEvent(new Event('scroll')); }, Math.round(cfg.path(f, r)));
-    if (cfg.finder && f === 50) await tap('[data-pick="now"][data-shade="0"]');
-    if (cfg.finder && f === 74) await tap('[data-pick="goal"][data-shade="5"]');
+    const t = cfg.taps && cfg.taps[f];
+    if (t) { const [k, i] = t.split(':'); await tap(`[data-pick="${k}"][data-shade="${i}"]`); }
     const wait = FRAME_MS - (Date.now() - t0) - 60;
     if (wait > 0) await p.waitForTimeout(wait);
     await p.screenshot({ path: `${OUT}/f${String(f).padStart(4, '0')}.jpg`, type: 'jpeg', quality: 94 });
