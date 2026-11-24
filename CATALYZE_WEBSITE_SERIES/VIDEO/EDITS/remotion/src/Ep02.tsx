@@ -1,6 +1,6 @@
 import React from 'react';
-import { AbsoluteFill, Easing, Img, OffthreadVideo, Sequence, interpolate, staticFile, useCurrentFrame } from 'remotion';
-import { captions, code, finderCamera, finderTaps, hookLines, palette, place, scenes, type Cap } from './ep02';
+import { AbsoluteFill, Easing, Freeze, Img, OffthreadVideo, Sequence, interpolate, staticFile, useCurrentFrame } from 'remotion';
+import { captions, finderCamera, finderTaps, hookLines, hookSplit, mirrorStart, place, scenes, type Cap } from './ep02';
 
 // Episode 02 edit, built on the Episode 01 template (same scenes, type, colours, captions).
 // CATALYZE series look: near-black, cream, one orange accent used sparingly.
@@ -28,9 +28,9 @@ const Label: React.FC<{ children: React.ReactNode; style?: React.CSSProperties }
 /* ---------- 1. Hook: their shopfront draws itself, then the payoff ---------- */
 const Hook: React.FC = () => {
   const f = useCurrentFrame();
-  const SW = 54; // 1.8s: the zoom through the sign into the dish
+  const SW = hookSplit; // the zoom through the sign into the blurred site
   // Part A: the street. Punches in on the sign at the end of the approach.
-  const zoom = lerp(f, 0, 42, 1.02, 1.1, inOut) * lerp(f, 42, SW + 2, 1, 2.1, whipEase);
+  const zoom = lerp(f, 0, SW - 12, 1.02, 1.1, inOut) * lerp(f, SW - 12, SW + 2, 1, 2.1, whipEase);
   const aBlur = lerp(f, SW - 10, SW + 2, 0, 18, whipEase);
   const aOut = 1 - lerp(f, SW - 4, SW + 4, 0, 1);
   // Part B: the dish spins, the cup becomes the pizza, the frame turns to night.
@@ -63,7 +63,7 @@ const Hook: React.FC = () => {
           <AbsoluteFill style={{ transform: `scale(${zoom})`, transformOrigin: '50% 64%', filter: aBlur > 0.3 ? `blur(${aBlur.toFixed(1)}px)` : undefined, alignItems: 'center', justifyContent: 'flex-end', paddingBottom: 300 }}>
             <SalonFront f={f} />
           </AbsoluteFill>
-          <AbsoluteFill style={{ padding: '210px 84px 0', fontFamily: serif, fontSize: 132, lineHeight: 0.98, letterSpacing: '-0.02em' }}>
+          <AbsoluteFill style={{ padding: '210px 84px 0', fontFamily: serif, fontSize: 118, lineHeight: 0.98, letterSpacing: '-0.02em' }}>
             {hookLines.a.map((l, i) => (
               <div key={l} style={{ overflow: 'hidden', paddingBottom: 8 }}><div style={{ color: C.cream, transform: lineA(i) }}>{l}</div></div>
             ))}
@@ -103,8 +103,14 @@ const Business: React.FC = () => {
   return (
     <AbsoluteFill style={{ background: '#f6e6e8', opacity: fade(f, 0, 4, end - 6, end) }}>
       {/* the site's opening: the name writes itself on a steamed-up salon mirror (captured at 2.2x) */}
-      <AbsoluteFill style={{ transform: `scale(${interpolate(f, [0, end], [1, 1.04])})`, transformOrigin: '50% 0%' }}>
-        <OffthreadVideo src={staticFile('ep02/mirror-mobile.mp4')} muted style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top' }} />
+      <AbsoluteFill style={{ transform: `scale(${interpolate(f, [0, end], [1, 1.05])})`, transformOrigin: '50% 0%' }}>
+        {f < mirrorStart ? (
+          <Freeze frame={0}><OffthreadVideo src={staticFile('ep02/mirror-mobile.mp4')} muted style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top' }} /></Freeze>
+        ) : (
+          <Sequence from={mirrorStart} layout="none">
+            <OffthreadVideo src={staticFile('ep02/mirror-mobile.mp4')} muted style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top' }} />
+          </Sequence>
+        )}
       </AbsoluteFill>
       {/* a soft dark fade under the mirror so the caption sits clear of the lettering */}
       <AbsoluteFill style={{ background: 'linear-gradient(180deg, transparent 62%, rgba(18,16,14,.75) 74%, rgba(18,16,14,.92) 100%)' }} />
@@ -112,7 +118,7 @@ const Business: React.FC = () => {
   );
 };
 
-/* ---------- 3. The build: real code, real drafts, the decisions ---------- */
+/* ---------- 3. Browser frame (used by the cover) ---------- */
 const Browser: React.FC<{ children: React.ReactNode; width: number; url?: string }> = ({ children, width, url = 'the-salon-sanctuary concept' }) => (
   <div style={{ width, borderRadius: 18, overflow: 'hidden', background: '#1c1a18', boxShadow: '0 50px 100px -30px rgba(0,0,0,.8), 0 0 0 1px rgba(255,255,255,.08)' }}>
     <div style={{ height: 54, display: 'flex', alignItems: 'center', gap: 12, padding: '0 22px' }}>
@@ -122,65 +128,6 @@ const Browser: React.FC<{ children: React.ReactNode; width: number; url?: string
     {children}
   </div>
 );
-
-const CodeShot: React.FC<{ f: number }> = ({ f }) => {
-  const chars = Math.floor(interpolate(f, [0, 11], [0, code.length], { extrapolateRight: 'clamp' }));
-  const shown = code.slice(0, chars);
-  const kw = /\b(function|const|return|let|if|else)\b/g;
-  return (
-    <div style={{ background: '#16140f', borderRadius: 18, padding: '40px 44px', width: 940, boxShadow: '0 0 0 1px rgba(255,255,255,.07)' }}>
-      <div style={{ fontFamily: mono, fontSize: 20, color: C.muted, marginBottom: 22 }}>src/scripts/main.ts</div>
-      <pre style={{ margin: 0, fontFamily: mono, fontSize: 23, lineHeight: 1.55, color: C.cream, whiteSpace: 'pre-wrap' }}>
-        {shown.split(kw).map((part, i) => (part.match(/^(function|const|return|let|if|else)$/) ? <span key={i} style={{ color: C.orange }}>{part}</span> : <span key={i}>{part}</span>))}
-        <span style={{ display: 'inline-block', width: 13, height: 28, background: C.orange, verticalAlign: -5, opacity: Math.floor(f / 8) % 2 ? 0.2 : 1 }} />
-      </pre>
-    </div>
-  );
-};
-
-const Build: React.FC = () => {
-  const f = useCurrentFrame();
-  const end = scenes.build.dur;
-  const DRAFT0 = 14, PER = 6; // five drafts, 6 frames each
-  const draft = Math.min(5, Math.max(1, Math.floor((f - DRAFT0) / PER) + 1));
-  const inDrafts = f >= DRAFT0 && f < DRAFT0 + PER * 5;
-  const pal0 = DRAFT0 + PER * 5; // 44
-  return (
-    <AbsoluteFill style={{ background: C.bg, opacity: fade(f, 0, 4, end - 6, end) }}>
-      <AbsoluteFill style={{ padding: '150px 70px 0', justifyContent: 'flex-start' }}>
-        <Label>{f < DRAFT0 ? 'Building the colour finder' : inDrafts ? `Draft 0${draft}` : 'Colours from the room'}</Label>
-      </AbsoluteFill>
-      {f < DRAFT0 && (
-        <AbsoluteFill style={{ alignItems: 'center', justifyContent: 'center', opacity: fade(f, 0, 4, DRAFT0 - 4, DRAFT0) }}>
-          <div style={{ transform: `scale(${interpolate(f, [0, DRAFT0], [1, 1.04])})` }}><CodeShot f={f} /></div>
-        </AbsoluteFill>
-      )}
-      {inDrafts && (
-        <AbsoluteFill style={{ alignItems: 'center', justifyContent: 'center' }}>
-          <div style={{ transform: `scale(${interpolate(f - DRAFT0, [0, PER * 5], [0.98, 1.03])})` }}>
-            <Browser width={980}><Img src={staticFile(`ep02/draft-v${draft}.jpg`)} style={{ width: 980, display: 'block' }} /></Browser>
-          </div>
-          <div style={{ position: 'absolute', top: 212, left: 70, display: 'flex', gap: 14 }}>
-            {[1, 2, 3, 4, 5].map((v) => <div key={v} style={{ width: 52, height: 3, background: v <= draft ? C.orange : C.line }} />)}
-          </div>
-        </AbsoluteFill>
-      )}
-      {f >= pal0 && (
-        <AbsoluteFill style={{ alignItems: 'center', justifyContent: 'center' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 280px)', gap: 24 }}>
-            {palette.map((c, i) => (
-              <div key={i} style={{ opacity: show(f, pal0 + i * 3, 12), transform: `translateY(${rise(f, pal0 + i * 3, 30, 16)}px)` }}>
-                <div style={{ height: 230, borderRadius: 14, background: c.hex, boxShadow: '0 0 0 1px rgba(255,255,255,.08)' }} />
-                <div style={{ fontFamily: sans, fontSize: 24, color: C.cream, marginTop: 14 }}>{c.name}</div>
-                <div style={{ fontFamily: mono, fontSize: 20, color: C.muted, marginTop: 4 }}>{c.hex}</div>
-              </div>
-            ))}
-          </div>
-        </AbsoluteFill>
-      )}
-    </AbsoluteFill>
-  );
-};
 
 /* ---------- 4. FEATURE: Find your colour, tapped through on a big phone ---------- */
 const Feature: React.FC = () => {
@@ -307,7 +254,6 @@ export const Ep02: React.FC<{ withCaptions: boolean }> = ({ withCaptions }) => (
   <AbsoluteFill style={{ background: C.bg }}>
     <Sequence from={scenes.hook.from} durationInFrames={scenes.hook.dur}><Hook /></Sequence>
     <Sequence from={scenes.business.from} durationInFrames={scenes.business.dur}><Business /></Sequence>
-    <Sequence from={scenes.build.from} durationInFrames={scenes.build.dur}><Build /></Sequence>
     <Sequence from={scenes.feature.from} durationInFrames={scenes.feature.dur}><Feature /></Sequence>
     <Sequence from={scenes.reveal.from} durationInFrames={scenes.reveal.dur}><Reveal /></Sequence>
     <Sequence from={scenes.outro.from} durationInFrames={scenes.outro.dur}><Outro /></Sequence>

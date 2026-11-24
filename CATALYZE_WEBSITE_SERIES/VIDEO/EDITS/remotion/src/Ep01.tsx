@@ -1,5 +1,5 @@
 import React from 'react';
-import { AbsoluteFill, Easing, Img, OffthreadVideo, Sequence, interpolate, staticFile, useCurrentFrame } from 'remotion';
+import { AbsoluteFill, Easing, Freeze, Img, OffthreadVideo, Sequence, interpolate, staticFile, useCurrentFrame } from 'remotion';
 import { captions, code, footage, hookLines, palette, place, scenes, type Cap } from './ep01';
 
 // CATALYZE series look: near-black, cream, one orange accent used sparingly.
@@ -25,11 +25,13 @@ const Label: React.FC<{ children: React.ReactNode; style?: React.CSSProperties }
 );
 
 /* ---------- 1. Hook: arrive at the shop on Street View, then the payoff ---------- */
-const Hook: React.FC = () => {
+const Hook: React.FC<{ mode: 'a' | 'b' }> = ({ mode }) => {
   const f = useCurrentFrame();
-  const SW = 54; // 1.8s: the zoom through the sign into the dish
+  // 'a': the street, whipping out at the end; 'b': the blurred site scroll with "So I built them one."
+  const SW = mode === 'a' ? scenes.hook.dur - 6 : 8;
   // Part A: the street. Punches in on the sign at the end of the approach.
-  const zoom = lerp(f, 0, 42, 1.02, 1.1, inOut) * lerp(f, 42, SW + 2, 1, 2.1, whipEase);
+  const ZS = Math.max(1, SW - 12);
+  const zoom = lerp(f, 0, ZS, 1.02, 1.1, inOut) * lerp(f, ZS, SW + 2, 1, 2.1, whipEase);
   const aBlur = lerp(f, SW - 10, SW + 2, 0, 18, whipEase);
   const aOut = 1 - lerp(f, SW - 4, SW + 4, 0, 1);
   // Part B: the dish spins, the cup becomes the pizza, the frame turns to night.
@@ -40,7 +42,7 @@ const Hook: React.FC = () => {
   return (
     <AbsoluteFill style={{ background: C.bg, overflow: 'hidden' }}>
       {/* B underneath: a blurred scroll of the real site, teasing the reveal */}
-      <AbsoluteFill style={{ background: C.bg, opacity: bIn, transform: `scale(${bScale})` }}>
+      {mode === 'b' && <AbsoluteFill style={{ background: C.bg, opacity: bIn, transform: `scale(${bScale})` }}>
         {f >= SW - 8 && (
           <Sequence from={SW - 8} layout="none">
             <AbsoluteFill style={{ filter: 'blur(14px) saturate(1.2) brightness(1.15)', transform: 'scale(1.12)' }}>
@@ -55,15 +57,15 @@ const Hook: React.FC = () => {
             <div key={l} style={{ overflow: 'hidden', paddingBottom: 10 }}><div style={{ color: i ? C.orange : C.cream, transform: lineB(i) }}>{l}</div></div>
           ))}
         </AbsoluteFill>
-      </AbsoluteFill>
+      </AbsoluteFill>}
       {/* A on top: Street View arrival */}
-      {f < SW + 4 && footage.street && (
+      {mode === 'a' && f < SW + 4 && footage.street && (
         <AbsoluteFill style={{ opacity: aOut }}>
           <AbsoluteFill style={{ transform: `scale(${zoom})`, transformOrigin: '38% 47%', filter: aBlur > 0.3 ? `blur(${aBlur.toFixed(1)}px)` : undefined }}>
             <OffthreadVideo src={staticFile(footage.street)} muted playbackRate={footage.streetRate} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           </AbsoluteFill>
           <AbsoluteFill style={{ background: 'linear-gradient(180deg, rgba(10,9,8,.82) 0%, rgba(10,9,8,.55) 30%, rgba(10,9,8,0) 50%)' }} />
-          <AbsoluteFill style={{ padding: '210px 84px 0', fontFamily: serif, fontSize: 132, lineHeight: 0.98, letterSpacing: '-0.02em' }}>
+          <AbsoluteFill style={{ padding: '210px 84px 0', fontFamily: serif, fontSize: 112, lineHeight: 0.98, letterSpacing: '-0.02em' }}>
             {hookLines.a.map((l, i) => (
               <div key={l} style={{ overflow: 'hidden', paddingBottom: 8 }}><div style={{ color: C.cream, transform: lineA(i) }}>{l}</div></div>
             ))}
@@ -73,7 +75,7 @@ const Hook: React.FC = () => {
             </div>
           </AbsoluteFill>
           {footage.streetCredit && (
-            <div style={{ position: 'absolute', left: 84, top: 1470, fontFamily: sans, fontSize: 22, color: '#fff', opacity: 0.85, textShadow: '0 1px 6px rgba(0,0,0,.6)' }}>{footage.streetCredit}</div>
+            <div style={{ position: 'absolute', left: 84, top: 1600, fontFamily: sans, fontSize: 22, color: '#fff', opacity: 0.85, textShadow: '0 1px 6px rgba(0,0,0,.6)' }}>{footage.streetCredit}</div>
           )}
         </AbsoluteFill>
       )}
@@ -152,10 +154,10 @@ const CodeShot: React.FC<{ f: number }> = ({ f }) => {
 const Build: React.FC = () => {
   const f = useCurrentFrame();
   const end = scenes.build.dur;
-  const DRAFT0 = 46, PER = 12; // five drafts, 12 frames each
+  const DRAFT0 = 0, PER = 13; // five drafts, 13 frames each (no code card in this cut)
   const draft = Math.min(5, Math.max(1, Math.floor((f - DRAFT0) / PER) + 1));
   const inDrafts = f >= DRAFT0 && f < DRAFT0 + PER * 5;
-  const pal0 = DRAFT0 + PER * 5; // 106
+  const pal0 = DRAFT0 + PER * 5; // 65
   return (
     <AbsoluteFill style={{ background: C.bg, opacity: fade(f, 0, 4, end - 6, end) }}>
       <AbsoluteFill style={{ padding: '150px 70px 0', justifyContent: 'flex-start' }}>
@@ -180,7 +182,7 @@ const Build: React.FC = () => {
         <AbsoluteFill style={{ alignItems: 'center', justifyContent: 'center' }}>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 280px)', gap: 24 }}>
             {palette.map((c, i) => (
-              <div key={i} style={{ opacity: show(f, pal0 + i * 3, 12), transform: `translateY(${rise(f, pal0 + i * 3, 30, 16)}px)` }}>
+              <div key={i} style={{ opacity: show(f, pal0 + i * 2, 8), transform: `translateY(${rise(f, pal0 + i * 2, 30, 12)}px)` }}>
                 <div style={{ height: 230, borderRadius: 14, background: c.hex, boxShadow: '0 0 0 1px rgba(255,255,255,.08)' }} />
                 <div style={{ fontFamily: sans, fontSize: 24, color: C.cream, marginTop: 14 }}>{c.name}</div>
                 <div style={{ fontFamily: mono, fontSize: 20, color: C.muted, marginTop: 4 }}>{c.hex}</div>
@@ -251,6 +253,61 @@ const Reveal: React.FC = () => {
   );
 };
 
+/* ---------- 4b. The menu: coffee and brunch, then the pizza tab ---------- */
+const Menu: React.FC = () => {
+  const f = useCurrentFrame();
+  const end = scenes.menu.dur;
+  return (
+    <AbsoluteFill style={{ background: C.bg, opacity: fade(f, 0, 5, end - 6, end) }}>
+      <AbsoluteFill style={{ padding: '150px 70px 0' }}><Label>On the menu</Label></AbsoluteFill>
+      <AbsoluteFill style={{ alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ transform: `scale(${interpolate(f, [0, end], [0.98, 1.04])})` }}>
+          <Browser width={980}><OffthreadVideo src={staticFile('ep01/menu-desktop.mp4')} muted style={{ width: 980, display: 'block' }} /></Browser>
+        </div>
+      </AbsoluteFill>
+    </AbsoluteFill>
+  );
+};
+
+/* ---------- 4c. Showcase: the cup spins into the pizza and the site turns to night ---------- */
+const Showcase: React.FC = () => {
+  const f = useCurrentFrame();
+  const end = scenes.showcase.dur;
+  const SWAP = 196; // laptop, then the phone at night
+  const MORPH = 89; // capture frame 14 (morph start) lands on "your flat white"
+  const lapIn = lerp(f, 0, 20, 0, 1);
+  const phoneIn = lerp(f, SWAP, SWAP + 16, 0, 1);
+  const push = lerp(f, 0, SWAP, 1.0, 1.07, inOut);
+  return (
+    <AbsoluteFill style={{ background: C.bg, opacity: fade(f, 0, 5, end - 6, end) }}>
+      <AbsoluteFill style={{ background: `radial-gradient(60% 34% at 50% 52%, rgba(255,140,60,${0.12 * lapIn}), transparent 75%)` }} />
+      {f < SWAP + 16 && (
+        <AbsoluteFill style={{ alignItems: 'center', justifyContent: 'center', opacity: lapIn * (1 - phoneIn), transform: `translateY(${(1 - lapIn) * 80}px) scale(${push})` }}>
+          <FrontLaptop>
+            {/* the cup holds until "your flat white", then spins into the pizza on "spins into a pizza" */}
+            {f < MORPH ? (
+              <Freeze frame={0}><OffthreadVideo src={staticFile('ep01/hero-desktop.mp4')} muted style={{ width: SCR_W, height: SCR_H, objectFit: 'cover', objectPosition: 'top', display: 'block' }} /></Freeze>
+            ) : (
+              <Sequence from={MORPH} layout="none">
+                <OffthreadVideo src={staticFile('ep01/hero-desktop.mp4')} muted playbackRate={1.25} style={{ width: SCR_W, height: SCR_H, objectFit: 'cover', objectPosition: 'top', display: 'block' }} />
+              </Sequence>
+            )}
+          </FrontLaptop>
+        </AbsoluteFill>
+      )}
+      {f >= SWAP && (
+        <div style={{ position: 'absolute', left: 540 - 260, top: 440, opacity: phoneIn, transform: `translateY(${(1 - phoneIn) * 120}px)` }}>
+          <FrontPhone width={520}>
+            <Sequence from={SWAP} layout="none">
+              <OffthreadVideo src={staticFile('ep01/hero-mobile.mp4')} muted trimBefore={88} style={{ width: 498, display: 'block' }} />
+            </Sequence>
+          </FrontPhone>
+        </div>
+      )}
+    </AbsoluteFill>
+  );
+};
+
 /* ---------- 5. Outro ---------- */
 const Outro: React.FC = () => {
   const f = useCurrentFrame();
@@ -259,7 +316,7 @@ const Outro: React.FC = () => {
       <div style={{ opacity: show(f, 0, 12), transform: `scale(${interpolate(f, [0, 30], [0.94, 1], { extrapolateRight: 'clamp', easing: out })})` }}>
         <Img src={staticFile('catalyze-logo-orange-cream.svg')} style={{ width: 640 }} />
       </div>
-      <div style={{ fontFamily: serif, fontSize: 120, color: C.orange, marginTop: 70, opacity: show(f, 12), transform: `translateY(${rise(f, 12, 30)}px)` }}>Who's next?</div>
+      <div style={{ fontFamily: serif, fontSize: 104, lineHeight: 1, textAlign: 'center', color: C.orange, marginTop: 70, opacity: show(f, 12), transform: `translateY(${rise(f, 12, 30)}px)` }}>Who should I build<br />one for next?</div>
       <div style={{ position: 'absolute', bottom: 430, fontFamily: sans, fontSize: 24, color: C.muted, opacity: show(f, 16) }}>Unofficial concept by CATALYZE · @catalyze.uk</div>
     </AbsoluteFill>
   );
@@ -282,8 +339,11 @@ const Caption: React.FC<{ c: Cap }> = ({ c }) => {
 
 export const Ep01: React.FC<{ withCaptions: boolean }> = ({ withCaptions }) => (
   <AbsoluteFill style={{ background: C.bg }}>
-    <Sequence from={scenes.hook.from} durationInFrames={scenes.hook.dur}><Hook /></Sequence>
+    <Sequence from={scenes.hook.from} durationInFrames={scenes.hook.dur}><Hook mode="a" /></Sequence>
     <Sequence from={scenes.business.from} durationInFrames={scenes.business.dur}><Business /></Sequence>
+    <Sequence from={scenes.menu.from} durationInFrames={scenes.menu.dur}><Menu /></Sequence>
+    <Sequence from={scenes.built.from} durationInFrames={scenes.built.dur}><Hook mode="b" /></Sequence>
+    <Sequence from={scenes.showcase.from} durationInFrames={scenes.showcase.dur}><Showcase /></Sequence>
     <Sequence from={scenes.build.from} durationInFrames={scenes.build.dur}><Build /></Sequence>
     <Sequence from={scenes.reveal.from} durationInFrames={scenes.reveal.dur}><Reveal /></Sequence>
     <Sequence from={scenes.outro.from} durationInFrames={scenes.outro.dur}><Outro /></Sequence>

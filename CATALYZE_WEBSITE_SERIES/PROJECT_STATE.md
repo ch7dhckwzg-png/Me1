@@ -148,3 +148,18 @@ None yet.
 - Video cut 3 (owner: slow down the hair select, add zooms):
   - The finder beat is now 8.3s, with a camera that pushes in on the dots for each tap and on each suggestion as it changes.
   - The mirror, build and reveal beats are tighter to stay at 19.0s. 0 black frames.
+
+## Conversational cuts (24 Nov 2026)
+
+- **What changed:** the owner wanted the narration to sound natural, like talking to the viewer, and both videos slowed to match. The new scripts are in `VOICE/SCRIPTS/EPISODE_01.md` and `EPISODE_02.md`, approved by the owner.
+- **Episode 01:** now 31.5s.
+  - Street View pan at half speed.
+  - New menu beat.
+  - New showcase: the cup holds, then spins into the pizza on "spins into a pizza", then night on the phone.
+  - Drafts and colours.
+  - Reveal, then the outro title "Who should I build one for next?".
+- **Episode 02:** now 35s.
+  - The mirror writes the name on that line.
+  - The finder beat (18s) is paced so the taps land on the words, with zooms.
+  - There's no code or drafts beat.
+- **Length:** both exceed the original 19s cap, which the owner agreed to with these scripts.

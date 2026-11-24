@@ -13,19 +13,20 @@ const SLOW = 10, FPS = 30, FRAME_MS = 1000 / FPS * SLOW;
 const ease = (t) => (t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
 const clamp = (v) => Math.max(0, Math.min(1, v));
 
-const fullPath = (f, r) => (f < 6 ? 0 : r.bottom * ease(clamp((f - 6) / 64)));
+const fullPath = (f, r) => (f < 12 ? 0 : r.bottom * ease(clamp((f - 12) / 130)));
 const shots = {
-  // the mirror opening, from the first frame of fog, at 3x speed (4.5s into 1.5s)
-  'mirror-mobile': { vp: { width: 390, height: 844 }, dsf: 3, frames: 45, speed: 3, fromLoad: true, path: () => 0 },
+  // the mirror opening, from the first frame of fog, at real speed (4.5s)
+  'mirror-mobile': { vp: { width: 390, height: 844 }, dsf: 3, frames: 140, speed: 1, fromLoad: true, path: () => 0 },
   // Find your colour: the ring fans open, then three combinations, each with its own suggestion:
   // Dark brown to Golden blonde, then goal Rose, then Golden blonde to Chestnut.
   // After the first pick it glides down so the dots and the suggestion share the screen.
-  'finder-mobile': { vp: { width: 390, height: 844 }, dsf: 3, frames: 252, speed: 1,
-    taps: { 48: 'now:0', 70: 'goal:5', 148: 'goal:8', 196: 'now:5', 212: 'goal:1' },
-    path: (f, r) => r.finder + (r.dots - r.finder) * ease(clamp((f - 78) / 22)) },
+  // paced to the narration (see src/ep02.ts): taps land on the spoken words
+  'finder-mobile': { vp: { width: 390, height: 844 }, dsf: 3, frames: 552, speed: 1,
+    taps: { 157: 'now:0', 212: 'goal:5', 370: 'goal:8', 454: 'now:5', 474: 'goal:1' },
+    path: (f, r) => r.finder + (r.dots - r.finder) * ease(clamp((f - 220) / 22)) },
   // whole page top to bottom on one shared timeline (laptop and phone in sync)
-  'full-desktop': { vp: { width: 1440, height: 900 }, dsf: 1.25, frames: 75, speed: 1, path: fullPath },
-  'full-mobile': { vp: { width: 390, height: 844 }, dsf: 2, frames: 75, speed: 1, path: fullPath },
+  'full-desktop': { vp: { width: 1440, height: 900 }, dsf: 1.25, frames: 150, speed: 1, path: fullPath },
+  'full-mobile': { vp: { width: 390, height: 844 }, dsf: 2, frames: 150, speed: 1, path: fullPath },
 };
 
 (async () => {
