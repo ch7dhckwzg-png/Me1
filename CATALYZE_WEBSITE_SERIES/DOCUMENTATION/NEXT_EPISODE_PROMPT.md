@@ -142,7 +142,7 @@ Transitions: soft fades between scenes (4 to 6 frames), whip/zoom-through only i
 - Captures: copy `VIDEO/EDITS/remotion/scripts/capture-ep02.cjs` to `capture-ep0N.cjs` and point it at `public/ep0N/` and the new site. It's frame-accurate: CSS animations slowed 10× via CDP, **and the page's JS clock (`performance.now`, `requestAnimationFrame`, timers) slowed too**, so canvas and script-driven animations also capture correctly; one screenshot per frame, fixed clock, capture-only tap rings. Shots: the signature move at real speed (`fromLoad` if it plays on load), the wow feature on a phone (390×844 @3) with taps paced to the narration, and `full-desktop` (1440×900 @1.25) / `full-mobile` (390×844 @2) on one shared timeline for the reveal. Force even frame sizes. Gitignore `public/ep0N`.
 - Drafts (only if the build beat is used): build each `ep0N-*-vK` tag from git into scratch and screenshot it at 1440×900 @1.5 with the fixed clock. If later versions changed something below the hero, screenshot the part that changed, so each draft looks different.
 - Hook street clip: if I give you a phone or Street View recording, measure the camera motion frame by frame and use the smoothest side-to-side pan; crop out phone UI; slow it from the 60fps source; keep the credit.
-- Shopfront: line drawing until I send my clip.
+- Shopfront: my clip if I've sent one; otherwise their own shopfront photo if it's good enough (section 1), with a slow push-in and credit; otherwise the line drawing.
 - No stock video, no AI footage, no map illustrations. If a shot can't be real, put it on my shot list.
 
 ### 5.4 Voiceover script (I make the audio myself)
