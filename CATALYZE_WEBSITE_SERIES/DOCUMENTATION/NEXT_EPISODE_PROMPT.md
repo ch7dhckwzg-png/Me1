@@ -52,7 +52,25 @@ Pitch the website in plain words like Episode 01's "Day to Night":
 - **The signature move: new every episode.** Every episode's hero has ONE signature animation that tells the business's story in a single motion, and **it must be a fresh idea each time**. Do not reuse a previous episode's mechanic. Used so far (do not repeat):
   - Episode 01 Social 114: an object crossing left to right while spinning and changing state (flat white to pizza), page flipping day to night.
   - Scrapped Apex demo: a weight plate rolling across (also a cross-and-spin; don't use it).
+  - Episode 02 The Salon Sanctuary: the name written on a steamed-up mirror (a reveal through a mask as the fog clears, plus lettering that draws itself), plus a herringbone wall laying itself tile by tile.
   Pick a different mechanic that fits the business, for example: a slow reveal through a mask or doorway, a stack building up layer by layer, a before/after wipe the visitor drags, a photo developing from negative, a timeline scrubbing through a day or a year, a split screen that slides, an object assembling from parts, a colour gradient pouring through the type. It must come from the business's real story or process and use **real things**: a cut-out photo set (placeholder until I shoot them) or a code-drawn object, never stock or AI imagery. It can be scroll-driven (series exception, the animated element only, text changes once) or click/arrival-driven. Pitch two or three options and recommend one. Add the one we use to the "used so far" list in this file when the episode is approved.
+- **The interactive wow feature: one per site, and it's what sells it.** The signature move is how the site *looks*. This is something a customer would actually *use*, and it's the reason the owner would pay for the site. Every demo needs one, built properly, not mocked up. What's worked so far:
+  - **Social 114 (café and restaurant): the site runs on their real hours.** A live clock and open/closed status in Europe/London time, today's row highlighted in the opening hours, "brunch until 15:00, pizza from 18:00", the whole site turning to night from 17:00, and the site switching between the day menu and the night menu to match what they're serving right now.
+  - **The Salon Sanctuary (salon): "Find your colour".** Tap your hair colour now, then the shade you want. Those two swatches slide out of a colour ring with "Now" and "Goal" labels, and it suggests a starting service from their real menu with prices and a Book button. Each combination gives a different answer. On-site booking backs it up: service, stylist, day and time, details, then an appointment card.
+
+  How to find this business's one:
+  - **Start from the question their customers ask most.** What should I book? Are you open now? What's on tonight? How much will it cost? Will it suit me? Is there space today? The feature answers that question in one or two taps.
+  - **Use their real data only:** menu, prices, hours, services, team. Anything that's advice (a suggestion, a recommendation, a price range) is labelled on the site as a starting point, marked `_placeholder` in `site.json` and listed in the README for the owner to approve. Never show fake availability. If times or stock are simulated for the concept, the site says so plainly.
+  - **Ideas by type** (starting points, not a menu to copy):
+    - **Barber or hair salon:** a style or colour finder, or the services available on the day you pick.
+    - **Café or restaurant:** a live "serving now" menu, a countdown to close or to the next service, or "what's on tonight".
+    - **Gym or studio:** a class finder by time and level.
+    - **Florist:** a bouquet builder by occasion and budget, using their real price bands.
+    - **Boutique:** an outfit builder or size guide from real stock.
+    - **Aesthetics or tattoo:** a consultation and deposit flow that explains the steps first.
+    - **Trades:** an instant price range from their published prices.
+  - **How it must feel:** instant, phone-first, and keyboard and screen-reader accessible. It animates in answer to a tap, which the rules allow, and with reduced motion it still works, minus the movement.
+  - **Pitch it alongside the signature move:** two or three feature ideas, with a recommendation. If the business's priority is obvious (for The Salon Sanctuary it was easy booking), the feature serves that priority.
 - **Colours come from the business.** Base the palette on their real branding (signage, Instagram grid, menus, interior) as I or the references show it, not on a guess. If their brand is black with a green accent, the site is black with a green accent.
 - **Sections.** Hero; the offer (menu/services, interactive where it helps); one "craft" section (Social 114's oven: a big typographic moment, e.g. a time, a year, a number that is true); one "community/story" section; "the street" with a fine-line architectural drawing of their shopfront that responds to the theme; visit (address, live "today" row in hours, maps link); footer with the concept disclosure.
 - **Tone:** clean, sleek, mature. Type-led layout, hairline rules, lots of space. No cartoons.
@@ -72,6 +90,7 @@ Copy Episode 01's skeleton, not its look: `WEBSITES/EPISODE_0N/` with the same s
 1. Run Impeccable's detector on the running page and fix until it reports **0 findings**: `.claude/skills/impeccable/scripts/impeccable detect --json http://127.0.0.1:4321/`.
 2. Playwright check at 1440 and 390 in both themes and across the signature move (0, 0.3, 0.5, 0.7, 1 and back to 0): no console errors, `scrollWidth` equals the viewport, mode switches both ways.
 3. Rule sweep over `src/` and the preview: no em/en dashes, glyph icons, banned words, purple, pill radii.
+3b. Exercise the interactive wow feature in Playwright at 1440 and 390: at least three different inputs, each giving its correct, different answer from the real data, with any booking or link it leads to working. No console errors, and it works by keyboard.
 4. Tag each version you show me: `ep0N-<slug>-v1`, `-v2`, ... (the video's "drafts" scene uses these real tags, so tag every meaningful iteration).
 5. Publish the single-file preview as a **private** Artifact page and give me the link (local servers aren't reachable from my phone).
 
@@ -98,6 +117,14 @@ Transitions: soft fades between scenes (4 to 6 frames), whip/zoom-through only i
 **Look:** background `#12100e`, cream `#f1ebdd`, muted `#9a9286`, CATALYZE orange `#ff6e00` (accent only, never a wash), line `#2b2622`. Fonts: Instrument Serif (headlines), Hanken Grotesk 500/600 (labels, captions), DM Mono (code, hex), plus the business's display face for its name.
 
 **Captions (burned in, captioned version only):** Hanken Grotesk 600, 64px, white with a soft shadow, sentence case, one line of 2 to 4 words at a time, 4-frame fade, one accent word per line in `#ff6e00`, left-aligned at x 96, y 1400 (y 300 during the reveal so they never cover the devices), clear of the bottom 20% and the right-hand app buttons. The hook's on-screen headline IS the hook's caption (don't double it). No caption on "Who's next?" (the title says it).
+
+**The interactive wow feature gets its own beat, and the viewer must not miss it.**
+- Show it on a big phone held below the caption line.
+- Show visible tap rings, added in the capture only, and push the camera in on each tap, then on the answer as it appears.
+- Show two or three different inputs giving different answers, so it reads as interactive, not a slideshow. The Salon Sanctuary's beat: Dark brown to Golden blonde ("All the way blonde"), then Rose ("Rose tones"), then Golden blonde to Chestnut ("Go richer").
+- Pace it to the narration, so each answer stays on screen long enough to read (over a second each).
+- The narration talks the viewer through it ("this is my favourite bit…").
+- Capture it with `scripts/capture-ep02.cjs`. It slows the page's JS clock as well as CSS, so animations driven from script are frame-accurate. Taps are scheduled at exact capture frames to match the voiceover.
 
 ### 5.3 Footage (real only)
 - Captures: `VIDEO/EDITS/remotion/scripts/capture-site.cjs` (frame-accurate: page animations slowed 10× via CDP, one screenshot per frame, fixed clock). Add `full-desktop` (1440×900 @1.25) and `full-mobile` (390×844 @2) for the new site with the same shared timeline function, plus `hero-desktop` if needed. Force even frame sizes.
