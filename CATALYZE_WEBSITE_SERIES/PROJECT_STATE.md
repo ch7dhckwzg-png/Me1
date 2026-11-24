@@ -163,3 +163,9 @@ None yet.
   - The finder beat (18s) is paced so the taps land on the words, with zooms.
   - There's no code or drafts beat.
 - **Length:** both exceed the original 19s cap, which the owner agreed to with these scripts.
+
+## Rule change: business photos (24 Nov 2026)
+
+- The owner now allows the business's own photos (Instagram, Facebook, Google, Fresha and similar) in the site and video, **if they're good enough**.
+- The quality bar, credit rules and gitignore rule are in `DOCUMENTATION/NEXT_EPISODE_PROMPT.md`, section 1. This replaces the earlier "reference only" rule.
+- Existing Episode 01 and 02 builds haven't been changed yet.

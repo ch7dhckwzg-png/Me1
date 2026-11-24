@@ -30,7 +30,16 @@ From `CLAUDE.md` (owner rules, no exceptions unless I say so):
 Learned on Episode 01 (keep them):
 - No eyebrow/kicker labels above section headings. No italic serif display headlines. No decorative radial glows. Labels in the body face, monospace only for times, hours and data.
 - Text contrast WCAG AA (check it), nothing under 11px, `text-wrap: pretty` on body copy.
-- Never use the business's own photos (Instagram, Facebook, Google, website) in the site or video. View them for reference only (colours, signage, menu).
+- **The business's own photos may be used** (their Instagram, Facebook, Google listing, booking pages such as Fresha, or old website) **if they're good enough**. Otherwise use them for reference only (colours, signage, menu) and put the shot on my shot list.
+  - **Good enough means:**
+    - sharp and well lit, with no watermark, logo overlay or heavy filter;
+    - at least 1600px on the long side for a large image, or 900px for a small card or thumbnail;
+    - it shows the real place, product or work, and suits the site's look.
+  - **People:** don't use photos where a customer's face is identifiable. Staff are fine only in shots the business published to promote itself.
+  - **Light edits only:** crop, straighten, colour-balance and gentle sharpening are fine. Never alter what's shown, never upscale with AI or fill in missing parts, and never pass one off as CATALYZE's photography.
+  - **Credit them:** on the site (for example "Photos: [Business]" in the footer) and in the video where a photo fills the frame.
+  - **Keep them out of git**, like placeholder photos: gitignore the images and anything that embeds them (previews, captures, renders). Record each photo's source URL in the README.
+  - **Flag it in the report:** these photos belong to the business (or its photographer), so they may ask for them to be taken down. Be ready to swap in my own shots.
 - Google Street View clips may be used only with a visible on-screen credit ("Google Street View · <month year>"), never with Google's UI or watermark edited out to hide the source. Flag in the report that Google's terms must be checked before publishing, or that my own street clip should replace it.
 - Placeholder photos I give you are private-comp only: gitignore them and anything that embeds them (cutouts, previews, captures, renders). Never commit them.
 
