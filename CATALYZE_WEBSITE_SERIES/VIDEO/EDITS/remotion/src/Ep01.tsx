@@ -154,10 +154,10 @@ const CodeShot: React.FC<{ f: number }> = ({ f }) => {
 const Build: React.FC = () => {
   const f = useCurrentFrame();
   const end = scenes.build.dur;
-  const DRAFT0 = 0, PER = 13; // five drafts, 13 frames each (no code card in this cut)
+  const DRAFT0 = 0, PER = 10; // five drafts, 10 frames each (no code card in this cut)
   const draft = Math.min(5, Math.max(1, Math.floor((f - DRAFT0) / PER) + 1));
   const inDrafts = f >= DRAFT0 && f < DRAFT0 + PER * 5;
-  const pal0 = DRAFT0 + PER * 5; // 65
+  const pal0 = DRAFT0 + PER * 5; // 50
   return (
     <AbsoluteFill style={{ background: C.bg, opacity: fade(f, 0, 4, end - 6, end) }}>
       <AbsoluteFill style={{ padding: '150px 70px 0', justifyContent: 'flex-start' }}>
