@@ -79,7 +79,7 @@ On screen, Part B reads "so I gave it" / "a new look." (second line orange).
 
 **Concept:** "Two o'clock till late on Hoylake Road." The site runs on their real day: the early two-course deal, delivery from three, then evening service.
 
-**Hero** (built to the KOVA reference):
+**Hero** (v7, owner's direction: their logo, large, beside the giant name; logo rolls in, name slams down with a dust cloud; no platter. Originally built to the KOVA reference):
 - "PIRI-SIRI" in Alfa Slab One, edge to edge.
 - A real cast-iron fajita sizzler, cut out, dead centre, in front of the name. One key light from the upper left, soft grounded shadow.
 - Corner facts: top left "Find us / 223 Hoylake Road, Moreton"; top right "Today / Open 14:00 to 22:30" (live); bottom left "Early two courses / £15.99, Sun to Thu till 17:30"; bottom right "On the menu / Burritos, fajitas, tacos, grill".
@@ -140,7 +140,7 @@ Facts behind it: £15.99 and £3.99 dessert (their menu); Sun to Thu only (their
 
 ## 10. Shot list (for the owner)
 
-1. **Hero object, the most important shot:** a fajita sizzler on its board, side-on at eye level, one window light from one side, plain background (a plain wall or a sheet of card behind it), the whole plate in frame with space around it. Several frames, phone on a steady surface. Sizzlers only come to the table, so this is a sit-in visit.
+1. **(No longer needed for the site: the platter was removed in v7. Still useful for the video.)** Hero object: a fajita sizzler on its board, side-on at eye level, one window light from one side, plain background (a plain wall or a sheet of card behind it), the whole plate in frame with space around it. Several frames, phone on a steady surface. Sizzlers only come to the table, so this is a sit-in visit.
 2. Storefront push-in, 3 to 5s vertical, 223 Hoylake Road.
 3. Wide street establishing shot of Hoylake Road, Moreton.
 4. Two details: the sign, and the orange wall with the wooden tables (no customers' faces).
