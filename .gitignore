@@ -33,3 +33,8 @@ dist-single
 
 # Single-file preview build (regenerate with npm run build:single)
 catalyze-site-preview.html
+
+# Third-party reference media (kept local, never committed)
+design/references/hero-moment/*.png
+design/references/hero-moment/*.mov
+design/references/hero-moment/*.mp4

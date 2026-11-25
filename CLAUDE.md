@@ -24,6 +24,13 @@ these, ask first.
   (filler like "elevate", "seamless", "unlock", "next level", empty superlatives).
 - A **"Made with AI"** (or "Built with ...") tag, badge or generator meta tag.
 
+## Hero reference
+
+Every hero (this site and every series site and reel) is built to `design/references/hero-moment/README.md`:
+one real object cut out over a giant edge-to-edge name, real facts pinned to the corners, at least half the
+frame empty, one key light, one small dock for controls, and motion saved for one living hero moment.
+Its list of AI "tells" is part of the rule sweep. Where that reference and these rules disagree, these rules win.
+
 ## Launch gates
 
 The site does not launch until every item in `LAUNCH.md` is checked:
