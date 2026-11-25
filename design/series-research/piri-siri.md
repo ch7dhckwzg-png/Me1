@@ -125,7 +125,7 @@ All three use only data from section 2. Anything that is a calculation is labell
 2. The menu: their real sections and prices, with Feature 2 built in ("Add to my order").
 3. The two-course builder (Feature 1), its own section.
 4. Craft: one big true number, "14:00", the time the doors and the kitchen open every day, with a line about the deal starting then.
-5. Story: what they serve and how (sizzling plates, the grill, sit-in and takeaway). The ownership story only once confirmed.
+5. Story, in their own words (owner's call, 25 Nov 2026: copy based on their Instagram bio): headed "A taste of Mexico brought to Moreton"; kitchen, bar and grill; sizzling plates, the grill, cocktails at the bar (no list yet), eat in, collect or delivery. The ownership story only once confirmed.
 6. The street: a fine-line drawing of 223 Hoylake Road's shopfront (from the owner's photo), warm in the day, lit at night.
 7. Visit: address, phone, live hours table with today highlighted, maps link, Book and Order buttons.
 8. Footer: "Unofficial concept by CATALYZE", "Website concept and build by CATALYZE, @catalyze.uk", "Photos: Piri-Siri Mexican Kitchen" where used.
