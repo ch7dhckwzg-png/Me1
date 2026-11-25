@@ -13,7 +13,8 @@ Move this into the series repo (`WEBSITES/EPISODE_0N/README.md` and `PROJECT_STA
 - Built on **eTakeawayMax** (footer: "Powered by eTakeawayMax"). It has working online ordering (collection and delivery), table booking, a full priced menu, hours and an Android app.
 - Weak points: a "Customer Notice" pop-up on every load; cartoon cactus and clipart bunting; a tall empty red block on phones before the menu card; the About page is one line ("Piri-Siri Mexican Kitchen.").
 - Verdict: **dated template**, not "no website". The hook says so (section 5).
-- Still to do: the owner checks their Instagram bio and link-in-bio; concept-site search (`pages.dev`, `netlify.app`, `vercel.app`, `framer`, `wixsite`).
+- Instagram bio (checked by the owner, 25 Nov 2026): the only link is www.pirisirimexican.co.uk. No other website. The hook stays true.
+- Still to do: concept-site search (`pages.dev`, `netlify.app`, `vercel.app`, `framer`, `wixsite`).
 
 ## 2. Facts (source: their website unless noted)
 
@@ -34,6 +35,8 @@ Move this into the series repo (`WEBSITES/EPISODE_0N/README.md` and `PROJECT_STA
 | Google listing (owner's paste) | Reservations required, happy-hour food, vegetarian options, £20 to 30 per person |
 | Instagram | `@pirisirimexicankitchen` (linked from their own site: **verified**) |
 | Facebook | facebook.com/profile.php?id=100083278655433 (linked from their own site: **verified**) |
+| Instagram bio | "A taste of Mexico brought to Moreton"; 15% off collection, 5% off delivery; **"Minimum order £20 for delivery/ collection"** (their website says delivery only: conflict, owner to confirm); highlights: Cocktails, Reviews, Our dishes, Menu, Customers |
+| Community | A GO Wirral post on their grid names them "Our newest community champion". **Not yet read in full**: possible story-section fact once confirmed |
 | FSA | Listed as "Piri-Siri Mexican Chicken", 223 Hoylake Road |
 | Story | **Unverified:** a web-search summary of The Guide Liverpool says owner Jeevan Kandel took over the former Fajitas restaurant in October 2022 and rebranded it. Article not read (host blocked). Quandoo still lists "Fajitas Classic Mexican Bar and Grill, Moreton". Keep out of copy until confirmed. |
 
@@ -145,6 +148,5 @@ Facts behind it: £15.99 and £3.99 dessert (their menu); Sun to Thu only (their
 ## 11. Open items
 
 - **Series repo not found.** `Smash-King` is a separate Smash King burger site (React + Vite), not the series. Episode 01 and 02 code, `cutout.py`, `single-file.py` and the capture scripts are needed, or the owner approves building them fresh.
-- Owner: Instagram bio / link-in-bio check.
-- Owner or business: confirm the two-course deal is sit-in only; delivery charge; the October 2022 takeover story.
+- Owner or business: confirm the two-course deal is sit-in only; delivery charge; whether the £20 minimum also applies to collection (Instagram says yes, website says delivery only); the October 2022 takeover story; the GO Wirral community champion post; they also do cocktails (Instagram highlight), not yet on the site.
 - Pending series decisions: Instrument Serif, the interpunct, the status dot.
