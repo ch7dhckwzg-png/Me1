@@ -85,7 +85,9 @@ On screen, Part B reads "so I gave it" / "a new look." (second line orange).
 - Corner facts: top left "Find us / 223 Hoylake Road, Moreton"; top right "Today / Open 14:00 to 22:30" (live); bottom left "Early two courses / £15.99, Sun to Thu till 17:30"; bottom right "On the menu / Burritos, fajitas, tacos, grill".
 - The dock (bottom centre, 6px radius): the live "right now" line (feature 3), Book a table, Order.
 
-**Signature move (approved): the name heats up.** On load, the giant letters behind the sizzler heat from cast-iron black (`#1C1816`) through dull red to Chair Red (`#B7291C`), left to right, about 1.6s, like the plate coming up to temperature. It plays once on arrival; the sizzler itself doesn't move. Reduced motion: the name is already red. New to the series (not a cross-and-spin, not a mask reveal or self-drawing lettering). Add to the "used so far" list when the episode is approved.
+**Signature move: "served hot"** (v3, after the owner asked for a better animation; replaces the left-to-right heat sweep). On load the sizzler is set down in front of the name and settles, a few specks of oil spit up, and the heat spreads out of the plate, up and outwards through the letters, cast-iron grey to hot red with an ember edge leading, plus a brief, gentle heat haze. About 2.2s, once. Reduced motion: finished state. New to the series. Add to the "used so far" list when the episode is approved.
+
+The voiceover line becomes: "When you open it, the sizzler lands and the heat spreads up through their name."
 
 ## 7. The three features (all approved)
 
