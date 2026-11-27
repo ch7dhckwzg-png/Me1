@@ -11,7 +11,7 @@ The site does not go live until every box is ticked. Done items were verified on
       Then tell Claude the domain, so it can:
   - [ ] set `og:url` and a canonical link, and make `og:image` an absolute URL (link previews
         on most apps need the full address);
-  - [ ] fill in `BUSINESS.host` in `src/legal.js`.
+  - [x] fill in `BUSINESS.host` in `src/legal.js` (done: Netlify, Inc.).
 - [x] **Favicon added:** `public/favicon.svg`, `favicon.ico` (16/32/48), `apple-touch-icon.png`,
       `icon-192.png`, `icon-512.png` and `site.webmanifest`, linked from all three pages.
 - [x] **No "Made with AI" tag:** none in the code, pages or build (`npm run check:rules` checks).

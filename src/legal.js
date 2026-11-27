@@ -13,13 +13,13 @@ export const BUSINESS = {
   legalName: '', // e.g. "Jane Smith trading as Catalyze", or "Catalyze Studio Ltd"
   companyNumber: '', // only for a limited company
   address: '', // registered or trading address
-  host: '', // e.g. "Netlify, Inc." once the site is deployed
+  host: 'Netlify, Inc.', // the company that hosts the site
   analytics: '', // e.g. "Netlify Analytics", only if you turn on cookie-free visitor statistics
   jurisdiction: 'England and Wales', // change to Scotland or Northern Ireland if that is where you trade
   email: EMAIL,
 }
 
-export const UPDATED = '21 November 2026'
+export const UPDATED = '27 November 2026'
 
 const who = () => {
   const name = BUSINESS.legalName || BUSINESS.tradingName
@@ -69,7 +69,7 @@ export const PRIVACY = [
   {
     h: 'Our website host',
     p: [
-      `${BUSINESS.host ? `This site is hosted by ${BUSINESS.host}. ` : ''}Like any web host, our hosting provider automatically processes technical information such as your IP address and browser type to deliver the site and keep it secure. We do not use this information to identify you.`,
+      `${BUSINESS.host ? `This site is hosted by ${BUSINESS.host.replace(/\.$/, '')}. ` : ''}Like any web host, our hosting provider automatically processes technical information such as your IP address and browser type to deliver the site and keep it secure. We do not use this information to identify you.`,
     ],
   },
   {
