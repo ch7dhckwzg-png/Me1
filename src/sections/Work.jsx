@@ -7,7 +7,7 @@ import ProductAnim from '@/components/motion/ProductAnim'
 import StoreWalk from '@/components/motion/StoreWalk'
 import LogoAnim from '@/components/motion/LogoAnim'
 import useAutoplay from '@/components/motion/useAutoplay'
-import { PHOTOGRAPHY, WEBSITES } from '@/content'
+import { PHOTOGRAPHY, WEBSITES, PACKAGES, DEMO_URL } from '@/content'
 import '@/styles/work.css'
 
 // Rendered from design/work/*.html by scripts/render-work.cjs.
@@ -101,9 +101,45 @@ function Websites() {
                   <li key={t}>{t}</li>
                 ))}
               </ul>
+              {site.id === 'oak' && (
+                <a className="btn btn-primary site-demo" href={`${DEMO_URL}/`} target="_blank" rel="noopener">
+                  Try the live demos
+                </a>
+              )}
             </div>
           </article>
         ))}
+      </div>
+      <div className="packages" id="web-packages">
+        <header className="packages-head">
+          <p className="site-kind">Website packages</p>
+          <h4 className="display-sm">One shop, four packages</h4>
+          <p>
+            We built Oak &amp; Iron at every level we offer. Each package adds to the one before, so you can see
+            exactly what you get. Open them on your phone.
+          </p>
+        </header>
+        <ol className="pkg-list">
+          {PACKAGES.map((p, i) => (
+            <li className="pkg" key={p.id}>
+              <span className="pkg-n" aria-hidden="true">{`0${i + 1}`}</span>
+              <h5 className="pkg-name">{p.name}</h5>
+              <p>{p.body}</p>
+              <a
+                className="btn btn-ghost pkg-go"
+                href={`${DEMO_URL}/${p.id}/`}
+                target="_blank"
+                rel="noopener"
+                aria-label={`View the ${p.name} demo (opens in a new tab)`}
+              >
+                View demo
+              </a>
+            </li>
+          ))}
+        </ol>
+        <a className="pkg-all" href={`${DEMO_URL}/`} target="_blank" rel="noopener">
+          See all four side by side
+        </a>
       </div>
     </div>
   )

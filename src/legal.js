@@ -14,6 +14,7 @@ export const BUSINESS = {
   companyNumber: '', // only for a limited company
   address: '', // registered or trading address
   host: '', // e.g. "Netlify, Inc." once the site is deployed
+  analytics: '', // e.g. "Netlify Analytics", only if you turn on cookie-free visitor statistics
   jurisdiction: 'England and Wales', // change to Scotland or Northern Ireland if that is where you trade
   email: EMAIL,
 }
@@ -39,11 +40,24 @@ export const PRIVACY = [
   {
     h: 'What this website collects',
     p: [
-      'Nothing that identifies you. The site has no contact forms, no account sign-up, no analytics and no advertising or tracking tools, and it sets no cookies.',
+      BUSINESS.analytics
+        ? 'Nothing that identifies you. The site has no contact forms, no account sign-up and no advertising or tracking tools, and it sets no cookies.'
+        : 'Nothing that identifies you. The site has no contact forms, no account sign-up, no analytics and no advertising or tracking tools, and it sets no cookies.',
       'The fonts, images and animation code are served from this website itself, so visiting it does not send your details to third parties such as Google Fonts.',
       'To avoid replaying the opening animation each time you load a page, your browser keeps a small note (in "session storage") that the intro has played. It stays on your device, does not identify you, is never sent to us, and is deleted when you close the tab.',
     ],
   },
+  ...(BUSINESS.analytics
+    ? [
+        {
+          h: 'Visitor statistics',
+          p: [
+            `We use ${BUSINESS.analytics} to count visits and see which pages are popular. It does not use cookies, does not track you across other websites and does not identify you: we only see totals, such as how many people visited a page and which country or device type they used.`,
+            'Our lawful basis is our legitimate interest in understanding how the site is used so we can improve it.',
+          ],
+        },
+      ]
+    : []),
   {
     h: 'When you email us',
     p: [

@@ -6,6 +6,7 @@ export const MAILTO = `mailto:${EMAIL}?subject=Project%20enquiry`
 export const SERVICES = [
   {
     id: 'brand',
+    example: { href: '#work-design', label: 'See logo examples' },
     title: 'Brand identity',
     short: 'Branding',
     body: 'A logo, colours and type that people remember, with simple guidelines so everything you make looks like you.',
@@ -13,6 +14,7 @@ export const SERVICES = [
   },
   {
     id: 'graphic',
+    example: { href: '#work-design', label: 'See menus and graphics' },
     title: 'Graphic design',
     short: 'Graphic design',
     body: 'Menus, print and social graphics that feel considered, readable and unmistakably yours.',
@@ -20,6 +22,7 @@ export const SERVICES = [
   },
   {
     id: 'web',
+    example: { href: '#web-packages', label: 'See packages and live demos' },
     title: 'Web design',
     short: 'Web design',
     body: 'Fast, beautiful websites that are easy to use on any screen and built to turn visitors into customers.',
@@ -27,6 +30,7 @@ export const SERVICES = [
   },
   {
     id: 'photo',
+    example: { href: '#work-photo', label: 'See photography' },
     title: 'Photography',
     short: 'Photography',
     body: 'Headshots, food, products and the everyday images your website needs, shot and edited to match your brand.',
@@ -34,6 +38,7 @@ export const SERVICES = [
   },
   {
     id: 'motion',
+    example: { href: '#work-motion', label: 'See animations' },
     title: 'Motion & animation',
     short: 'Motion',
     body: 'Product animations, store walk-throughs and moving graphics that stop the scroll and show what you do.',
@@ -71,6 +76,15 @@ export const WEBSITES = [
     body: 'A booking-first site for a barbershop: choose a service, a barber and a time in under thirty seconds.',
     tags: ['Online booking', 'Mobile first', 'Logo'],
   },
+]
+
+// Website packages: the same concept barbershop (Oak & Iron) built at each level, live at DEMO_URL.
+export const DEMO_URL = 'https://broad-art-97da.ch7dhckwzg.workers.dev'
+export const PACKAGES = [
+  { id: 'essentials', name: 'Essentials', body: 'One sharp page: what you do, prices, opening hours, tap to call and directions.' },
+  { id: 'business', name: 'Business', body: 'A full site: services with descriptions, your team, gallery, FAQs and a custom animated feature.' },
+  { id: 'signature', name: 'Signature', body: 'A standout animated opening and an interactive feature made for your trade.' },
+  { id: 'booking', name: 'Signature + Booking', body: 'Everything in Signature, plus customers book appointments on your site, with texts, emails and calendar sync.' },
 ]
 
 // Photography: each slot shows its photo once `src` is set (see README, "Adding photos").
@@ -138,6 +152,10 @@ export const PROCESS = [
 
 export const FAQ = [
   {
+    q: 'Where are you based?',
+    a: 'We work mobile, so we come to you for photo and video shoots, and meet in person or on a video call, whichever suits you.',
+  },
+  {
     q: 'Do I have to use all of your services?',
     a: 'Not at all. Bring us in for one thing, like a logo or a set of headshots, or for everything at once. Whatever we make is designed to work with the rest if you add more later.',
   },
@@ -155,6 +173,6 @@ export const FAQ = [
   },
   {
     q: 'What do you need from me to get started?',
-    a: 'Just an email with a little about your business and what you’d like to do. We’ll take it from there and arrange a time to talk.',
+    a: 'Just an email with a little about your business and what you’d like to do. We’ll reply within two working days and arrange a time to talk.',
   },
 ]

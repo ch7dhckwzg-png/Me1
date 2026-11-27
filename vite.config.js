@@ -26,12 +26,13 @@ export default defineConfig(({ mode }) => ({
     mode === 'single'
       ? { outDir: 'dist-single', assetsInlineLimit: Number.MAX_SAFE_INTEGER, copyPublicDir: false }
       : {
-          // Three pages: the site, the privacy policy and the terms.
+          // Four pages: the site, the privacy policy, the terms and the 404 page.
           rollupOptions: {
             input: {
               main: fileURLToPath(new URL('./index.html', import.meta.url)),
               privacy: fileURLToPath(new URL('./privacy.html', import.meta.url)),
               terms: fileURLToPath(new URL('./terms.html', import.meta.url)),
+              notfound: fileURLToPath(new URL('./404.html', import.meta.url)),
             },
           },
         },
