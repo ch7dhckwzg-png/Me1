@@ -17,8 +17,8 @@ export const SERVICES = [
     example: { href: '#work-design', label: 'See menus and graphics' },
     title: 'Graphic design',
     short: 'Graphic design',
-    body: 'Menus, print and social graphics that feel considered, readable and unmistakably yours.',
-    includes: ['Menus', 'Posters & flyers', 'Social media graphics', 'Packaging & labels'],
+    body: 'Menus, print and graphic bundles that feel considered, readable and unmistakably yours.',
+    includes: ['Menus', 'Posters & flyers', 'Graphic bundles', 'Packaging & labels'],
   },
   {
     id: 'web',
@@ -48,8 +48,8 @@ export const SERVICES = [
     id: 'marketing',
     title: 'Digital marketing',
     short: 'Marketing',
-    body: 'Social media, ads and search, planned and run so the right people find you and keep coming back.',
-    includes: ['Social media management', 'Paid social & search', 'SEO', 'Content planning'],
+    body: 'Ads, search and content, planned and run so the right people find you and keep coming back.',
+    includes: ['Paid social & search', 'SEO', 'Content planning'],
   },
 ]
 
