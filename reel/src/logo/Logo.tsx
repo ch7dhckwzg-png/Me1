@@ -1,4 +1,5 @@
-import React, { useId } from 'react';
+import React, { useContext, useId } from 'react';
+import { LogoColorContext } from './LogoColor';
 import { LOGO_H, LOGO_W, LOGO_X, LOGO_Y } from '../brand';
 import { LOGO_PATH, LOGO_TRANSFORM, LOGO_VIEWBOX } from './logoPath';
 
@@ -32,6 +33,16 @@ export const Logo: React.FC<Props> = ({
   mixBlendMode,
 }) => {
   const id = useId().replace(/:/g, '');
+  const override = useContext(LogoColorContext);
+  if (override) {
+    // Flat recolour for the orange stills: drop fills, filters and fades
+    color = override;
+    fill = undefined;
+    svgFilter = undefined;
+    cssFilter = undefined;
+    opacity = 1;
+    mixBlendMode = undefined;
+  }
   return (
     <svg
       viewBox={`0 0 ${LOGO_VIEWBOX.width} ${LOGO_VIEWBOX.height}`}

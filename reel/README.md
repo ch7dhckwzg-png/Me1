@@ -30,3 +30,10 @@ On a machine that can't download Chrome Headless Shell, point Remotion at a loca
 ## Music
 
 Put a track at `public/music.mp3` and run `npm run beats`. It finds the onsets, moves each cut to the nearest beat within 3 frames, and switches the audio on. Then run `npm run render`. Without a track, `npm run beats` puts back the even ~0.3 s grid. You can also edit `src/cuts.json` by hand.
+
+## Stills
+
+- **Reel photos:** one still per scene, from the source (sharper than video frames):
+  `npx remotion still Reel out/stills/01-concrete.png --frame=5` (mid-frame of each scene's first cut; `darkFade` at its first frame, 99, before it fades).
+- **Orange series (30):** the mark in CATALYZE orange `#FF6E00`, alternating light and dark backgrounds (odd numbers light, even dark). The list is `ORANGE_SERIES` in `src/OrangeStills.tsx`; existing scenes are reused with the logo recoloured through `LogoColorContext`, plus plain, grid, wordmark, tile, tagline and palette backgrounds.
+  `npx remotion still Orange out/orange/01.png --props='{"n":1}' --frame=26`

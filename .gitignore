@@ -38,3 +38,11 @@ catalyze-site-preview.html
 design/references/hero-moment/*.png
 design/references/hero-moment/*.mov
 design/references/hero-moment/*.mp4
+
+# Reel stills and the orange series: regenerate with remotion still (see reel/README.md)
+reel/out/stills/
+reel/out/stills-jpg/
+reel/out/orange/
+reel/out/orange-jpg/
+reel/out/*.zip
+reel/out/*-sheet.jpg
