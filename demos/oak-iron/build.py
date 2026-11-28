@@ -75,6 +75,36 @@ MENU_JS = """
 """
 
 
+FONTS = {
+    'bebas-neue-400.woff2': ('bebas-neue', 'bebas-neue-latin-400-normal.woff2'),
+    'inter-400.woff2': ('inter', 'inter-latin-400-normal.woff2'),
+    'inter-500.woff2': ('inter', 'inter-latin-500-normal.woff2'),
+    'inter-600.woff2': ('inter', 'inter-latin-600-normal.woff2'),
+}
+GOOGLE_FONTS = ('<link rel="preconnect" href="https://fonts.googleapis.com">\n'
+                '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n'
+                '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600&display=swap">')
+
+
+def self_host_fonts(html, prefix):
+    """Serve Bebas Neue and Inter from the site itself, so no visitor data goes to Google
+    (the privacy policy promises this). prefix is the path from the page to dist/."""
+    assert GOOGLE_FONTS in html, 'Google Fonts links not found'
+    face = lambda fam, w, f: (f"  @font-face {{ font-family: '{fam}'; font-style: normal; font-weight: {w}; "
+                              f"font-display: swap; src: url('{prefix}fonts/{f}') format('woff2'); }}")
+    css = '\n'.join([face('Bebas Neue', 400, 'bebas-neue-400.woff2')] +
+                     [face('Inter', w, f'inter-{w}.woff2') for w in (400, 500, 600)])
+    html = html.replace(GOOGLE_FONTS, f'<link rel="preload" href="{prefix}fonts/bebas-neue-400.woff2" as="font" type="font/woff2" crossorigin>')
+    return html.replace('<style>', '<style>\n' + css, 1)
+
+
+def copy_fonts():
+    nm = ROOT.parent.parent / 'node_modules' / '@fontsource'
+    (DIST / 'fonts').mkdir()
+    for out, (pkg, f) in FONTS.items():
+        shutil.copy(nm / pkg / 'files' / f, DIST / 'fonts' / out)
+
+
 def fix_clipper_animation(html):
     """Signature hero: keep the clipper blade on the cut line, then send it off the edge.
 
@@ -172,6 +202,7 @@ def build_package(name):
     out.mkdir(parents=True, exist_ok=True)
     home = html[:m_main.start(1)] + home_main + html[m_main.end(1):]
     home = header_links(home, '', None, has_finder)
+    home = self_host_fonts(home, '../')
     (out / 'index.html').write_text(home)
 
     for k, (slug, label, title, _) in enumerate(PAGES):
@@ -189,6 +220,7 @@ def build_package(name):
         page = page.replace('<main id="top">', '<main id="top" class="sub">', 1)
         page = re.sub(r'<title>.*?</title>', f'<title>{title} | {title_base}</title>', page, count=1)
         page = header_links(page, '../', slug, has_finder)
+        page = self_host_fonts(page, '../../')
         (out / slug).mkdir(exist_ok=True)
         (out / slug / 'index.html').write_text(page)
 
@@ -197,12 +229,13 @@ def main():
     if DIST.exists():
         shutil.rmtree(DIST)
     DIST.mkdir()
-    shutil.copy(SRC / 'index.html', DIST / 'index.html')
+    copy_fonts()
+    (DIST / 'index.html').write_text(self_host_fonts((SRC / 'index.html').read_text(), ''))
     (DIST / 'essentials').mkdir()
-    shutil.copy(SRC / 'essentials' / 'index.html', DIST / 'essentials' / 'index.html')
+    (DIST / 'essentials' / 'index.html').write_text(self_host_fonts((SRC / 'essentials' / 'index.html').read_text(), '../'))
     for name in ('business', 'signature', 'booking'):
         build_package(name)
-    print('\n'.join(sorted(str(p.relative_to(DIST)) for p in DIST.rglob('*.html'))))
+    print('\n'.join(sorted(str(p.relative_to(DIST)) for p in DIST.rglob('*') if p.is_file())))
 
 
 if __name__ == '__main__':
