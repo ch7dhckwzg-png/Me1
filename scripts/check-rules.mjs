@@ -7,7 +7,7 @@ import { readFileSync, readdirSync, statSync, existsSync } from 'node:fs'
 import { join, extname, relative } from 'node:path'
 
 const ROOT = new URL('..', import.meta.url).pathname
-const SCAN = ['src', 'design/work', 'index.html', 'privacy.html', 'terms.html', '404.html', 'public', 'dist']
+const SCAN = ['src', 'design/work', 'index.html', 'privacy.html', 'terms.html', '404.html', 'public', 'demos/oak-iron/dist', 'dist']
 // Third-party component files are checked only for the rules that affect what renders.
 const VENDOR = /src\/components\/ui\//
 const TEXT = new Set(['.js', '.jsx', '.css', '.html', '.json', '.webmanifest', '.svg', '.txt'])

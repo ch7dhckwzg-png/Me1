@@ -1,7 +1,8 @@
 # Oak & Iron package demos
 
 The four website-package demos linked from the Work section (Essentials, Business,
-Signature, Signature + Booking). Live on the Cloudflare Worker `broad-art-97da`.
+Signature, Signature + Booking). Served by the main site at `/demos/oak-iron/`
+(`npm run build` copies `dist/` in). An older copy also lives on the Cloudflare Worker `broad-art-97da`.
 
 - `src/`: the demos as first deployed (one page each).
 - `build.py`: builds `dist/`. Essentials stays one page; Business, Signature and
@@ -12,6 +13,6 @@ Signature, Signature + Booking). Live on the Cloudflare Worker `broad-art-97da`.
 - `dist/`: what gets uploaded.
 
 ```bash
-python3 demos/oak-iron/build.py
-npx wrangler deploy --name broad-art-97da --assets demos/oak-iron/dist --compatibility-date 2026-11-27
+python3 demos/oak-iron/build.py   # rebuild the demos
+npm run build                      # site + demos in dist/
 ```

@@ -78,8 +78,9 @@ export const WEBSITES = [
   },
 ]
 
-// Website packages: the same concept barbershop (Oak & Iron) built at each level, live at DEMO_URL.
-export const DEMO_URL = 'https://broad-art-97da.ch7dhckwzg.workers.dev'
+// Website packages: the same concept barbershop (Oak & Iron) built at each level.
+// Served from this site (demos/oak-iron, copied into dist/ by scripts/copy-demos.mjs after the build).
+export const DEMO_URL = '/demos/oak-iron'
 export const PACKAGES = [
   { id: 'essentials', name: 'Essentials', body: 'One sharp page: what you do, prices, opening hours, tap to call and directions.' },
   { id: 'business', name: 'Business', body: 'A full site: services with descriptions, your team, gallery, FAQs and a custom animated feature.' },
