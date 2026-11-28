@@ -1,12 +1,13 @@
 import { SERVICES } from '@/content'
 
 /** Every service in one calm list: what it is, and what's included. */
-export default function Services() {
+export default function Services({ level = 2 }) {
+  const H = `h${level}`
   return (
     <section className="section services" id="services">
       <div className="wrap">
         <header className="section-head">
-          <h2 className="display">Everything your brand needs to be <span className="accent-word">seen</span></h2>
+          <H className="display">Everything your brand needs to be <span className="accent-word">seen</span></H>
           <p className="lead">Choose one service, or bring us in for the lot. Whatever we make is designed to work together.</p>
         </header>
         <ul className="service-list">

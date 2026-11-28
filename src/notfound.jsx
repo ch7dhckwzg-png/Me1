@@ -9,10 +9,10 @@ import PageShell from '@/components/PageShell'
 import { MAILTO } from '@/content'
 
 const LINKS = [
-  { href: '/#services', label: 'Our services' },
-  { href: '/#work', label: 'Our work' },
-  { href: '/#process', label: 'How we work' },
-  { href: '/#faq', label: 'Questions' },
+  { href: '/services/', label: 'Our services' },
+  { href: '/work/', label: 'Our work' },
+  { href: '/process/', label: 'How we work' },
+  { href: '/faq/', label: 'Questions' },
 ]
 
 function NotFound() {

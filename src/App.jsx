@@ -8,11 +8,24 @@ import Intro from '@/sections/Intro'
 import Hero from '@/sections/Hero'
 import Velocity from '@/sections/Velocity'
 import Statement from '@/sections/Statement'
-import Services from '@/sections/Services'
-import Work from '@/sections/Work'
-import Process from '@/sections/Process'
-import Faq from '@/sections/Faq'
+import Explore from '@/sections/Explore'
 import Contact from '@/sections/Contact'
+
+// Before the site had separate pages, sections were reached with links like /#work or
+// /#work-design. Send those (shared or bookmarked) to the right page.
+const OLD_LINKS = {
+  services: '/services/',
+  work: '/work/',
+  'work-web': '/work/#work-web',
+  'work-photo': '/work/#work-photo',
+  'work-design': '/work/#work-design',
+  'work-motion': '/work/#work-motion',
+  'web-packages': '/work/#web-packages',
+  process: '/process/',
+  faq: '/faq/',
+}
+const moved = OLD_LINKS[window.location.hash.slice(1)]
+if (moved) window.location.replace(moved)
 
 // The intro plays once per browser session; `?intro=0` skips it (for shared links and testing).
 const INTRO_KEY = 'catalyze-intro-seen'
@@ -63,10 +76,7 @@ export default function App() {
       <main id="main" tabIndex={-1}>
         <Velocity reducedMotion={reducedMotion} />
         <Statement reducedMotion={reducedMotion} />
-        <Services />
-        <Work reducedMotion={reducedMotion} />
-        <Process reducedMotion={reducedMotion} />
-        <Faq />
+        <Explore />
         <Contact />
       </main>
       {phase !== 'intro' || reducedMotion ? (

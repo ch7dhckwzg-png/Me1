@@ -6,7 +6,8 @@ import Spark from '@/components/kinetic/Spark'
 const LABEL = 'Copy email address'
 
 /** The sign-off, on orange. */
-export default function Contact() {
+export default function Contact({ level = 2 }) {
+  const H = `h${level}`
   const [label, setLabel] = useState(LABEL)
   const timer = useRef(0)
 
@@ -28,7 +29,7 @@ export default function Contact() {
       <GiantWord className="giant-ink">
         Let’s go <Spark className="giant-spark" outline /> Let’s go</GiantWord>
       <div className="wrap">
-        <h2 className="contact-title">Let’s make something worth noticing.</h2>
+        <H className="contact-title">Let’s make something worth noticing.</H>
         <p className="contact-lead">
           Tell us a little about your business and what you have in mind. We’ll reply with a few
           questions and a time to talk.

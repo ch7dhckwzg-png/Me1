@@ -9,7 +9,13 @@ import { createHash } from 'node:crypto'
 
 const DIST = new URL('../dist/', import.meta.url).pathname
 const html = []
-const walk = (d) => readdirSync(d).forEach((f) => { const p = join(d, f); statSync(p).isDirectory() ? walk(p) : p.endsWith('.html') && html.push(p) })
+const walk = (d) => {
+  for (const f of readdirSync(d)) {
+    const p = join(d, f)
+    if (statSync(p).isDirectory()) walk(p)
+    else if (p.endsWith('.html')) html.push(p)
+  }
+}
 walk(DIST)
 
 const hashes = new Set()

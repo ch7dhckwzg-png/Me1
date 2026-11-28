@@ -36,9 +36,10 @@
   margin: 0;
 }
 
+/* No scroll-behavior: smooth here. Lenis smooths in-page links itself (anchors: true), and the
+   CSS rule made browsers slide down from the top when a page opened at a #section. */
 html {
   background: var(--bg);
-  scroll-behavior: smooth;
 }
 
 html.is-locked,
@@ -317,9 +318,95 @@ img {
   font-size: 0.88rem;
 }
 
-@media (max-width: 720px) {
-  .nav ul li:nth-child(3) {
+.nav {
+  position: relative;
+  z-index: 20;
+}
+
+.nav ul a[aria-current='page'] {
+  opacity: 1;
+  color: var(--fg);
+  box-shadow: inset 0 -2px 0 var(--accent);
+}
+
+.nav-menu-btn {
+  display: none;
+  flex-shrink: 0;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-control);
+  background: transparent;
+  color: var(--fg);
+  cursor: pointer;
+}
+
+.nav-menu-btn svg {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+}
+
+.nav-menu-btn path {
+  transform-origin: 12px 12px;
+  transition:
+    transform 0.25s ease,
+    opacity 0.2s;
+}
+
+.nav.is-open .nav-menu-btn .m1 {
+  transform: translateY(5px) rotate(45deg);
+}
+
+.nav.is-open .nav-menu-btn .m2 {
+  opacity: 0;
+}
+
+.nav.is-open .nav-menu-btn .m3 {
+  transform: translateY(-5px) rotate(-45deg);
+}
+
+@media (max-width: 820px) {
+  .nav-menu-btn {
+    display: grid;
+  }
+
+  .nav ul {
     display: none;
+  }
+
+  .nav.is-open ul {
+    display: grid;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    gap: 0;
+    margin: 0;
+    padding: 0.25rem var(--gutter) 1rem;
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+    box-shadow: 0 24px 40px -20px rgba(0, 0, 0, 0.8);
+    font-size: 1.05rem;
+  }
+
+  .nav.is-open ul a {
+    display: flex;
+    min-height: 52px;
+    border-bottom: 1px solid var(--line);
+    opacity: 1;
+  }
+
+  .nav.is-open ul li:last-child a {
+    border-bottom: 0;
+  }
+
+  .nav.is-open ul a[aria-current='page'] {
+    color: var(--accent);
+    box-shadow: none;
   }
 }
 
@@ -1536,4 +1623,102 @@ details[open] .faq-icon::after {
   min-height: 44px;
   font: 400 1.5rem/1.2 var(--serif);
   text-decoration-color: var(--accent);
+}
+
+/* ---------- Pages ---------- */
+
+.site-header {
+  position: relative;
+  z-index: 20;
+  border-bottom: 1px solid var(--line);
+}
+
+.subpage > .breadcrumb {
+  max-width: none;
+  padding-top: clamp(1.5rem, 4vw, 2.5rem);
+  padding-inline: max(var(--gutter), calc((100% - 1320px) / 2 + var(--gutter)));
+}
+
+.subpage > .breadcrumb ol {
+  margin-bottom: 0;
+}
+
+.subpage > .breadcrumb + .section {
+  padding-top: clamp(2.5rem, 6vw, 4.5rem);
+}
+
+/* The breadcrumb strip takes the colour of the section under it, so there is no seam. */
+.subpage-services > .breadcrumb,
+.subpage-faq > .breadcrumb {
+  background: var(--surface);
+}
+
+.subpage-contact > .breadcrumb {
+  padding-bottom: clamp(1.5rem, 4vw, 2.5rem);
+}
+
+/* Home: a way into each page */
+.explore {
+  padding-bottom: clamp(4rem, 9vw, 7rem);
+}
+
+.explore-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.explore-card {
+  display: grid;
+  align-content: start;
+  gap: 0.6rem;
+  height: 100%;
+  padding: clamp(1.25rem, 2.4vw, 1.75rem);
+  border-radius: var(--radius-card);
+  background: var(--surface);
+  box-shadow: inset 0 0 0 1px var(--line);
+  text-decoration: none;
+  transition: box-shadow 0.2s;
+}
+
+.explore-num {
+  font: 400 1.6rem/1 var(--bold);
+  color: var(--accent);
+}
+
+.explore-name {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  font: 400 clamp(1.9rem, 3vw, 2.4rem)/1.05 var(--serif);
+}
+
+.explore-name svg {
+  flex-shrink: 0;
+  color: var(--accent);
+  transition: transform 0.2s ease;
+}
+
+.explore-blurb {
+  color: var(--soft);
+  font-size: 0.98rem;
+}
+
+@media (hover: hover) {
+  .explore-card:hover {
+    box-shadow: inset 0 0 0 1px var(--accent);
+  }
+
+  .explore-card:hover .explore-name svg {
+    transform: translateX(4px);
+  }
+}
+
+.explore-card:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
 }

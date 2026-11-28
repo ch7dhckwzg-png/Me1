@@ -5,6 +5,7 @@ import { useGSAP } from '@gsap/react'
 import { ShimmerButton } from '@/components/ui/shimmer-button'
 import RotatingBadge from '@/components/kinetic/RotatingBadge'
 import { MAILTO } from '@/content'
+import SiteNav from '@/components/SiteNav'
 import logo from '@/assets/logo.svg'
 
 // three.js lives in its own chunk so the page opens fast. It is fetched while the intro
@@ -79,18 +80,7 @@ export default function Hero({ reducedMotion, prepare = true, ready = true, onSc
         )}
       </div>
 
-      <nav className="nav" aria-label="Main">
-        <a className="logo" href="#home">
-          <img src={logo} width="1286" height="488" alt="Catalyze, back to top" />
-        </a>
-        <ul>
-          <li><a href="#services">Services</a></li>
-          <li><a href="#work">Work</a></li>
-          <li><a href="#process">Process</a></li>
-          <li><a href="#contact">Contact</a></li>
-        </ul>
-        <a className="btn btn-primary nav-cta" href={MAILTO}>Start a project</a>
-      </nav>
+      <SiteNav />
 
       <RotatingBadge href={MAILTO} className="hero-badge" />
 
@@ -115,7 +105,7 @@ export default function Hero({ reducedMotion, prepare = true, ready = true, onSc
             >
               Start a project
             </ShimmerButton>
-            <a className="btn btn-ghost" href="#work">See our work</a>
+            <a className="btn btn-ghost" href="/work/">See our work</a>
           </div>
         </div>
         <h1 className="hero-title">

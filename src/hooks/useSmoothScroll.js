@@ -56,4 +56,31 @@ export default function useSmoothScroll(disabled, locked = false) {
       root.classList.remove('is-locked')
     }
   }, [locked, disabled])
+
+  return lenisRef
+}
+
+/**
+ * Arriving on a page with a hash (for example /work/#work-design): jump straight to that
+ * spot, with no slide from the top, and again once images above it have loaded and
+ * pushed it down. Goes through Lenis when it is running, so it does not animate the jump.
+ */
+export function useJumpToHash(lenisRef) {
+  useEffect(() => {
+    if (!window.location.hash) return undefined
+    const el = document.getElementById(decodeURIComponent(window.location.hash.slice(1)))
+    if (!el) return undefined
+    const go = () => {
+      if (lenisRef.current) lenisRef.current.scrollTo(el, { immediate: true, force: true })
+      else el.scrollIntoView({ behavior: 'instant', block: 'start' })
+    }
+    const frame = requestAnimationFrame(go)
+    const late = setTimeout(go, 600)
+    if (document.readyState !== 'complete') window.addEventListener('load', go, { once: true })
+    return () => {
+      cancelAnimationFrame(frame)
+      clearTimeout(late)
+      window.removeEventListener('load', go)
+    }
+  }, [lenisRef])
 }

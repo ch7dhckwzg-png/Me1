@@ -1,25 +1,24 @@
 import { EMAIL, MAILTO } from '@/content'
+import { PAGES, pageHref } from '@/pages'
 import logo from '@/assets/logo.svg'
 
 const YEAR = new Date().getFullYear()
 
-/** One footer for every page. `base` is '' on the home page and '/' elsewhere, for section links. */
-export default function SiteFooter({ base = '' }) {
+/** One footer for every page. */
+export default function SiteFooter() {
   return (
     <footer className="site-footer">
       <div className="wrap footer-grid">
         <div>
-          <a href={base || '#home'} className="footer-home" aria-label="Catalyze home">
+          <a href="/" className="footer-home" aria-label="Catalyze home">
             <img src={logo} width="1286" height="488" alt="" className="footer-logo" />
           </a>
           <p>A creative studio for brands that want to be noticed.</p>
         </div>
         <nav aria-label="Footer">
-          <a href={`${base}#services`}>Services</a>
-          <a href={`${base}#work`}>Work</a>
-          <a href={`${base}#process`}>Process</a>
-          <a href={`${base}#faq`}>Questions</a>
-          <a href={`${base}#contact`}>Contact</a>
+          {PAGES.map((p) => (
+            <a key={p.slug} href={pageHref(p.slug)}>{p.label}</a>
+          ))}
         </nav>
         <div>
           <a href={MAILTO} className="footer-mail">{EMAIL}</a>

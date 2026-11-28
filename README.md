@@ -60,7 +60,13 @@ With `prefers-reduced-motion: reduce`: no intro, no WebGL (the flat logo instead
 
 ## Pages
 
-`index.html` (the site), `privacy.html` and `terms.html` (content in `src/legal.js`, rendered by `src/components/LegalPage.jsx`). All three share `src/components/SiteFooter.jsx`.
+- `/` (`index.html`, `src/App.jsx`): the intro, hero, crossing bands, statement, a card for each page, and contact.
+- `/services/`, `/work/`, `/process/`, `/faq/`, `/contact/`: one page per section. Each has its own `index.html` (title and description) with `<body data-page="...">`, rendered by `src/subpage.jsx`. The list of pages lives in `src/pages.js`; the menu (`src/components/SiteNav.jsx`) folds into a menu button on phones.
+- Old links such as `/#work` or `/#work-design` forward to the new pages.
+- `privacy.html` and `terms.html` (content in `src/legal.js`, rendered by `src/components/LegalPage.jsx`), and `404.html`.
+- `/demos/oak-iron/`: the website-package demos (see `demos/oak-iron/README.md`).
+
+Every page shares `src/components/SiteFooter.jsx`.
 
 ## Concept work
 

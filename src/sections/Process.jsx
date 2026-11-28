@@ -4,7 +4,8 @@ import { useGSAP } from '@gsap/react'
 import { PROCESS } from '@/content'
 
 /** How a project runs: when the steps come into view, a track fills once and lights each step in turn. */
-export default function Process({ reducedMotion }) {
+export default function Process({ reducedMotion, level = 2 }) {
+  const H = `h${level}`
   const scope = useRef(null)
 
   useGSAP(
@@ -27,7 +28,7 @@ export default function Process({ reducedMotion }) {
     <section className="section process" id="process" ref={scope}>
       <div className="wrap">
         <header className="section-head">
-          <h2 className="display">Simple, from first chat to <span className="accent-word">launch</span></h2>
+          <H className="display">Simple, from first chat to <span className="accent-word">launch</span></H>
         </header>
         <div className="track" aria-hidden="true">
           <div className="track-fill" />

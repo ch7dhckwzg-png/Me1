@@ -288,7 +288,8 @@ function Motion({ reducedMotion }) {
   )
 }
 
-export default function Work({ reducedMotion }) {
+export default function Work({ reducedMotion, level = 2 }) {
+  const H = `h${level}`
   const [open, setOpen] = useState(null)
   return (
     <section className="section work" id="work">
@@ -297,7 +298,7 @@ export default function Work({ reducedMotion }) {
       </GiantWord>
       <div className="wrap">
         <header className="section-head">
-          <h2 className="display">A taste of what we <span className="accent-word">make</span></h2>
+          <H className="display">A taste of what we <span className="accent-word">make</span></H>
           <p className="lead">
             The brands below are concept projects, created by Catalyze to show our range. Yours could be next.
           </p>

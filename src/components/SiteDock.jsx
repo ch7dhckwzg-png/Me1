@@ -12,10 +12,10 @@ const Icon = ({ d }) => (
 
 const ITEMS = [
   { href: '#home', label: 'Back to top', d: ['M12 19V5', 'M5 12l7-7 7 7'] },
-  { href: '#services', label: 'Services', d: ['M4 4h7v7H4z', 'M13 4h7v7h-7z', 'M4 13h7v7H4z', 'M13 13h7v7h-7z'] },
-  { href: '#work', label: 'Work', d: ['M3 7h18v13H3z', 'M8 7V4h8v3'] },
-  { href: '#process', label: 'Process', d: ['M4 6h16', 'M4 12h10', 'M4 18h6'] },
-  { href: '#contact', label: 'Contact', d: ['M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z'] },
+  { href: '/services/', label: 'Services', d: ['M4 4h7v7H4z', 'M13 4h7v7h-7z', 'M4 13h7v7H4z', 'M13 13h7v7h-7z'] },
+  { href: '/work/', label: 'Work', d: ['M3 7h18v13H3z', 'M8 7V4h8v3'] },
+  { href: '/process/', label: 'Process', d: ['M4 6h16', 'M4 12h10', 'M4 18h6'] },
+  { href: '/contact/', label: 'Contact', d: ['M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z'] },
 ]
 
 /**
