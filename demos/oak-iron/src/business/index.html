@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#141414">
+<title>Oak &amp; Iron Barbers</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="Example website for the CATALYZE Business package. Oak & Iron is a made-up barbershop.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600&display=swap">
+<style>
+  
+  :root {
+    --ink: #141414;      
+    --panel: #1d1c1b;    
+    --panel-2: #262422;
+    --cream: #eee7db;    
+    --muted: #b9b1a5;    
+    --brass: #b48a52;    
+    --brass-hi: #c79a5e;
+    --line: rgba(238, 231, 219, .12);
+    --display: 'Bebas Neue', Impact, 'Arial Narrow', sans-serif;
+    --body: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --radius: 6px;
+    --ease: cubic-bezier(.16, 1, .3, 1);
+    --ease-io: cubic-bezier(.65, 0, .35, 1);
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 76px; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { animation-duration: 1ms !important; animation-delay: 0s !important; transition-duration: 1ms !important; } }
+  body { margin: 0; background: var(--ink); color: var(--cream); font: 400 16px/1.6 var(--body); -webkit-font-smoothing: antialiased; }
+  a { color: inherit; }
+  :focus-visible { outline: 2px solid var(--brass); outline-offset: 3px; }
+  p { text-wrap: pretty; }
+  button { font: inherit; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+  .demo { background: var(--brass); color: var(--ink); font-size: 13px; font-weight: 500; text-align: center; padding-block: 8px; }
+
+  header.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: rgba(20, 20, 20, .9); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
+  header.top .wrap { display: flex; align-items: center; gap: 24px; padding-block: 12px; }
+  .logo { font: 400 28px/1 var(--display); letter-spacing: .08em; text-decoration: none; white-space: nowrap; }
+  .logo b { font-weight: 400; color: var(--brass); }
+  nav.links { display: flex; gap: 22px; margin-left: auto; font-size: 14px; }
+  nav.links a { color: var(--muted); text-decoration: none; padding: 8px 0; }
+  @media (hover: hover) { nav.links a:hover { color: var(--cream); } }
+  @media (max-width: 900px) { nav.links { display: none; } header.top .cta { margin-left: auto; } }
+
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 12px 18px; border-radius: var(--radius); font: 600 15px/1 var(--body); text-decoration: none; border: 1px solid var(--line); background: transparent; color: var(--cream); cursor: pointer; transition: background-color .2s, border-color .2s, transform .15s var(--ease); }
+  .btn:active { transform: scale(.97); }
+  .btn svg { width: 16px; height: 16px; flex: none; }
+  .btn-solid { background: var(--brass); border-color: var(--brass); color: var(--ink); }
+  @media (hover: hover) { .btn:hover { border-color: var(--cream); } .btn-solid:hover { background: var(--brass-hi); border-color: var(--brass-hi); } }
+
+  section.band { padding-block: 72px; border-top: 1px solid var(--line); }
+  h2 { font: 400 clamp(40px, 5.4vw, 64px)/1 var(--display); letter-spacing: .03em; margin: 0 0 14px; }
+  .lead { color: var(--muted); max-width: 56ch; margin: 0 0 32px; font-size: 17px; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 40px 64px; }
+  @media (max-width: 800px) { .grid2 { grid-template-columns: 1fr; } }
+  .note { color: var(--muted); font-size: 14px; margin: 14px 0 0; }
+
+  
+  
+  .hero-b { padding-block: 56px 72px; }
+  .hero-b .wrap { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 32px 64px; align-items: center; }
+  .hero-b h1 { margin: 0; font: 400 clamp(76px, 14vw, 176px)/.86 var(--display); letter-spacing: .01em; }
+  .hero-b .what { margin: 22px 0 0; font-size: clamp(18px, 2vw, 21px); max-width: 36ch; }
+  .hero-b .status { margin: 16px 0 0; color: var(--muted); font-size: 15px; }
+  .hero-b .status b { color: var(--cream); font-weight: 600; }
+  .hero-b .ctas { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+  .pole { width: clamp(70px, 9vw, 110px); height: auto; display: block; }
+  .pole .stripes { animation: fv-twist 2.6s var(--ease-io) .25s both; }
+  @keyframes fv-twist { from { transform: translateY(-160px); } to { transform: translateY(0); } }
+  @media (max-width: 640px) { .hero-b .wrap { grid-template-columns: 1fr; } .pole { display: none; } }
+  .cut { position: relative; display: inline-block; }
+  .cut .rough { display: block; filter: blur(5px); opacity: .45; }
+  .cut .crisp { position: absolute; inset: 0; }
+  .cut span span, .cut .amp { color: var(--brass); }
+  .cut .blade { position: absolute; top: -6%; bottom: -6%; left: 100%; width: 12px; opacity: 0; pointer-events: none;
+    background: linear-gradient(90deg, var(--brass) 0 2px, transparent 2px), repeating-linear-gradient(180deg, var(--brass) 0 3px, transparent 3px 7px);
+    background-size: 2px 100%, 8px 100%; background-position: 0 0, 4px 0; background-repeat: no-repeat; }
+  @media (prefers-reduced-motion: no-preference) {
+    .cut .crisp { animation: fv-cut 1.5s var(--ease-io) .35s both; }
+    .cut .rough { animation: fv-rough 1.5s var(--ease-io) .35s both; }
+    .cut .blade { animation: fv-blade 1.5s var(--ease-io) .35s both; }
+  }
+  @media (prefers-reduced-motion: reduce) { .cut .rough { visibility: hidden; } }
+  @keyframes fv-cut { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+  @keyframes fv-rough { 0%, 85% { opacity: .45; } 100% { opacity: 0; } }
+  @keyframes fv-blade { 0% { left: 0; opacity: 1; } 92% { left: 100%; opacity: 1; } 100% { left: 100%; opacity: 0; } }
+  
+
+  
+  
+
+  
+  .svc-groups { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 8px 56px; }
+  .svc-groups h3 { font: 400 28px/1 var(--display); letter-spacing: .05em; color: var(--brass); margin: 18px 0 4px; }
+  .svc { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 16px; padding: 14px 0; border-bottom: 1px solid var(--line); }
+  .svc b { font-weight: 600; }
+  .svc small { grid-column: 1; color: var(--muted); font-size: 14px; }
+  .svc .p { grid-row: 1 / span 2; grid-column: 2; align-self: center; font-variant-numeric: tabular-nums; font-size: 17px; text-align: right; }
+  .svc .p .t { display: block; font-size: 13px; color: var(--muted); }
+  
+
+  
+  
+
+  
+  .team { list-style: none; margin: 0; padding: 0; }
+  .team li { display: grid; grid-template-columns: 56px minmax(0, 1fr) auto; gap: 4px 18px; align-items: center; padding: 18px 0; border-bottom: 1px solid var(--line); }
+  .team .av { grid-row: 1 / span 2; width: 56px; height: 56px; border-radius: 50%; display: grid; place-items: center; background: var(--panel-2); box-shadow: inset 0 0 0 1px var(--brass); font: 400 24px/1 var(--display); letter-spacing: .04em; color: var(--brass); }
+  .team b { font-size: 18px; }
+  .team small { grid-column: 2; color: var(--muted); font-size: 14.5px; }
+  .team .days { grid-row: 1 / span 2; grid-column: 3; text-align: right; color: var(--muted); font-size: 14px; }
+  .slot { margin: 0; border-radius: var(--radius); background: var(--panel); border: 1px dashed var(--line); display: grid; place-items: center; text-align: center; padding: 12px; color: var(--muted); font-size: 13px; }
+  .slot svg { width: 30px; height: 30px; color: var(--brass); display: block; margin: 0 auto 8px; }
+  .gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .gallery .slot { aspect-ratio: 4 / 5; }
+  @media (max-width: 560px) { .gallery { grid-template-columns: 1fr 1fr; } }
+  .faq details { border-bottom: 1px solid var(--line); }
+  .faq summary { cursor: pointer; list-style: none; padding: 18px 36px 18px 0; position: relative; font-weight: 600; }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary::after { content: ""; position: absolute; right: 6px; top: 50%; width: 10px; height: 10px; border-right: 1.6px solid var(--brass); border-bottom: 1.6px solid var(--brass); transform: translateY(-70%) rotate(45deg); transition: transform .25s var(--ease); }
+  .faq details[open] summary::after { transform: translateY(-30%) rotate(225deg); }
+  .faq details p { margin: 0 0 18px; color: var(--muted); }
+
+  table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+  th, td { text-align: left; padding: 12px 0; border-bottom: 1px solid var(--line); font-weight: 400; }
+  td { text-align: right; color: var(--muted); }
+  tr.today th, tr.today td { color: var(--cream); font-weight: 600; }
+  tr.today th::after { content: " (today)"; color: var(--brass); font-weight: 500; font-size: 14px; }
+  address { font-style: normal; font-size: 19px; line-height: 1.5; }
+  .contact { margin: 18px 0 0; display: grid; gap: 6px; }
+  .contact a { text-decoration: none; border-bottom: 1px solid var(--line); justify-self: start; }
+  footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; padding-block: 28px calc(28px + env(safe-area-inset-bottom, 0px)); color: var(--muted); font-size: 13px; border-top: 1px solid var(--line); }
+
+  
+  
+</style>
+</head>
+<body>
+
+
+<div class="demo"><div class="wrap">Example site for the CATALYZE Business package. Oak &amp; Iron is a made-up barbershop; its details are examples.</div></div>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#top">Oak <b>&amp;</b> Iron</a>
+    <nav class="links" aria-label="Sections">
+      <a href="#services">Services</a>
+      
+      <a href="#barbers">Barbers</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#faq">FAQs</a>
+      <a href="#find-us">Find us</a>
+    </nav>
+    <a class="btn btn-solid cta" href="tel:+441514960123">Call to book</a>
+    
+  </div>
+</header>
+
+<main id="top">
+  
+  <div class="hero-b">
+    <div class="wrap">
+      <div>
+        <h1 class="cut" aria-label="Oak &amp; Iron"><span class="rough" aria-hidden="true">Oak <span>&amp;</span> Iron</span><span class="crisp" aria-hidden="true">Oak <span>&amp;</span> Iron</span><span class="blade" aria-hidden="true"></span></h1>
+        <p class="what">Barbershop on Example Road, Wallasey. Cuts, skin fades, beard work and hot-towel shaves from three barbers. Walk in, or call to book a time.</p>
+        <p class="status" data-status><b>Opening hours below.</b></p>
+        <div class="ctas">
+          <a class="btn btn-solid" href="tel:+441514960123">Call 0151 496 0123</a>
+          <a class="btn" href="#services">See prices</a>
+          <a class="btn" href="#barbers">Meet the barbers</a>
+        </div>
+      </div>
+      <svg class="pole" viewBox="0 0 100 300" aria-hidden="true">
+        <defs>
+          <clipPath id="tube"><rect x="22" y="40" width="56" height="220" rx="28"/></clipPath>
+          <linearGradient id="glass" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity=".22"/><stop offset=".35" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".35"/></linearGradient>
+          <linearGradient id="capg" x1="0" x2="1"><stop offset="0" stop-color="#d8c2a0"/><stop offset=".5" stop-color="#b48a52"/><stop offset="1" stop-color="#7d5f38"/></linearGradient>
+        </defs>
+        <rect x="22" y="40" width="56" height="220" rx="28" fill="#eee7db"/>
+        <g clip-path="url(#tube)">
+          <g class="stripes">
+            <path d="M-40 -120 L140 -40 L140 -10 L-40 -90 Z M-40 -40 L140 40 L140 70 L-40 -10 Z M-40 40 L140 120 L140 150 L-40 70 Z M-40 120 L140 200 L140 230 L-40 150 Z M-40 200 L140 280 L140 310 L-40 230 Z M-40 280 L140 360 L140 390 L-40 310 Z" fill="#b48a52"/>
+            <path d="M-40 -80 L140 0 L140 14 L-40 -66 Z M-40 0 L140 80 L140 94 L-40 14 Z M-40 80 L140 160 L140 174 L-40 94 Z M-40 160 L140 240 L140 254 L-40 174 Z M-40 240 L140 320 L140 334 L-40 254 Z" fill="#2b2826"/>
+          </g>
+          <rect x="22" y="40" width="56" height="220" fill="url(#glass)"/>
+        </g>
+        <rect x="14" y="22" width="72" height="22" rx="6" fill="url(#capg)"/>
+        <rect x="14" y="256" width="72" height="22" rx="6" fill="url(#capg)"/>
+        <rect x="38" y="6" width="24" height="18" rx="9" fill="url(#capg)"/>
+      </svg>
+    </div>
+  </div>
+  
+
+  
+
+  <section class="band" id="services" aria-labelledby="services-h">
+    <div class="wrap">
+      <h2 id="services-h">Services and prices</h2>
+      <p class="lead">Every cut includes a consultation and a finish with product. Beard work is done with a hot towel.</p>
+      <div class="svc-groups" data-services></div>
+      <p class="note">Card and cash taken. Example prices for this demo.</p>
+    </div>
+  </section>
+
+  
+
+  <section class="band" id="barbers" aria-labelledby="barbers-h">
+    <div class="wrap grid2">
+      <div>
+        <h2 id="barbers-h">The barbers</h2>
+        <p class="lead">Three chairs, three barbers, each with the work they're known for.</p>
+        <ul class="team">
+          <li><span class="av" aria-hidden="true">JM</span><b>Jordan</b><small>Skin fades, tapers and beard shaping</small><span class="days">Mon to Fri</span></li>
+          <li><span class="av" aria-hidden="true">SA</span><b>Sami</b><small>Scissor cuts, longer hair and curls</small><span class="days">Tue to Sat</span></li>
+          <li><span class="av" aria-hidden="true">RT</span><b>Rhys</b><small>Hot-towel shaves and classic cuts</small><span class="days">Thu to Sun</span></li>
+        </ul>
+      </div>
+      <div id="about">
+        <h2>The shop</h2>
+        <p>Oak &amp; Iron is a three-chair barbershop with old-school fittings and no rush. Every appointment starts with a proper chat about what you want, and finishes with a hot towel and a look in the mirror together.</p>
+        <figure class="slot" style="aspect-ratio: 16 / 10; margin-top: 18px"><figcaption><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8.5A1.5 1.5 0 0 1 5.5 7h2l1.2-1.8A1 1 0 0 1 9.5 5h5a1 1 0 0 1 .8.4L16.5 7h2A1.5 1.5 0 0 1 20 8.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 17.5z" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="12" cy="12.5" r="3.2" fill="none" stroke="currentColor" stroke-width="1.3"/></svg>Your photo: the three barbers in the shop</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="gallery" aria-labelledby="gallery-h">
+    <div class="wrap">
+      <h2 id="gallery-h">Recent work</h2>
+      <div class="gallery" data-gallery></div>
+    </div>
+  </section>
+
+  <section class="band faq" id="faq" aria-labelledby="faq-h">
+    <div class="wrap grid2">
+      <div><h2 id="faq-h">FAQs</h2><p class="lead">Anything else, call us on 0151 496 0123.</p></div>
+      <div>
+        <details><summary>Do I need to book?</summary><p>No, walk-ins are welcome whenever a chair is free. Booking ahead means no wait, especially on Saturdays.</p></details>
+        <details><summary>Do you cut children's hair?</summary><p>Yes, under-12s are £16. An adult needs to stay with them.</p></details>
+        <details><summary>How do I pay?</summary><p>Card or cash in the shop.</p></details>
+        <details><summary>Is there parking?</summary><p>On-street parking outside, and we're two minutes' walk from the train station. Step-free entrance.</p></details>
+        
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="find-us" aria-labelledby="find-h">
+    <div class="wrap grid2">
+      <div>
+        <h2 id="find-h">Find us</h2>
+        <address>Oak &amp; Iron Barbers<br>12 Example Road<br>Wallasey</address>
+        <p class="status" data-status style="margin-top:14px;color:var(--muted)"></p>
+        <div class="contact">
+          <a href="tel:+441514960123">0151 496 0123</a>
+          <a href="https://www.instagram.com/" target="_blank" rel="noopener">Instagram</a>
+        </div>
+        <p style="margin-top:22px"><a class="btn" href="https://www.google.com/maps" target="_blank" rel="noopener">Open in Maps</a></p>
+      </div>
+      <div>
+        <h2>Opening hours</h2>
+        <table aria-label="Opening hours"><tbody data-hours></tbody></table>
+        <p class="note">Last booking 30 minutes before closing.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer><div class="wrap"><span>Oak &amp; Iron Barbers. Example business.</span><span>Website by CATALYZE, Business package</span></div></footer>
+
+
+
+<script>
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const camera = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8.5A1.5 1.5 0 0 1 5.5 7h2l1.2-1.8A1 1 0 0 1 9.5 5h5a1 1 0 0 1 .8.4L16.5 7h2A1.5 1.5 0 0 1 20 8.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 17.5z" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="12" cy="12.5" r="3.2" fill="none" stroke="currentColor" stroke-width="1.3"/></svg>';
+
+  /* ---------- Example content ---------- */
+  const SERVICES = [
+    { id: 'cut', group: 'Cuts', name: 'Cut', mins: 40, price: 24, desc: 'Scissor or clipper cut, finished with product' },
+    { id: 'fade', group: 'Cuts', name: 'Skin fade', mins: 45, price: 26, desc: 'Down to the skin, blended into any length on top' },
+    { id: 'long', group: 'Cuts', name: 'Long hair cut', mins: 50, price: 28, desc: 'Layers, undercuts and keeping the length you want' },
+    { id: 'kids', group: 'Cuts', name: "Kids' cut (under 12)", mins: 30, price: 16, desc: 'An adult stays with them' },
+    { id: 'beard', group: 'Beards', name: 'Beard trim and shape', mins: 20, price: 15, desc: 'Shaped with clippers and a cut-throat edge' },
+    { id: 'cutbeard', group: 'Beards', name: 'Cut and beard', mins: 55, price: 32, desc: 'Any cut plus a full beard shape with hot towel' },
+    { id: 'colour', group: 'Beards', name: 'Beard colour', mins: 30, price: 18, desc: 'Blends grey or evens out tone. Patch test 48 hours before', patch: true },
+    { id: 'shave', group: 'Shaves', name: 'Hot-towel shave', mins: 35, price: 28, desc: 'Traditional wet shave with hot towels and a cut-throat razor' },
+    { id: 'head', group: 'Shaves', name: 'Head shave', mins: 30, price: 20, desc: 'Clipper then razor finish, with a cold towel to close' },
+  ];
+  const WEEK = [['Monday', '09:00', '19:00'], ['Tuesday', '09:00', '19:00'], ['Wednesday', '09:00', '19:00'], ['Thursday', '09:00', '19:00'], ['Friday', '09:00', '19:00'], ['Saturday', '08:30', '17:00'], ['Sunday', '10:00', '15:00']];
+  const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  const money = (n) => (n === 0 ? 'Free' : `£${n}`);
+  const dur = (m) => `${m} min`;
+  const toMin = (t) => +t.slice(0, 2) * 60 + +t.slice(3);
+  const hm = (m) => `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`;
+
+  /* ---------- Services list ---------- */
+  const groups = [...new Set(SERVICES.map((s) => s.group))];
+  $('[data-services]').innerHTML = groups.map((g) => `<div><h3>${g}</h3>${SERVICES.filter((s) => s.group === g).map((s) => `<div class="svc"><b>${esc(s.name)}</b><small>${esc(s.desc)}</small><span class="p">${money(s.price)}<span class="t">${dur(s.mins)}</span></span></div>`).join('')}</div>`).join('');
+  $('[data-gallery]').innerHTML = ['A skin fade', 'A beard shape-up', 'A scissor cut', 'A hot-towel shave', 'The chairs', 'The shopfront'].map((t) => `<figure class="slot"><figcaption>${camera}Your photo: ${t.toLowerCase()}</figcaption></figure>`).join('');
+
+  /* ---------- Opening hours and live status (UK time) ---------- */
+  function london() {
+    const p = new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/London', weekday: 'long', hour: '2-digit', minute: '2-digit', hour12: false }).formatToParts(new Date());
+    const g = (t) => p.find((x) => x.type === t).value;
+    return { day: g('weekday'), mins: (+g('hour') % 24) * 60 + +g('minute') };
+  }
+  function paint() {
+    const n = london(); const t = WEEK.find((w) => w[0] === n.day);
+    $('[data-hours]').innerHTML = WEEK.map(([d, o, c]) => `<tr${d === n.day ? ' class="today"' : ''}><th scope="row">${d}</th><td>${o} to ${c}</td></tr>`).join('');
+    let long, short;
+    if (n.mins >= toMin(t[1]) && n.mins < toMin(t[2])) { long = `<b>Open now</b>, until ${t[2]} today.`; short = `Open now, until ${t[2]}`; }
+    else if (n.mins < toMin(t[1])) { long = `<b>Closed now.</b> Opens today at ${t[1]}.`; short = `Opens at ${t[1]}`; }
+    else { const nx = WEEK[(WEEK.findIndex((w) => w[0] === n.day) + 1) % 7]; long = `<b>Closed now.</b> Opens ${nx[0]} at ${nx[1]}.`; short = `Opens ${nx[0]} ${nx[1]}`; }
+    $$('[data-status]').forEach((e) => { e.innerHTML = long; });
+    $$('[data-status-short]').forEach((e) => { e.textContent = short; });
+    $$('[data-today]').forEach((e) => { e.textContent = `${t[1]} to ${t[2]}`; });
+  }
+  paint(); setInterval(paint, 30000);
+
+  /* ---------- Find your cut ---------- */
+  
+
+  /* ---------- Booking (demo: sample times from the opening hours, nothing sent) ---------- */
+  
+</script>
+
+</body>
+</html>
