@@ -13,6 +13,6 @@ Signature, Signature + Booking). Served by the main site at `/demos/oak-iron/`
 - `dist/`: what gets uploaded.
 
 ```bash
-python3 demos/oak-iron/build.py   # rebuild the demos
+python3 demos/oak-iron/build.py   # rebuild the demos (needs: pip install fonttools)
 npm run build                      # site + demos in dist/
 ```

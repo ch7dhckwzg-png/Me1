@@ -105,6 +105,39 @@ def copy_fonts():
         shutil.copy(nm / pkg / 'files' / f, DIST / 'fonts' / out)
 
 
+NAME_TEXT = ('<text x="0" y="250" textLength="1000" lengthAdjust="spacing" font-family="Bebas Neue, Impact, sans-serif" '
+             'font-size="300" fill="#eee7db">OAK <tspan fill="#b48a52">&amp;</tspan> IRON</text>')
+
+
+def name_as_paths():
+    """'OAK & IRON' as SVG paths drawn from the Bebas Neue font file.
+
+    The hero used <text textLength="1000" lengthAdjust="spacing">, which Safari (WebKit,
+    so every iPhone browser) lays out wrongly when part of the text is a <tspan>: the
+    letters land in the wrong places and overlap. Paths look the same in every browser.
+    Spacing matches textLength: the leftover width is shared equally between letters.
+    """
+    from fontTools.ttLib import TTFont
+    from fontTools.pens.svgPathPen import SVGPathPen
+    from fontTools.pens.transformPen import TransformPen
+    font = TTFont(str(ROOT.parent.parent / 'node_modules/@fontsource/bebas-neue/files/bebas-neue-latin-400-normal.woff'))
+    cmap, gs, hmtx = font.getBestCmap(), font.getGlyphSet(), font['hmtx']
+    size, baseline, width = 300, 250, 1000
+    k = size / font['head'].unitsPerEm
+    text = 'OAK & IRON'
+    adv = [hmtx[cmap[ord(c)]][0] * k for c in text]
+    gap = (width - sum(adv)) / (len(text) - 1)
+    cream, brass, x = [], [], 0.0
+    for c, a in zip(text, adv):
+        if c != ' ':
+            pen = SVGPathPen(gs, ntos=lambda v: f'{v:.1f}'.rstrip('0').rstrip('.'))
+            gs[cmap[ord(c)]].draw(TransformPen(pen, (k, 0, 0, -k, x, baseline)))
+            (brass if c == '&' else cream).append(pen.getCommands())
+        x += a + gap
+    return (f'<g fill="#eee7db"><path d="{" ".join(cream)}"/>'
+            f'<path fill="#b48a52" d="{" ".join(brass)}"/></g>')
+
+
 def fix_clipper_animation(html):
     """Signature hero: keep the clipper blade on the cut line, then send it off the edge.
 
@@ -182,6 +215,8 @@ def build_package(name):
     html = src
     if 'class="namefx"' in html:
         html = fix_clipper_animation(html)
+        assert html.count(NAME_TEXT) == 2, 'hero name text not found'
+        html = html.replace(NAME_TEXT, name_as_paths())
     html = null_safe_script(html)
     html = html.replace('</style>', EXTRA_CSS + '</style>', 1)
     html = html.replace('</script>', MENU_JS + '</script>', 1)
